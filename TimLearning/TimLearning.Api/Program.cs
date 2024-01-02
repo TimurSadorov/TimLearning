@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TimLearning.Model.Configurations;
 using TimLearning.Model.Db;
+using TimLearning.Shared.App.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,9 @@ var services = builder.Services;
 var config = builder.Configuration;
 
 services.AddControllers();
+
+services.AddTimLearningAuthentication(config);
+services.AddTimLearningAuthorization();
 
 services.AddSwaggerGen();
 
@@ -22,6 +26,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseTimLearningAuthentication();
+app.UseTimLearningAuthorization();
 
 app.MapControllers();
 

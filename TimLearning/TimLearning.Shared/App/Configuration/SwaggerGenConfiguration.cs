@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace TimLearning.Shared.App.Extension;
+namespace TimLearning.Shared.App.Configuration;
 
 public static class SwaggerGenConfiguration
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace TimLearning.Shared.App.Extension;
+namespace TimLearning.Shared.App.Configuration;
 
 public static class AuthorizationConfiguration
 {

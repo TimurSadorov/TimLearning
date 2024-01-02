@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using TimLearning.Shared.App.Auth.Configuration;
 using TimLearning.Shared.Configuration.Extensions;
 
-namespace TimLearning.Shared.App.Extension;
+namespace TimLearning.Shared.App.Configuration;
 
 public static class AuthenticationConfiguration
 {
@@ -32,9 +32,9 @@ public static class AuthenticationConfiguration
                 {
                     ValidateIssuer = false,
                     ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero,
                     ValidateLifetime = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(jwtSettings.KeyInByte),
-                    ValidateIssuerSigningKey = true
+                    IssuerSigningKey = new SymmetricSecurityKey(jwtSettings.KeyInByte)
                 };
             });
 
