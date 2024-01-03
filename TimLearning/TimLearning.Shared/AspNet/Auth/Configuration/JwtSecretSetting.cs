@@ -2,7 +2,7 @@
 using TimLearning.Shared.Configuration;
 using TimLearning.Shared.Extensions;
 
-namespace TimLearning.Shared.App.Auth.Configuration;
+namespace TimLearning.Shared.AspNet.Auth.Configuration;
 
 public class JwtSecretSetting : IConfigurationSettings
 {

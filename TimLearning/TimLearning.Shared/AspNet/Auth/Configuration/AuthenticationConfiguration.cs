@@ -3,10 +3,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using TimLearning.Shared.App.Auth.Configuration;
 using TimLearning.Shared.Configuration.Extensions;
 
-namespace TimLearning.Shared.App.Configuration;
+namespace TimLearning.Shared.AspNet.Auth.Configuration;
 
 public static class AuthenticationConfiguration
 {

@@ -4,5 +4,5 @@ namespace TimLearning.Model.Services;
 
 public interface IUserService
 {
-    Task RegisterAsync(NewUserDto dto);
+    Task<Guid> RegisterAsync(NewUserDto dto);
 }

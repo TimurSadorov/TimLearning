@@ -1,4 +1,4 @@
-﻿namespace TimLearning.Shared.App.Auth.Claim;
+﻿namespace TimLearning.Shared.AspNet.Auth.Claim;
 
 public static class ExtendedClaimTypes
 {

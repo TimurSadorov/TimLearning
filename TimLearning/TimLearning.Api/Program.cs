@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TimLearning.Model.Configurations;
 using TimLearning.Model.Db;
-using TimLearning.Shared.App.Configuration;
+using TimLearning.Shared.AspNet.Auth.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
