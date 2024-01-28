@@ -1,12 +1,13 @@
 using FluentValidation;
 using FluentValidation.Results;
-using TimLearning.Shared.Validation.Exceptions;
+using TimLearning.Shared.Validation.Exceptions.Localized;
+using TimLearning.Shared.Validation.Exceptions.Localized.Errors;
 
 namespace TimLearning.Shared.Validation.FluentValidator.Extensions;
 
 public static class ValidatorExtensions
 {
-    public static void ValidateAndThrowWithLocalizedErrors<T>(
+    public static void ValidateAndThrowLocalizedException<T>(
         this IValidator<T> validator,
         T entityToValidate
     )
@@ -15,12 +16,13 @@ public static class ValidatorExtensions
         ThrowLocalizedValidationExceptionIfNotValid(validationResult);
     }
 
-    public static async Task ValidateAndThrowWithLocalizedErrorsAsync<T>(
+    public static async Task ValidateAndThrowLocalizedExceptionAsync<T>(
         this IValidator<T> validator,
-        T entityToValidate
+        T entityToValidate,
+        CancellationToken ct = default
     )
     {
-        var validationResult = await validator.ValidateAsync(entityToValidate);
+        var validationResult = await validator.ValidateAsync(entityToValidate, ct);
         ThrowLocalizedValidationExceptionIfNotValid(validationResult);
     }
 
@@ -30,12 +32,12 @@ public static class ValidatorExtensions
     {
         if (validationResult.IsValid is false)
         {
-            throw new LocalizedValidationException(
-                validationResult
-                    .Errors.ToLookup(e => e.PropertyName, e => e.ErrorMessage)
+            LocalizedValidationException.ThrowWithModelError(
+                validationResult.Errors
+                    .ToLookup(e => e.PropertyName, e => e.ErrorMessage)
                     .Select(
                         propErrors =>
-                            new PropertyValidationResult(propErrors.Key, propErrors.ToList())
+                            new PropertyError(propErrors.Key, propErrors.ToList())
                     )
                     .ToList()
             );

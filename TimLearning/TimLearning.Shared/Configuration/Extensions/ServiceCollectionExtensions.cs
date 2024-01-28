@@ -5,7 +5,7 @@ namespace TimLearning.Shared.Configuration.Extensions;
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddRequiredOptions<TOptions>(this IServiceCollection services)
-        where TOptions : class, IConfigurationSettings
+        where TOptions : class, IConfigurationOptions
     {
         return services.AddRequiredOptions<TOptions>(TOptions.SectionName);
     }
