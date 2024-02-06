@@ -16,8 +16,22 @@ public class TimLearningLinkFactory : ITimLearningLinkFactory
 
     public string GetLinkToUserConfirm(string userEmail, string signature)
     {
+        var linkToConfirm = new UriBuilder(new Uri(GetLinkToTimLearningSite(), "/account/confirm"))
+        {
+            Query = new QueryBuilder
+            {
+                { "email", userEmail },
+                { "signature", signature }
+            }.ToString()
+        };
+
+        return linkToConfirm.ToString();
+    }
+
+    public string GetLinkToRecoverPassword(string userEmail, string signature)
+    {
         var linkToConfirm = new UriBuilder(
-            new Uri(new Uri(_timLearningOptions.Url, UriKind.Absolute), "/account/confirm")
+            new Uri(GetLinkToTimLearningSite(), "/account/passwrod-recovering")
         )
         {
             Query = new QueryBuilder
@@ -28,5 +42,10 @@ public class TimLearningLinkFactory : ITimLearningLinkFactory
         };
 
         return linkToConfirm.ToString();
+    }
+
+    private Uri GetLinkToTimLearningSite()
+    {
+        return new Uri(_timLearningOptions.Url, UriKind.Absolute);
     }
 }

@@ -27,6 +27,12 @@ namespace TimLearning.Infrastructure.Implementation.Db.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
         }
 
         /// <inheritdoc />

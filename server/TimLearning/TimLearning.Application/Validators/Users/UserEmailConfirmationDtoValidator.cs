@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
-using TimLearning.Application.Services.DataEncryptors.UserDataEncryptor;
+using TimLearning.Application.Services.UserServices;
 using TimLearning.Application.Specifications.Dynamic.Users;
 using TimLearning.Application.UseCases.Users.Dto;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Shared.Validation.Exceptions.Localized;
 using TimLearning.Shared.Validation.Validators;
 
-namespace TimLearning.Application.Validators.User;
+namespace TimLearning.Application.Validators.Users;
 
 public class UserEmailConfirmationDtoValidator : IAsyncSimpleValidator<UserEmailConfirmationDto>
 {
@@ -40,7 +40,7 @@ public class UserEmailConfirmationDtoValidator : IAsyncSimpleValidator<UserEmail
             LocalizedValidationException.ThrowWithSimpleTextError("Почта уже подтверждена.");
         }
 
-        if (_userUserDataEncryptor.VerifyEmail(entity.Email, entity.Signature) == false)
+        if (_userUserDataEncryptor.VerifyEmail(entity.Signature, entity.Email) == false)
         {
             LocalizedValidationException.ThrowWithSimpleTextError("Ссылка была изменена.");
         }

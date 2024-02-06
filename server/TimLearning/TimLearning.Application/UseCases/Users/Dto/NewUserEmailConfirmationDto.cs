@@ -1,3 +1,3 @@
 ﻿namespace TimLearning.Application.UseCases.Users.Dto;
 
-public record NewUserEmailConfirmationDto(Guid UserId);
+public record NewUserEmailConfirmationDto(string UserEmail);

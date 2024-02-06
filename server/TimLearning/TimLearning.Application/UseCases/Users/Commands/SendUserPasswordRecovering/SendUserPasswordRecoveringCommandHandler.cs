@@ -1,16 +1,20 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using TimLearning.Application.Data.ValueObjects;
 using TimLearning.Application.Services.UserServices;
+using TimLearning.Application.Specifications.Dynamic.Users;
+using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Infrastructure.Interfaces.Factories.Link;
 using TimLearning.Infrastructure.Interfaces.Providers.Clock;
 using TimLearning.Infrastructure.Interfaces.Services.Email;
 using TimLearning.Shared.Validation.Validators;
 
-namespace TimLearning.Application.UseCases.Users.Commands.SendUserEmailConfirmation;
+namespace TimLearning.Application.UseCases.Users.Commands.SendUserPasswordRecovering;
 
-public class SendUserEmailConfirmationCommandHandler
-    : IRequestHandler<SendUserEmailConfirmationCommand>
+public class SendUserPasswordRecoveringCommandHandler
+    : IRequestHandler<SendUserPasswordRecoveringCommand>
 {
+    private readonly IAppDbContext _db;
     private readonly IEmailService _emailService;
     private readonly IUserDataEncryptor _userDataEncryptor;
     private readonly ITimLearningLinkFactory _timLearningLinkFactory;
@@ -18,7 +22,8 @@ public class SendUserEmailConfirmationCommandHandler
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IAsyncSimpleValidator<UserEmailValueObject> _userIdValidator;
 
-    public SendUserEmailConfirmationCommandHandler(
+    public SendUserPasswordRecoveringCommandHandler(
+        IAppDbContext db,
         IEmailService emailService,
         IUserDataEncryptor userDataEncryptor,
         ITimLearningLinkFactory timLearningLinkFactory,
@@ -27,30 +32,42 @@ public class SendUserEmailConfirmationCommandHandler
         IAsyncSimpleValidator<UserEmailValueObject> userIdValidator
     )
     {
+        _db = db;
         _emailService = emailService;
+        _userDataEncryptor = userDataEncryptor;
         _timLearningLinkFactory = timLearningLinkFactory;
         _userEmailProvider = userEmailProvider;
         _dateTimeProvider = dateTimeProvider;
-        _userDataEncryptor = userDataEncryptor;
         _userIdValidator = userIdValidator;
     }
 
     public async Task Handle(
-        SendUserEmailConfirmationCommand request,
+        SendUserPasswordRecoveringCommand request,
         CancellationToken cancellationToken
     )
     {
-        var userEmail = request.NewConfirmationDto.UserEmail;
+        var userEmail = request.Dto.UserEmail;
         await _userIdValidator.ValidateAndThrowAsync(
             new UserEmailValueObject(userEmail),
             cancellationToken
         );
 
-        var signedEmail = _userDataEncryptor.SingEmail(userEmail);
-        var linkToConfirm = _timLearningLinkFactory.GetLinkToUserConfirm(userEmail, signedEmail);
-        var mail = _userEmailProvider.GetMailForEmailConfirmation(
+        var userPasswordHash = await _db.Users
+            .Where(new UserByEmailSpecification(userEmail))
+            .Select(u => u.PasswordHash)
+            .SingleAsync(cancellationToken);
+
+        var signedEmailAndPassword = _userDataEncryptor.SingEmailAndPassword(
             userEmail,
-            linkToConfirm,
+            userPasswordHash
+        );
+        var linkToRecovering = _timLearningLinkFactory.GetLinkToRecoverPassword(
+            userEmail,
+            signedEmailAndPassword
+        );
+        var mail = _userEmailProvider.GetMailForPasswordRecovering(
+            userEmail,
+            linkToRecovering,
             await _dateTimeProvider.GetUtcNow()
         );
 

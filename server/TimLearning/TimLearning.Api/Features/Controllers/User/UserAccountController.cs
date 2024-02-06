@@ -9,6 +9,7 @@ using TimLearning.Application.UseCases.Users.Commands.ConfirmUserEmail;
 using TimLearning.Application.UseCases.Users.Commands.LoginUser;
 using TimLearning.Application.UseCases.Users.Commands.RefreshUserToken;
 using TimLearning.Application.UseCases.Users.Commands.RegisterUser;
+using TimLearning.Application.UseCases.Users.Commands.SendUserPasswordRecovering;
 using TimLearning.Application.UseCases.Users.Dto;
 
 namespace TimLearning.Api.Features.Controllers.User;
@@ -71,5 +72,17 @@ public class UserAccountController : BaseController
         );
 
         return tokens.ToResponse();
+    }
+
+    [HttpPost]
+    [Route("password/recover")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> RecoverPassword(RecoverPasswordRequest request)
+    {
+        await _mediator.Send(
+            new SendUserPasswordRecoveringCommand(new UserRecoveringPasswordDto(request.UserEmail))
+        );
+
+        return Ok();
     }
 }

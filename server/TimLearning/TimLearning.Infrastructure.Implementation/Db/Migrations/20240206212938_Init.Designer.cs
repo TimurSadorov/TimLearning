@@ -12,7 +12,7 @@ using TimLearning.Infrastructure.Implementation.Db;
 namespace TimLearning.Infrastructure.Implementation.Db.Migrations
 {
     [DbContext(typeof(AppAppDbContext))]
-    [Migration("20240206162556_Init")]
+    [Migration("20240206212938_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -53,6 +53,9 @@ namespace TimLearning.Infrastructure.Implementation.Db.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });

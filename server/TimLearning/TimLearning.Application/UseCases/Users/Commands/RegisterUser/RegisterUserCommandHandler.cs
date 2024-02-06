@@ -51,7 +51,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
         await _db.SaveChangesAsync(cancellationToken);
 
         await _mediator.Send(
-            new SendUserEmailConfirmationCommand(new NewUserEmailConfirmationDto(user.Id)),
+            new SendUserEmailConfirmationCommand(new NewUserEmailConfirmationDto(user.Email)),
             cancellationToken
         );
 

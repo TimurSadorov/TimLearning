@@ -7,7 +7,7 @@ using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Shared.Validation.Exceptions.Localized;
 using TimLearning.Shared.Validation.Validators;
 
-namespace TimLearning.Application.Validators.User;
+namespace TimLearning.Application.Validators.Users;
 
 public class AuthorizationDtoValidator : IAsyncSimpleValidator<AuthorizationDto>
 {

@@ -20,9 +20,7 @@ public class EmailService : IEmailService
         var message = CreateMessage(mailDto);
 
         using var client = new SmtpClient();
-        // client.ServerCertificateValidationCallback = (s, c, h, e) => true;
         await client.ConnectAsync(_mailOptions.Server, _mailOptions.Port, _mailOptions.UseSsl);
-        // client.AuthenticationMechanisms.Remove("XOAUTH2");
         await client.AuthenticateAsync(_mailOptions.UserMail, _mailOptions.Password);
         await client.SendAsync(message);
         await client.DisconnectAsync(true);

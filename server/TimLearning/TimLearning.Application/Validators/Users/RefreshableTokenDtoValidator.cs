@@ -6,7 +6,7 @@ using TimLearning.Infrastructure.Interfaces.Providers.Clock;
 using TimLearning.Shared.Validation.Exceptions.Localized;
 using TimLearning.Shared.Validation.Validators;
 
-namespace TimLearning.Application.Validators.User;
+namespace TimLearning.Application.Validators.Users;
 
 public class RefreshableTokenDtoValidator : IAsyncSimpleValidator<RefreshableTokenDto>
 {
@@ -20,22 +20,22 @@ public class RefreshableTokenDtoValidator : IAsyncSimpleValidator<RefreshableTok
     }
 
     public async Task ValidateAndThrowAsync(
-        RefreshableTokenDto token,
+        RefreshableTokenDto entity,
         CancellationToken ct = default
     )
     {
         var user = await _db.Users
-            .Where(new UserByEmailSpecification(token.UserEmail))
+            .Where(new UserByEmailSpecification(entity.UserEmail))
             .Select(u => new { u.RefreshToken, u.RefreshTokenExpireAt })
             .SingleOrDefaultAsync(ct);
 
         if (user is null)
         {
             LocalizedValidationException.ThrowWithSimpleTextError(
-                "Пользователя с такой почтой не существует."
+                $"Пользователя с почтой[{entity.UserEmail}] не существует."
             );
         }
-        if (user.RefreshToken != token.RefreshToken)
+        if (user.RefreshToken != entity.RefreshToken)
         {
             LocalizedValidationException.ThrowWithSimpleTextError(
                 "У данного пользователя другой refresh token."

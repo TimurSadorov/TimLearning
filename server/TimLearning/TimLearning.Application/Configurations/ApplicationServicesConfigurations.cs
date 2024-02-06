@@ -3,12 +3,12 @@ using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TimLearning.Application.Configurations.Options;
-using TimLearning.Application.Services.DataEncryptors.UserDataEncryptor;
+using TimLearning.Application.Data.ValueObjects;
 using TimLearning.Application.Services.UserServices;
 using TimLearning.Application.ToDoServices;
 using TimLearning.Application.UseCases.Users.Commands.RegisterUser;
 using TimLearning.Application.UseCases.Users.Dto;
-using TimLearning.Application.Validators.User;
+using TimLearning.Application.Validators.Users;
 using TimLearning.Shared.Configuration.Extensions;
 using TimLearning.Shared.Services.Encryptors.DataEncryptor;
 using TimLearning.Shared.Services.Encryptors.PasswordEncryptor;
@@ -40,22 +40,17 @@ public static class ApplicationServicesConfigurations
 
     private static void AddPrivateServices(this IServiceCollection services, IConfiguration config)
     {
-        services.AddDataEncryptors(config);
-
-        services.AddSingleton<IJwtTokensGenerator, JwtTokenGenerator>();
-        services.AddSingleton<IUserTokenGenerator, UserTokenGenerator>();
-        services.AddScoped<IUserTokenUpdater, UserTokenUpdater>();
-
-        services.AddToDoServices();
-    }
-
-    private static void AddDataEncryptors(this IServiceCollection services, IConfiguration config)
-    {
         services.AddDataHasher(config.GetRequiredStringValue("DataEncryptor:SharedKey"));
         services.AddSingleton<IUserPasswordService>(
             new UserPasswordService(new PasswordEncryptor(SHA512.Create()))
         );
         services.AddSingleton<IUserDataEncryptor, UserDataEncryptor>();
+        services.AddSingleton<IJwtTokensGenerator, JwtTokenGenerator>();
+        services.AddSingleton<IUserTokenGenerator, UserTokenGenerator>();
+        services.AddScoped<IUserTokenUpdater, UserTokenUpdater>();
+        services.AddSingleton<IUserEmailProvider, UserEmailProvider>();
+
+        services.AddToDoServices();
     }
 
     // TODO: services for future use
@@ -76,5 +71,6 @@ public static class ApplicationServicesConfigurations
             IAsyncSimpleValidator<RefreshableTokenDto>,
             RefreshableTokenDtoValidator
         >();
+        services.AddScoped<IAsyncSimpleValidator<UserEmailValueObject>, UserEmailValidator>();
     }
 }

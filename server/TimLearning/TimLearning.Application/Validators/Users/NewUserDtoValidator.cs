@@ -5,7 +5,7 @@ using TimLearning.Application.UseCases.Users.Dto;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Shared.Validation.FluentValidator.Validators;
 
-namespace TimLearning.Application.Validators.User;
+namespace TimLearning.Application.Validators.Users;
 
 public class NewUserDtoValidator : TimLearningFluentValidator<NewUserDto>
 {
