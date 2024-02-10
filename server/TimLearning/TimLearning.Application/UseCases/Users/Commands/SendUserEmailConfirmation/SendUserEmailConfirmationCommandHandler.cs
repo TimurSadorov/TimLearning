@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using TimLearning.Application.Data.ValueObjects;
 using TimLearning.Application.Services.UserServices;
+using TimLearning.Application.UseCases.Users.Dto;
 using TimLearning.Infrastructure.Interfaces.Factories.Link;
 using TimLearning.Infrastructure.Interfaces.Providers.Clock;
 using TimLearning.Infrastructure.Interfaces.Services.Email;
@@ -16,7 +16,7 @@ public class SendUserEmailConfirmationCommandHandler
     private readonly ITimLearningLinkFactory _timLearningLinkFactory;
     private readonly IUserEmailProvider _userEmailProvider;
     private readonly IDateTimeProvider _dateTimeProvider;
-    private readonly IAsyncSimpleValidator<UserEmailValueObject> _userIdValidator;
+    private readonly IAsyncSimpleValidator<NewUserEmailConfirmationDto> _newUserEmailConfirmationValidator;
 
     public SendUserEmailConfirmationCommandHandler(
         IEmailService emailService,
@@ -24,7 +24,7 @@ public class SendUserEmailConfirmationCommandHandler
         ITimLearningLinkFactory timLearningLinkFactory,
         IUserEmailProvider userEmailProvider,
         IDateTimeProvider dateTimeProvider,
-        IAsyncSimpleValidator<UserEmailValueObject> userIdValidator
+        IAsyncSimpleValidator<NewUserEmailConfirmationDto> newUserEmailConfirmationValidator
     )
     {
         _emailService = emailService;
@@ -32,7 +32,7 @@ public class SendUserEmailConfirmationCommandHandler
         _userEmailProvider = userEmailProvider;
         _dateTimeProvider = dateTimeProvider;
         _userDataEncryptor = userDataEncryptor;
-        _userIdValidator = userIdValidator;
+        _newUserEmailConfirmationValidator = newUserEmailConfirmationValidator;
     }
 
     public async Task Handle(
@@ -40,11 +40,11 @@ public class SendUserEmailConfirmationCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var userEmail = request.NewConfirmationDto.UserEmail;
-        await _userIdValidator.ValidateAndThrowAsync(
-            new UserEmailValueObject(userEmail),
+        await _newUserEmailConfirmationValidator.ValidateAndThrowAsync(
+            request.NewConfirmationDto,
             cancellationToken
         );
+        var userEmail = request.NewConfirmationDto.UserEmail;
 
         var signedEmail = _userDataEncryptor.SingEmail(userEmail);
         var linkToConfirm = _timLearningLinkFactory.GetLinkToUserConfirm(userEmail, signedEmail);

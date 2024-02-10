@@ -8,10 +8,12 @@ using TimLearning.Application.Services.UserServices;
 using TimLearning.Application.ToDoServices;
 using TimLearning.Application.UseCases.Users.Commands.RegisterUser;
 using TimLearning.Application.UseCases.Users.Dto;
+using TimLearning.Application.UseCases.Users.Validators;
 using TimLearning.Application.Validators.Users;
 using TimLearning.Shared.Configuration.Extensions;
 using TimLearning.Shared.Services.Encryptors.DataEncryptor;
 using TimLearning.Shared.Services.Encryptors.PasswordEncryptor;
+using TimLearning.Shared.Validation.FluentValidator.Validators;
 using TimLearning.Shared.Validation.Validators;
 
 namespace TimLearning.Application.Configurations;
@@ -66,11 +68,20 @@ public static class ApplicationServicesConfigurations
             IAsyncSimpleValidator<UserEmailConfirmationDto>,
             UserEmailConfirmationDtoValidator
         >();
+        services.AddScoped<
+            IAsyncSimpleValidator<NewUserEmailConfirmationDto>,
+            NewUserEmailConfirmationDtoValidator
+        >();
         services.AddScoped<IAsyncSimpleValidator<AuthorizationDto>, AuthorizationDtoValidator>();
         services.AddScoped<
             IAsyncSimpleValidator<RefreshableTokenDto>,
             RefreshableTokenDtoValidator
         >();
         services.AddScoped<IAsyncSimpleValidator<UserEmailValueObject>, UserEmailValidator>();
+        services.AddSingleton<IValidator<UserPasswordValueObject>, UserPasswordValidator>();
+        services.AddScoped<
+            ICombinedFluentAndSimpleValidator<NewRecoveringPasswordDto>,
+            NewRecoveringPasswordDtoValidator
+        >();
     }
 }

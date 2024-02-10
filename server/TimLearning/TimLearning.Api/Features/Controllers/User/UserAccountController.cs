@@ -7,8 +7,10 @@ using TimLearning.Api.Requests.User;
 using TimLearning.Api.Responses.User;
 using TimLearning.Application.UseCases.Users.Commands.ConfirmUserEmail;
 using TimLearning.Application.UseCases.Users.Commands.LoginUser;
+using TimLearning.Application.UseCases.Users.Commands.RecoverUserPassword;
 using TimLearning.Application.UseCases.Users.Commands.RefreshUserToken;
 using TimLearning.Application.UseCases.Users.Commands.RegisterUser;
+using TimLearning.Application.UseCases.Users.Commands.SendUserEmailConfirmation;
 using TimLearning.Application.UseCases.Users.Commands.SendUserPasswordRecovering;
 using TimLearning.Application.UseCases.Users.Dto;
 
@@ -34,6 +36,18 @@ public class UserAccountController : BaseController
         );
 
         return Created();
+    }
+
+    [HttpPost]
+    [Route("email/confirmation/send")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> SendEmailConfirmation(SendEmailConfirmationRequest request)
+    {
+        await _mediator.Send(
+            new SendUserEmailConfirmationCommand(new NewUserEmailConfirmationDto(request.UserEmail))
+        );
+
+        return Ok();
     }
 
     [HttpPost]
@@ -75,12 +89,34 @@ public class UserAccountController : BaseController
     }
 
     [HttpPost]
+    [Route("password/mail/recover")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> SendMailToRecoverPassword(
+        SendMailToRecoverPasswordRequest request
+    )
+    {
+        await _mediator.Send(
+            new SendUserPasswordRecoveringCommand(
+                new UserInfoForRecoveringPasswordDto(request.UserEmail)
+            )
+        );
+
+        return Ok();
+    }
+
+    [HttpPost]
     [Route("password/recover")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> RecoverPassword(RecoverPasswordRequest request)
     {
         await _mediator.Send(
-            new SendUserPasswordRecoveringCommand(new UserRecoveringPasswordDto(request.UserEmail))
+            new RecoverUserPasswordCommand(
+                new NewRecoveringPasswordDto(
+                    request.UserEmail,
+                    request.Signature,
+                    request.NewPassword
+                )
+            )
         );
 
         return Ok();

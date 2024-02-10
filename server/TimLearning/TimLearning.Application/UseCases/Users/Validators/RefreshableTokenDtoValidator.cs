@@ -6,7 +6,7 @@ using TimLearning.Infrastructure.Interfaces.Providers.Clock;
 using TimLearning.Shared.Validation.Exceptions.Localized;
 using TimLearning.Shared.Validation.Validators;
 
-namespace TimLearning.Application.Validators.Users;
+namespace TimLearning.Application.UseCases.Users.Validators;
 
 public class RefreshableTokenDtoValidator : IAsyncSimpleValidator<RefreshableTokenDto>
 {

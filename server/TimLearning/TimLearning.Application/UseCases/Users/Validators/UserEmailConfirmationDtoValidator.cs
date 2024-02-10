@@ -6,7 +6,7 @@ using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Shared.Validation.Exceptions.Localized;
 using TimLearning.Shared.Validation.Validators;
 
-namespace TimLearning.Application.Validators.Users;
+namespace TimLearning.Application.UseCases.Users.Validators;
 
 public class UserEmailConfirmationDtoValidator : IAsyncSimpleValidator<UserEmailConfirmationDto>
 {
@@ -42,7 +42,9 @@ public class UserEmailConfirmationDtoValidator : IAsyncSimpleValidator<UserEmail
 
         if (_userUserDataEncryptor.VerifyEmail(entity.Signature, entity.Email) == false)
         {
-            LocalizedValidationException.ThrowWithSimpleTextError("Ссылка была изменена.");
+            LocalizedValidationException.ThrowWithSimpleTextError(
+                "Подтверждение не предназначено для этой почты."
+            );
         }
     }
 }

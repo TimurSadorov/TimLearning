@@ -1,15 +1,18 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using TimLearning.Application.Data.ValueObjects;
 using TimLearning.Application.Specifications.Dynamic.Users;
 using TimLearning.Application.UseCases.Users.Dto;
 using TimLearning.Infrastructure.Interfaces.Db;
-using TimLearning.Shared.Validation.FluentValidator.Validators;
 
-namespace TimLearning.Application.Validators.Users;
+namespace TimLearning.Application.UseCases.Users.Validators;
 
-public class NewUserDtoValidator : TimLearningFluentValidator<NewUserDto>
+public class NewUserDtoValidator : AbstractValidator<NewUserDto>
 {
-    public NewUserDtoValidator(IAppDbContext db)
+    public NewUserDtoValidator(
+        IAppDbContext db,
+        IValidator<UserPasswordValueObject> userPasswordValidator
+    )
     {
         RuleFor(dto => dto.Email)
             .NotEmpty()
@@ -23,9 +26,8 @@ public class NewUserDtoValidator : TimLearningFluentValidator<NewUserDto>
             )
             .WithMessage("Пользователь с такой почтой уже существует.");
 
-        RuleFor(dto => dto.Password)
-            .MinimumLength(8)
-            .OverridePropertyName("password")
-            .WithMessage("Пароль должен содержать не меньше 8 символов.");
+        RuleFor(dto => new UserPasswordValueObject(dto.Password))
+            .SetValidator(userPasswordValidator)
+            .OverridePropertyName("password");
     }
 }
