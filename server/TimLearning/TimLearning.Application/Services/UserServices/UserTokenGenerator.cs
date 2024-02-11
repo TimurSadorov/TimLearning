@@ -11,7 +11,7 @@ public class UserTokenGenerator : IUserTokenGenerator
         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private const int RefreshTokenLength = 20;
 
-    private static readonly TimeSpan JwtTokenLifetime = TimeSpan.FromMinutes(30);
+    private static readonly TimeSpan JwtTokenLifetime = TimeSpan.FromMinutes(5);
 
     private readonly IJwtTokensGenerator _jwtTokensGenerator;
 
@@ -34,6 +34,8 @@ public class UserTokenGenerator : IUserTokenGenerator
             new(ClaimTypes.Email, user.Email),
             new(ExtendedClaimTypes.Id, user.Id.ToString())
         };
+        claims.AddRange(user.Roles.Select(r => new Claim(ClaimTypes.Role, r.ToString())));
+
         return new ClaimsIdentity(claims);
     }
 

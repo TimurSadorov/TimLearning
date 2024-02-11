@@ -11,4 +11,6 @@ public class User : IIdHolder<Guid>
     public required bool IsEmailConfirmed { get; set; }
     public string? RefreshToken { get; set; }
     public DateTimeOffset? RefreshTokenExpireAt { get; set; }
+
+    public required List<UserRole> Roles { get; init; }
 }

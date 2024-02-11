@@ -4,6 +4,7 @@ using TimLearning.Application.Services.UserServices;
 using TimLearning.Application.UseCases.Users.Commands.SendUserEmailConfirmation;
 using TimLearning.Application.UseCases.Users.Dto;
 using TimLearning.Domain.Entities;
+using TimLearning.Domain.Entities.Enums;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Shared.Validation.FluentValidator.Extensions;
 
@@ -43,7 +44,8 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
             Email = newUserDto.Email,
             IsEmailConfirmed = false,
             PasswordHash = passwordWithSalt.HashWithSalt,
-            PasswordSalt = passwordWithSalt.Salt
+            PasswordSalt = passwordWithSalt.Salt,
+            Roles = new List<UserRole> { new() { Type = UserRoleType.User } }
         };
 
         _db.Add(user);

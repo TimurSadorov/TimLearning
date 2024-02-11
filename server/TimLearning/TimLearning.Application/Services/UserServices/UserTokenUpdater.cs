@@ -28,9 +28,11 @@ public class UserTokenUpdater : IUserTokenUpdater
 
     public async Task<AuthTokensDto> UpdateUserTokens(string email)
     {
-        var user = await _db.Users.SingleAsync(new UserByEmailSpecification(email));
+        var user = await _db.Users
+            .Include(u => u.Roles)
+            .SingleAsync(new UserByEmailSpecification(email));
 
-        var tokens = await _userTokenGenerator.GenerateTokens(user.ToUserClaimsDto());
+        var tokens = await _userTokenGenerator.GenerateTokens(user.ToUserClaimsDto(user.Roles));
 
         var now = await _dateTimeProvider.GetUtcNow();
         user.RefreshToken = tokens.RefreshToken;
