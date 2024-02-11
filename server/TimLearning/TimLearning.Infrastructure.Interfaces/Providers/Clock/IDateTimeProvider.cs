@@ -2,7 +2,7 @@
 
 public interface IDateTimeProvider
 {
-    public Task<DateTimeOffset> GetUtcNow();
+    public ValueTask<DateTimeOffset> GetUtcNow();
 
-    public Task<DateTime> GetDateTimeUtcNow();
+    public ValueTask<DateTime> GetDateTimeUtcNow();
 }

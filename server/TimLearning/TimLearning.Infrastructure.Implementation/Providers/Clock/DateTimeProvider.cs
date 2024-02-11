@@ -4,12 +4,12 @@ namespace TimLearning.Infrastructure.Implementation.Providers.Clock;
 
 public class DateTimeProvider : IDateTimeProvider
 {
-    public Task<DateTimeOffset> GetUtcNow()
+    public ValueTask<DateTimeOffset> GetUtcNow()
     {
-        return Task.FromResult(DateTimeOffset.UtcNow);
+        return ValueTask.FromResult(DateTimeOffset.UtcNow);
     }
 
-    public async Task<DateTime> GetDateTimeUtcNow()
+    public async ValueTask<DateTime> GetDateTimeUtcNow()
     {
         return (await GetUtcNow()).UtcDateTime;
     }

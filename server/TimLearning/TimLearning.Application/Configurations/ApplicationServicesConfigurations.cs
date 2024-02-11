@@ -43,6 +43,7 @@ public static class ApplicationServicesConfigurations
     private static void AddPrivateServices(this IServiceCollection services, IConfiguration config)
     {
         services.AddDataHasher(config.GetRequiredStringValue("DataEncryptor:SharedKey"));
+
         services.AddSingleton<IUserPasswordService>(
             new UserPasswordService(new PasswordEncryptor(SHA512.Create()))
         );
