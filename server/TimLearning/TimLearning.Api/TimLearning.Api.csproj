@@ -6,10 +6,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.1" />
     </ItemGroup>
-
+    
     <ItemGroup>
       <ProjectReference Include="..\TimLearning.Application\TimLearning.Application.csproj" />
       <ProjectReference Include="..\TimLearning.Domain\TimLearning.Domain.csproj" />

@@ -4,11 +4,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using TimLearning.Api.Features.Controllers.User;
 using TimLearning.Application.Configurations.Options;
+using TimLearning.Shared.AspNet.Swagger.Filters.Validation;
+using TimLearning.Shared.AspNet.Validations.Filters;
 using TimLearning.Shared.Configuration.Extensions;
-using TimLearning.Shared.Validation.AspNet.Filters;
 
 namespace TimLearning.Api.Configurations;
 
@@ -82,33 +84,31 @@ public static class ApiConfigurations
     {
         services.AddSwaggerGen(options =>
         {
+            options.AddServer(new OpenApiServer { Description = "Main server", Url = "/" });
+            options.SwaggerDoc("v1", new OpenApiInfo { Title = "Server API", Version = "1.0.0" });
+
+            options.CustomOperationIds(apiDesc =>
+            {
+                var methodName = apiDesc.TryGetMethodInfo(out var methodInfo)
+                    ? methodInfo.Name
+                    : throw new InvalidOperationException("Can not resolve OperationId for OAS.");
+
+                return methodName;
+            });
+
+            const string securityShameName = "BearerToken";
             options.AddSecurityDefinition(
-                "Bearer",
+                securityShameName,
                 new OpenApiSecurityScheme
                 {
-                    Name = "Authorization",
                     Type = SecuritySchemeType.Http,
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
-                    In = ParameterLocation.Header
+                    Scheme = "bearer",
+                    BearerFormat = "JWT"
                 }
             );
-            options.AddSecurityRequirement(
-                new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        Array.Empty<string>()
-                    }
-                }
-            );
+            options.OperationFilter<SecurityRequirementsOperationFilter>(true, securityShameName);
+
+            options.ConfigureValidationErrorOperation();
 
             setupAction?.Invoke(options);
         });
@@ -119,8 +119,21 @@ public static class ApiConfigurations
     // ReSharper disable once InconsistentNaming
     public static IApplicationBuilder UseTimLearningSwaggerAndUI(this WebApplication app)
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
+        app.UseSwagger(o =>
+        {
+            o.RouteTemplate = "/api-docs/{documentName}/swagger.json";
+        });
+        app.UseSwaggerUI(o =>
+        {
+            o.RoutePrefix = "api-docs";
+            o.SwaggerEndpoint("/api-docs/v1/swagger.json", "Server API");
+
+            o.DisplayOperationId();
+            o.EnableFilter();
+            o.EnablePersistAuthorization();
+            o.ShowCommonExtensions();
+            o.DefaultModelsExpandDepth(10);
+        });
 
         return app;
     }

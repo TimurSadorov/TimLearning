@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using TimLearning.Shared.Validation.AspNet.Mapper;
+using TimLearning.Shared.AspNet.Validations.Mapper;
 using TimLearning.Shared.Validation.Exceptions.Localized;
 
-namespace TimLearning.Shared.Validation.AspNet.Filters;
+namespace TimLearning.Shared.AspNet.Validations.Filters;
 
 public class LocalizedValidationExceptionFilter : IExceptionFilter
 {
@@ -12,7 +12,7 @@ public class LocalizedValidationExceptionFilter : IExceptionFilter
         if (context.Exception is not LocalizedValidationException localizedValidationException)
             return;
 
-        context.Result = new BadRequestObjectResult(
+        context.Result = new UnprocessableEntityObjectResult(
             localizedValidationException.Error.ToValidationErrorResponse()
         );
         context.ExceptionHandled = true;

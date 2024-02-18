@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using TimLearning.Shared.Validation.Exceptions.Localized.Errors;
 
-namespace TimLearning.Shared.Validation.AspNet.Dto;
+namespace TimLearning.Shared.AspNet.Validations.Dto;
 
 public record ValidationErrorTextResponse(
     [property: JsonPropertyName("message"), Required] string Message
