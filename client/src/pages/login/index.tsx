@@ -5,7 +5,7 @@ import { Navigate } from 'react-router-dom';
 import { routes } from 'shared/config';
 
 const Login = () => {
-    // const { isAuthenticated } = userModel.useUser();
+    const { isAuthenticated } = userModel.useUser();
 
     // if (isAuthenticated) {
     //     return <Navigate to={routes.root.path} />;

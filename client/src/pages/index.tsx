@@ -8,7 +8,7 @@ import { TestPage } from './test';
 export const Routing = () => {
     return (
         <Routes>
-            <Route path={routes.login.path}>
+            <Route path={routes.login.path} element={}>
                 <Route index element={<Login />} />
             </Route>
 
