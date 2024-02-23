@@ -7,7 +7,7 @@ namespace TimLearning.Api.ToDo;
 
 // TODO: For help, delete in prod
 [Route("api/help-docker")]
-public class HelpController : BaseController
+public class HelpController : SiteApiController
 {
     [HttpDelete]
     public async Task<IActionResult> Delete()

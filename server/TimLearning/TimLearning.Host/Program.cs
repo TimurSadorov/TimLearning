@@ -2,15 +2,20 @@ using Microsoft.EntityFrameworkCore;
 using TimLearning.Api.Configurations;
 using TimLearning.Application.Configurations;
 using TimLearning.Infrastructure.Implementation.Configurations;
+using TimLearning.Infrastructure.Implementation.Configurations.Options;
 using TimLearning.Infrastructure.Interfaces.Db;
+using TimLearning.Shared.Configuration.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
 var config = builder.Configuration;
 
-services.AddAllApiServices(config);
+var siteOptions = config.GetRequiredConfig<TimLearningSiteOptions>();
+services.AddAllApiServices(config, siteOptions.Url);
+
 services.AddAllInfrastructureServices(config);
+
 services.AddAllApplicationServices(config);
 
 var app = builder.Build();
@@ -22,8 +27,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
+
 app.UseTimLearningAuthentication();
 app.UseTimLearningAuthorization();
+
+app.UseCors();
 
 app.MapControllers();
 

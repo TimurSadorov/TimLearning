@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TimLearning.Api.Features.Controllers;
-using TimLearning.Api.Requests;
 using TimLearning.Api.ToDo.Requests;
 using TimLearning.Application.ToDo.Dto;
 using TimLearning.Application.ToDoServices;
@@ -8,7 +7,7 @@ using TimLearning.Application.ToDoServices;
 namespace TimLearning.Api.ToDo;
 
 [Route("api/exercise")]
-public class PracticeExerciseController : BaseController
+public class PracticeExerciseController : SiteApiController
 {
     private readonly ExerciseService _exerciseService;
 

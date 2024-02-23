@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using TimLearning.Api.Consts;
 using TimLearning.Api.Features.Controllers.User;
 using TimLearning.Application.Configurations.Options;
 using TimLearning.Shared.AspNet.Swagger.Filters.Validation;
@@ -18,7 +19,8 @@ public static class ApiConfigurations
 {
     public static IServiceCollection AddAllApiServices(
         this IServiceCollection services,
-        IConfiguration configuration
+        IConfiguration configuration,
+        string siteUrl
     )
     {
         services
@@ -29,6 +31,20 @@ public static class ApiConfigurations
         services.AddTimLearningAuthorization();
 
         services.AddTimLearningSwaggerGen();
+
+        services.AddCors(
+            options =>
+                options.AddPolicy(
+                    CorsNamesConsts.TimLearningSite,
+                    builder =>
+                        builder
+                            .WithOrigins(siteUrl)
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials()
+                            .SetPreflightMaxAge(TimeSpan.FromDays(30))
+                )
+        );
 
         return services;
     }

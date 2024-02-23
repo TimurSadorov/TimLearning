@@ -30,7 +30,7 @@ public static class InfrastructureServicesConfigurations
 
     private static void AddAllOptions(this IServiceCollection services)
     {
-        services.AddRequiredOptions<TimLearningOptions>();
+        services.AddRequiredOptions<TimLearningSiteOptions>();
         services.AddRequiredOptions<MailOptions>();
     }
 

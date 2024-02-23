@@ -7,11 +7,11 @@ namespace TimLearning.Infrastructure.Implementation.Factories.Link;
 
 public class TimLearningLinkFactory : ITimLearningLinkFactory
 {
-    private readonly TimLearningOptions _timLearningOptions;
+    private readonly TimLearningSiteOptions _timLearningSiteOptions;
 
-    public TimLearningLinkFactory(IOptions<TimLearningOptions> timLearningOptions)
+    public TimLearningLinkFactory(IOptions<TimLearningSiteOptions> timLearningOptions)
     {
-        _timLearningOptions = timLearningOptions.Value;
+        _timLearningSiteOptions = timLearningOptions.Value;
     }
 
     public string GetLinkToUserConfirm(string userEmail, string signature)
@@ -46,6 +46,6 @@ public class TimLearningLinkFactory : ITimLearningLinkFactory
 
     private Uri GetLinkToTimLearningSite()
     {
-        return new Uri(_timLearningOptions.Url, UriKind.Absolute);
+        return new Uri(_timLearningSiteOptions.Url, UriKind.Absolute);
     }
 }

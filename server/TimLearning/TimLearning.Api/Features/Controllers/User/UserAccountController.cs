@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.ComponentModel.DataAnnotations;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TimLearning.Api.Consts;
@@ -17,7 +18,7 @@ using TimLearning.Application.UseCases.Users.Dto;
 namespace TimLearning.Api.Features.Controllers.User;
 
 [Route($"{ApiRouteConsts.Prefix}/user/account")]
-public class UserAccountController : BaseController
+public class UserAccountController : SiteApiController
 {
     private readonly IMediator _mediator;
 
@@ -29,7 +30,7 @@ public class UserAccountController : BaseController
     [HttpPost]
     [Route("register")]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<IActionResult> Register(NewUserRequest request)
+    public async Task<IActionResult> Register([Required] NewUserRequest request)
     {
         await _mediator.Send(
             new RegisterUserCommand(new NewUserDto(request.Email, request.Password))
@@ -41,7 +42,9 @@ public class UserAccountController : BaseController
     [HttpPost]
     [Route("email/confirmation/send")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> SendEmailConfirmation(SendEmailConfirmationRequest request)
+    public async Task<IActionResult> SendEmailConfirmation(
+        [Required] SendEmailConfirmationRequest request
+    )
     {
         await _mediator.Send(
             new SendUserEmailConfirmationCommand(new NewUserEmailConfirmationDto(request.UserEmail))
@@ -53,7 +56,7 @@ public class UserAccountController : BaseController
     [HttpPost]
     [Route("email/confirm")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> ConfirmEmail(UserEmailConfirmationRequest request)
+    public async Task<IActionResult> ConfirmEmail([Required] UserEmailConfirmationRequest request)
     {
         await _mediator.Send(
             new ConfirmUserEmailCommand(
@@ -66,7 +69,7 @@ public class UserAccountController : BaseController
 
     [HttpPost]
     [Route("login")]
-    public async Task<AuthTokensResponse> Login(LoginRequest request)
+    public async Task<AuthTokensResponse> Login([Required] LoginRequest request)
     {
         var tokens = await _mediator.Send(
             new LoginUserCommand(new AuthorizationDto(request.Email, request.Password))
@@ -77,7 +80,7 @@ public class UserAccountController : BaseController
 
     [HttpPost]
     [Route("refresh")]
-    public async Task<AuthTokensResponse> Refresh(RefreshRequest request)
+    public async Task<AuthTokensResponse> Refresh([Required] RefreshRequest request)
     {
         var tokens = await _mediator.Send(
             new RefreshUserTokenCommand(
@@ -92,7 +95,7 @@ public class UserAccountController : BaseController
     [Route("password/mail/recover")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> SendMailToRecoverPassword(
-        SendMailToRecoverPasswordRequest request
+        [Required] SendMailToRecoverPasswordRequest request
     )
     {
         await _mediator.Send(
@@ -107,7 +110,7 @@ public class UserAccountController : BaseController
     [HttpPost]
     [Route("password/recover")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> RecoverPassword(RecoverPasswordRequest request)
+    public async Task<IActionResult> RecoverPassword([Required] RecoverPasswordRequest request)
     {
         await _mediator.Send(
             new RecoverUserPasswordCommand(
