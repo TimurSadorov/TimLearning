@@ -1,7 +1,7 @@
 import compose from 'compose-function';
-import { withAntdConfig } from './with-antd-config';
-import { withRouter } from './with-router';
-import { withApiUrl } from './with-api-url';
+import { withAntdConfig } from './withAntdConfig';
+import { withRouter } from './withRouter';
+import { withApiUrl } from './withApiUrl';
 
 const withProviders = compose(withAntdConfig, withRouter, withApiUrl);
 

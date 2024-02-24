@@ -1,1 +1,1 @@
-export {};
+export * as UserEntity from './user';

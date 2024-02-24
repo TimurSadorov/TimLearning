@@ -5,4 +5,5 @@ import App from 'app';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
+import('./init');
 root.render(<App />);
