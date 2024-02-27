@@ -1,12 +1,13 @@
-const loadUserFx = createEffect(() => {
-    const token = getToken();
-    const userInfo = token ? jwtDecode<{ nameid: string }>(token) : null;
+import { createEffect } from 'effector';
+import { jwtDecode } from 'jwt-decode';
+import { getAccessToken } from 'shared/local-storage';
+import { User } from '../types';
 
-    return {
-        isAuthenticated: !!userInfo,
-        username: userInfo?.nameid ?? '',
-        isAdmin: userInfo?.nameid?.startsWith('admin') ?? false,
-    };
+export const loadUserFx = createEffect(() => {
+    const token = getAccessToken();
+    const user = token ? jwtDecode<User>(token) : null;
+
+    return user;
 });
 
 const authFx = createEffect(async (data: { username: string }) => {

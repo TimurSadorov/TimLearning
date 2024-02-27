@@ -1,1 +1,5 @@
-const $user = createStore<User>({ isAuthenticated: false, username: '', isAdmin: false });
+import { restore } from 'effector';
+import { User } from '../types';
+import { effects } from './effects';
+
+export const $user = restore<User | null>(effects.loadUserFx, null);

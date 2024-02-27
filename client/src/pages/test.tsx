@@ -1,3 +1,4 @@
+import { UserEntity } from 'entities';
 import React, { useEffect } from 'react';
 import {
     ApiError,
@@ -12,6 +13,7 @@ const isModel = (resp: ValidationErrorResponse): resp is ModelValidationErrorRes
 const isSimple = (resp: ValidationErrorResponse): resp is ValidationErrorTextResponse => 'message' in resp;
 
 export const TestPage = () => {
+    UserEntity.Model.$user;
     const recover = async () => {
         try {
             const resp = await UserAccountService.recoverPassword({
