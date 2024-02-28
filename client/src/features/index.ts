@@ -1,1 +1,1 @@
-export {};
+export * as AuthFeature from './auth';

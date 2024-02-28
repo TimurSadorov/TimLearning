@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@craco/craco": "^7.1.0",
         "@types/compose-function": "^0.0.33",
         "@types/node": "^20.11.19",
         "@types/react": "^18.2.55",
@@ -30,8 +31,8 @@
         "prettier": "3.2.5"
     },
     "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
+        "start": "craco start",
+        "build": "craco build",
         "eject": "react-scripts eject",
         "generate-client": "openapi --input http://localhost:5001/api-docs/v1/swagger.json --output ./src/shared/api/generated --client axios"
     },

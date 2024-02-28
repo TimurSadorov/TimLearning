@@ -15,7 +15,14 @@
         "isolatedModules": true,
         "noEmit": true,
         "jsx": "react-jsx",
-        "baseUrl": "./src"
+        "baseUrl": "./src",
+        "paths": {
+            "@app": ["app"],
+            "@pages": ["pages"],
+            "@features": ["features"],
+            "@entities": ["entities"],
+            "@shared/*": ["shared/*"]
+        }
     },
     "include": ["src"]
 }

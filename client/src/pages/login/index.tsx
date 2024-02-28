@@ -1,12 +1,14 @@
+import { UserEntity } from '@entities';
+import { routes } from '@shared/config';
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-// import { userModel } from 'entities/user';
-// import { LoginForm } from 'features/login';
-import { routes } from 'shared/config';
 
 const Login = () => {
-    const { isAuthenticated } = userModel.useUser();
+    const { user } = UserEntity.Model.useUser();
 
+    if (!!user) {
+        return <Navigate to={routes.root.path} />;
+    }
     // if (isAuthenticated) {
     //     return <Navigate to={routes.root.path} />;
     // }
