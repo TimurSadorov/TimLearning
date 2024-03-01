@@ -9,10 +9,12 @@ import { TestPage } from './test';
 export const Routing = () => {
     return (
         <Routes>
-            <Route path={routes.login.path}>
-                <Route index element={<Login />} />
+            <Route
+                element={<AuthFeature.UI.RequiredAuth needAuth={false} navigateLinkIfUnavailable={routes.root.path} />}
+            >
+                <Route path={routes.login.path} element={<Login />} />
             </Route>
-            <Route element={<AuthFeature.UI.RequiredAuth />}>
+            <Route element={<AuthFeature.UI.RequiredAuth needAuth navigateLinkIfUnavailable={routes.login.path} />}>
                 <Route path="*" element={<Navigate to={routes.root.path} />} />
                 <Route path={routes.root.path} element={<TestPage />} />
             </Route>

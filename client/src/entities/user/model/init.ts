@@ -1,12 +1,12 @@
 import { sample } from 'effector';
-import { UserGate } from './model';
 import { loadUserFx } from './effects';
+import { $isLoging } from './model';
 
 sample({
-    clock: UserGate.open,
-    target: loadUserFx,
+    clock: loadUserFx.doneData,
+    fn: () => true,
+    target: $isLoging,
 });
-
 // sample({
 //     clock: chatModel.connection.events.newUserJoinedToRoom,
 //     source: $user,

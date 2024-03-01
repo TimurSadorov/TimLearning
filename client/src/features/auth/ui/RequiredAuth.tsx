@@ -1,17 +1,21 @@
 import React from 'react';
-import { Spin } from 'antd';
-import { UserEntity } from '@entities';
 import { Navigate, Outlet } from 'react-router-dom';
-import { routes } from '@shared/config';
+import { useUser } from '../model';
+import { PageLoader } from '@shared/ui';
 
-export const RequiredAuth = () => {
-    const { user, loading } = UserEntity.Model.useUser();
-    if (loading) {
-        return <Spin size="large" />;
+interface Props {
+    needAuth: boolean;
+    navigateLinkIfUnavailable: string;
+}
+
+export const RequiredAuth = (props: Props) => {
+    const { user, isLoging } = useUser();
+    if (!isLoging) {
+        return <PageLoader />;
     }
 
-    if (!user) {
-        return <Navigate to={routes.login.path} />;
+    if (!!user !== props.needAuth) {
+        return <Navigate to={props.navigateLinkIfUnavailable} />;
     }
 
     return <Outlet />;
