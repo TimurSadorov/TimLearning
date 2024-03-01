@@ -5,7 +5,6 @@ import { User } from '../types';
 
 export const loadUserFx = createEffect(() => {
     const token = getAccessToken();
-    console.log('d');
     const user = token ? jwtDecode<User>(token) : null;
 
     return user;

@@ -5,7 +5,6 @@ import { loadUserFx } from './effects';
 
 export const $user = restore<User | null>(loadUserFx, null);
 export const $isLoging = createStore(false);
-export const $userLoading = loadUserFx.pending;
 
 export const resetUser = createEvent();
 
