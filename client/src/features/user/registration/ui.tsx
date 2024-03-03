@@ -3,6 +3,8 @@ import { Button, Form, Input } from 'antd';
 import styled from 'styled-components';
 import { NewUserForm, useRegistrationForm } from './model';
 import { emailRules, passwordRules } from '../config/rules';
+import { Link } from 'react-router-dom';
+import { Config } from '@shared';
 
 export const RegistrationForm = () => {
     const { form, submit, registrationPending } = useRegistrationForm();
@@ -30,6 +32,7 @@ export const RegistrationForm = () => {
                 <Input placeholder="Подтвердите пароль" />
             </FormItem>
             <SubmitButton htmlType="submit">Регистрация</SubmitButton>
+            <LoginLink to={Config.routes.login.path}>Войти</LoginLink>
         </StyledForm>
     );
 };
@@ -48,4 +51,9 @@ const FormItem = styled(Form.Item<NewUserForm>)`
 
 const SubmitButton = styled(Button)`
     width: 50%;
+`;
+
+const LoginLink = styled(Link)`
+    margin-top: 5px;
+    font-size: 0.98em;
 `;

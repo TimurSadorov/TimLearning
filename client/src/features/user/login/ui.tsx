@@ -3,6 +3,8 @@ import { Button, Form, Input } from 'antd';
 import styled from 'styled-components';
 import { AuthForm, useLoginForm } from './model';
 import { emailRules, passwordRules } from '../config/rules';
+import { Link } from 'react-router-dom';
+import { Config } from '@shared';
 
 export const LoginForm = () => {
     const { form, submit, loginPending } = useLoginForm();
@@ -15,6 +17,10 @@ export const LoginForm = () => {
             <FormItem validateDebounce={1000} rules={passwordRules} name="password">
                 <Input.Password placeholder="Пароль" />
             </FormItem>
+            <InfoContainer>
+                <Link to={Config.routes.registration.path}>Регистрация</Link>
+                <Link to={Config.routes.registration.path}>Забыли пароль?</Link>
+            </InfoContainer>
             <SubmitButton htmlType="submit">Войти</SubmitButton>
         </StyledForm>
     );
@@ -34,4 +40,12 @@ const FormItem = styled(Form.Item<AuthForm>)`
 
 const SubmitButton = styled(Button)`
     width: 50%;
+`;
+
+const InfoContainer = styled.div`
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 0.98em;
 `;
