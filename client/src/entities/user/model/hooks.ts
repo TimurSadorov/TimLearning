@@ -1,10 +1,13 @@
 import { useGate, useUnit } from 'effector-react';
-import { loginFx, registerFx } from './effects';
+import { loginFx, registerFx, sendMailToRecoverPasswordFx } from './effects';
 import {
     $errorOnLogin,
+    $errorOnPasswordRecovery,
     $errorOnRegistration,
-    $isSuccessRegister as $isSuccessRegistration,
+    $isSuccessPasswordRecovery,
+    $isSuccessPasswordRecovery as $isSuccessRegistration,
     LoginGate,
+    PasswordRecoveryGate,
     RegistrationGate,
 } from './model';
 import { Api } from '@shared';
@@ -35,4 +38,21 @@ export const useRegistration = (onSuccess = () => {}) => {
     }, [isSuccessRegistration, onSuccess]);
 
     return { register, registrationPending, errorOnRegistration };
+};
+
+export const usePasswordRecovery = (onSuccess = () => {}) => {
+    useGate(PasswordRecoveryGate);
+
+    const recover = (request: Api.Services.SendMailToRecoverPasswordRequest) => sendMailToRecoverPasswordFx(request);
+    const recoverPending = useUnit(sendMailToRecoverPasswordFx.pending);
+    const errorOnPasswordRecovery = useUnit($errorOnPasswordRecovery);
+    const isSuccessPasswordRecovery = useUnit($isSuccessPasswordRecovery);
+
+    useEffect(() => {
+        if (isSuccessPasswordRecovery) {
+            onSuccess();
+        }
+    }, [isSuccessPasswordRecovery, onSuccess]);
+
+    return { recover, recoverPending, errorOnPasswordRecovery };
 };

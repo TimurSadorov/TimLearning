@@ -1,6 +1,6 @@
 import { createEvent, createStore, restore } from 'effector';
 import { reset } from 'patronum';
-import { loadUserFx, loginFx, registerFx } from './effects';
+import { loadUserFx, loginFx, registerFx, sendMailToRecoverPasswordFx } from './effects';
 import { restoreFail } from '@shared';
 import { createGate } from 'effector-react';
 
@@ -17,3 +17,8 @@ export const RegistrationGate = createGate();
 export const $isSuccessRegister = createStore(false).on(registerFx.done, () => true);
 export const $errorOnRegistration = restoreFail(registerFx, null);
 reset({ clock: RegistrationGate.close, target: [$isSuccessRegister, $errorOnRegistration] });
+
+export const PasswordRecoveryGate = createGate();
+export const $isSuccessPasswordRecovery = createStore(false).on(sendMailToRecoverPasswordFx.done, () => true);
+export const $errorOnPasswordRecovery = restoreFail(sendMailToRecoverPasswordFx, null);
+reset({ clock: PasswordRecoveryGate.close, target: [$isSuccessPasswordRecovery, $errorOnPasswordRecovery] });

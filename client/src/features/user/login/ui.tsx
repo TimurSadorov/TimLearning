@@ -19,7 +19,7 @@ export const LoginForm = () => {
             </FormItem>
             <InfoContainer>
                 <Link to={Config.routes.registration.path}>Регистрация</Link>
-                <Link to={Config.routes.registration.path}>Забыли пароль?</Link>
+                <Link to={Config.routes.passwordRecovery.path}>Забыли пароль?</Link>
             </InfoContainer>
             <SubmitButton htmlType="submit">Войти</SubmitButton>
         </StyledForm>

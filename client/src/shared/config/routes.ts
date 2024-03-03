@@ -13,8 +13,14 @@ const registration = {
     getLink: () => '/registration',
 };
 
+const passwordRecovery = {
+    path: '/account/password/recovery',
+    getLink: () => '/account/password/recovery',
+};
+
 export const routes = {
     root,
     login,
     registration,
+    passwordRecovery,
 };

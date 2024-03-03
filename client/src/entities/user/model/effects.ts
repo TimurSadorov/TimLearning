@@ -20,3 +20,7 @@ export const loginFx = createEffect(async (data: Api.Services.LoginRequest) => {
 export const registerFx = createEffect(async (data: Api.Services.NewUserRequest) => {
     await Api.Services.UserAccountService.register(data);
 });
+
+export const sendMailToRecoverPasswordFx = createEffect(async (data: Api.Services.SendMailToRecoverPasswordRequest) => {
+    await Api.Services.UserAccountService.sendMailToRecoverPassword(data);
+});
