@@ -7,3 +7,10 @@ export const notifyErrorFx = createEffect((errorMessage: string) => {
         placement: 'bottomRight',
     });
 });
+
+export const notifySuccessFx = createEffect((message: string) => {
+    notification.success({
+        message: message,
+        placement: 'bottomRight',
+    });
+});

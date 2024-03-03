@@ -10,7 +10,7 @@ export interface AuthForm {
 
 export const useLoginForm = () => {
     const [form] = Form.useForm<AuthForm>();
-    const { login, isLogin, errorOnLogin } = UserEntity.Model.useLogin();
+    const { login, loginPending, errorOnLogin } = UserEntity.Model.useLogin();
     const submit = useCallback(async (form: AuthForm) => {
         login(form);
     }, []);
@@ -21,6 +21,6 @@ export const useLoginForm = () => {
     return {
         form,
         submit,
-        isLogin,
+        loginPending,
     };
 };

@@ -16,3 +16,7 @@ export const loginFx = createEffect(async (data: Api.Services.LoginRequest) => {
     SiteLocalStorage.setAccessToken(tokens.accessToken);
     SiteLocalStorage.setRefresfToken(tokens.refreshToken);
 });
+
+export const registerFx = createEffect(async (data: Api.Services.NewUserRequest) => {
+    await Api.Services.UserAccountService.register(data);
+});

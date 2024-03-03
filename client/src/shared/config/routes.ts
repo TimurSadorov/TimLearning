@@ -8,7 +8,13 @@ const login = {
     getLink: () => '/login',
 };
 
+const registration = {
+    path: '/registration',
+    getLink: () => '/registration',
+};
+
 export const routes = {
     root,
     login,
+    registration,
 };

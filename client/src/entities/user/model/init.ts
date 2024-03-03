@@ -1,6 +1,6 @@
 import { sample } from 'effector';
 import { loadUserFx, loginFx } from './effects';
-import { $isLoging, LoginGate, resetErrorOnLogin } from './model';
+import { $isLoging } from './model';
 
 sample({
     clock: loadUserFx.finally,
@@ -11,9 +11,4 @@ sample({
 sample({
     clock: loginFx.doneData,
     target: loadUserFx,
-});
-
-sample({
-    clock: LoginGate.close,
-    target: resetErrorOnLogin,
 });
