@@ -1,22 +1,19 @@
 import { sample } from 'effector';
-import { loadUserFx } from './effects';
-import { $isLoging } from './model';
+import { loadUserFx, loginFx } from './effects';
+import { $isLoging, LoginGate, resetErrorOnLogin } from './model';
 
 sample({
-    clock: loadUserFx.doneData,
+    clock: loadUserFx.finally,
     fn: () => true,
     target: $isLoging,
 });
-// sample({
-//     clock: chatModel.connection.events.newUserJoinedToRoom,
-//     source: $user,
-//     filter: (user) => user.isAdmin,
-//     target: chatModel.messages.events.loadMessages,
-// });
 
-// sample({
-//     clock: chatModel.connection.events.interlocutorLeftFromRoom,
-//     source: $user,
-//     filter: (user) => user.isAdmin,
-//     target: chatModel.messages.events.clearMessage,
-// });
+sample({
+    clock: loginFx.doneData,
+    target: loadUserFx,
+});
+
+sample({
+    clock: LoginGate.close,
+    target: resetErrorOnLogin,
+});

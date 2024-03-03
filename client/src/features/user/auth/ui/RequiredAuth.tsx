@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useUser } from '../model';
-import { PageLoader } from '@shared/ui';
+import { SharedUI } from '@shared';
 
 interface Props {
     needAuth: boolean;
@@ -11,7 +11,7 @@ interface Props {
 export const RequiredAuth = (props: Props) => {
     const { user, isLoging } = useUser();
     if (!isLoging) {
-        return <PageLoader />;
+        return <SharedUI.PageLoader />;
     }
 
     if (!!user !== props.needAuth) {

@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 // eslint-disable-next-line react/display-name
 export const withRouter = (Component: FC) => () => (
     <BrowserRouter>
-        <Suspense fallback="Loading...">
+        <Suspense fallback="Загрузка...">
             <Component />
         </Suspense>
     </BrowserRouter>

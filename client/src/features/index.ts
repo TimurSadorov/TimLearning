@@ -1,1 +1,1 @@
-export * as AuthFeature from './auth';
+export * as UserFeature from './user';

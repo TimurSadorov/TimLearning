@@ -11,4 +11,4 @@ public record ModelValidationErrorResponse(
 {
     public ModelValidationErrorResponse(ModelError modelError)
         : this(modelError.PropertiesErrors.ToDictionary(p => p.Name, p => p.Errors)) { }
-};
+}

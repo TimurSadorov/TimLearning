@@ -1,10 +1,9 @@
 import React from 'react';
 import { FC } from 'react';
-import { OpenAPI } from 'shared/api';
-import { appEnv } from 'shared/config';
+import { Api, Config } from '@shared';
 
 // eslint-disable-next-line react/display-name
 export const withApiUrl = (Component: FC) => () => {
-    OpenAPI.BASE = appEnv.apiUrl;
+    Api.Services.OpenAPI.BASE = Config.appEnv.apiUrl;
     return <Component />;
 };

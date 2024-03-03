@@ -1,18 +1,18 @@
 import { createEffect } from 'effector';
 import { jwtDecode } from 'jwt-decode';
-import { getAccessToken } from '@shared/local-storage';
+import { SiteLocalStorage, Api } from '@shared';
 import { User } from '../types';
 
 export const loadUserFx = createEffect(() => {
-    const token = getAccessToken();
+    const token = SiteLocalStorage.getAccessToken();
     const user = token ? jwtDecode<User>(token) : null;
 
     return user;
 });
 
-// const authFx = createEffect(async (data: { username: string }) => {
-//     const resp = await auth(data);
-//     const { jwt } = resp.data;
+export const loginFx = createEffect(async (data: Api.Services.LoginRequest) => {
+    const tokens = await Api.Services.UserAccountService.login(data);
 
-//     setToken(jwt);
-// });
+    SiteLocalStorage.setAccessToken(tokens.accessToken);
+    SiteLocalStorage.setRefresfToken(tokens.refreshToken);
+});
