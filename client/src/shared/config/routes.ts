@@ -14,8 +14,13 @@ const registration = {
 };
 
 const passwordRecovery = {
-    path: '/account/password/recovery',
-    getLink: () => '/account/password/recovery',
+    path: '/account/password/recovering',
+    getLink: () => '/account/password/recovering',
+};
+
+const recoveryPasswordChanging = {
+    path: '/account/password/recovering/changing',
+    getLink: () => '/account/password/recovering/changing',
 };
 
 export const routes = {
@@ -23,4 +28,5 @@ export const routes = {
     login,
     registration,
     passwordRecovery,
+    recoveryPasswordChanging,
 };

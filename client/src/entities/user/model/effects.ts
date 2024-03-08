@@ -24,3 +24,7 @@ export const registerFx = createEffect(async (data: Api.Services.NewUserRequest)
 export const sendMailToRecoverPasswordFx = createEffect(async (data: Api.Services.SendMailToRecoverPasswordRequest) => {
     await Api.Services.UserAccountService.sendMailToRecoverPassword(data);
 });
+
+export const recoverPasswordFx = createEffect(async (data: Api.Services.RecoverPasswordRequest) => {
+    await Api.Services.UserAccountService.recoverPassword(data);
+});

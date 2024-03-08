@@ -5,7 +5,7 @@ import { UserFeature } from '@features';
 import { TestPage } from './test';
 import { LoginPage } from './login';
 import { RegistrationPage } from './registration';
-import { PasswordRecoveryPage } from './passwordRecovery';
+import { PasswordChngingPage, PasswordRecoveryPage } from './passwordRecovery';
 
 const routes = Config.routes;
 
@@ -20,6 +20,7 @@ export const Routing = () => {
                 <Route path={routes.login.path} element={<LoginPage />} />
                 <Route path={routes.registration.path} element={<RegistrationPage />} />
                 <Route path={routes.passwordRecovery.path} element={<PasswordRecoveryPage />} />
+                <Route path={routes.recoveryPasswordChanging.path} element={<PasswordChngingPage />} />
             </Route>
             <Route
                 element={<UserFeature.Auth.UI.RequiredAuth needAuth navigateLinkIfUnavailable={routes.login.path} />}

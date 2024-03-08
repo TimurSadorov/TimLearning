@@ -31,7 +31,7 @@ public class TimLearningLinkFactory : ITimLearningLinkFactory
     public string GetLinkToRecoverPassword(string userEmail, string signature)
     {
         var linkToConfirm = new UriBuilder(
-            new Uri(GetLinkToTimLearningSite(), "/account/passwrod-recovering")
+            new Uri(GetLinkToTimLearningSite(), "/account/password/recovering/changing")
         )
         {
             Query = new QueryBuilder

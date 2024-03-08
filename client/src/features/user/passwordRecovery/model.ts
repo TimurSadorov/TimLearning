@@ -8,6 +8,11 @@ export interface RecoveringForm {
     userEmail: string;
 }
 
+export interface ChangingForm {
+    password: string;
+    repeatedPassword: string;
+}
+
 export const usePasswordRecoveryForm = () => {
     const navigate = useNavigate();
 
@@ -32,5 +37,35 @@ export const usePasswordRecoveryForm = () => {
         form,
         submit,
         recoverPending,
+    };
+};
+
+export const usePasswordChangingForm = (email: string, signature: string) => {
+    const navigate = useNavigate();
+
+    const onSuccesRecovering = useCallback(() => {
+        SharedUI.Model.Notification.notifySuccessFx('Пароль успешно изменен 🔑');
+        navigate(Config.routes.login.path);
+    }, [navigate]);
+
+    const { change, changePending, errorOnRecoveryPasswordChanging } =
+        UserEntity.Model.useRecoveryPasswordChanging(onSuccesRecovering);
+
+    const [form] = Form.useForm<ChangingForm>();
+    const submit = useCallback(
+        async (form: ChangingForm) => {
+            change({ newPassword: form.password, signature: signature, userEmail: email });
+        },
+        [signature, email],
+    );
+
+    Api.Model.useValidationErrorTextNotification(errorOnRecoveryPasswordChanging);
+    Api.Model.useModelValidationErrorForForm(errorOnRecoveryPasswordChanging, form);
+    Api.Model.useRequestToServerErrorNotification(errorOnRecoveryPasswordChanging);
+
+    return {
+        form,
+        submit,
+        changePending,
     };
 };
