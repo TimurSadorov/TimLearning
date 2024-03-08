@@ -28,3 +28,7 @@ export const sendMailToRecoverPasswordFx = createEffect(async (data: Api.Service
 export const recoverPasswordFx = createEffect(async (data: Api.Services.RecoverPasswordRequest) => {
     await Api.Services.UserAccountService.recoverPassword(data);
 });
+
+export const confirmEmailFx = createEffect(async (data: Api.Services.UserEmailConfirmationRequest) => {
+    await Api.Services.UserAccountService.confirmEmail(data);
+});

@@ -16,7 +16,9 @@ public class TimLearningLinkFactory : ITimLearningLinkFactory
 
     public string GetLinkToUserConfirm(string userEmail, string signature)
     {
-        var linkToConfirm = new UriBuilder(new Uri(GetLinkToTimLearningSite(), "/account/confirm"))
+        var linkToConfirm = new UriBuilder(
+            new Uri(GetLinkToTimLearningSite(), "/account/email/confirmation")
+        )
         {
             Query = new QueryBuilder
             {

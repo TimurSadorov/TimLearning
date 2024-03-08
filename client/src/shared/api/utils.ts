@@ -1,3 +1,4 @@
+import { SharedUI } from '@shared';
 import {
     ApiError,
     ModelValidationErrorResponse,
@@ -16,3 +17,9 @@ export const isModelValidationError = (response: ValidationErrorResponse): respo
 
 export const isValidationErrorText = (response: ValidationErrorResponse): response is ValidationErrorTextResponse =>
     (response as ValidationErrorTextResponse).message !== undefined;
+
+export const notifyIfValidationErrorText = (error: Error) => {
+    if (isApiError(error) && hasValidationErrorResponse(error) && isValidationErrorText(error.body)) {
+        SharedUI.Model.Notification.notifyErrorFx((error.body as ValidationErrorTextResponse).message);
+    }
+};

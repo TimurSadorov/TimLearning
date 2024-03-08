@@ -23,10 +23,16 @@ const recoveryPasswordChanging = {
     getLink: () => '/account/password/recovering/changing',
 };
 
+const emailConfiramtion = {
+    path: '/account/email/confirmation',
+    getLink: () => '/account/email/confirmation',
+};
+
 export const routes = {
     root,
     login,
     registration,
     passwordRecovery,
     recoveryPasswordChanging,
+    emailConfiramtion,
 };

@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
-import { ValidationErrorResponse, ValidationErrorTextResponse, ModelValidationErrorResponse } from '../generated';
+import { ValidationErrorResponse, ModelValidationErrorResponse } from '../generated';
 import {
     hasValidationErrorResponse,
     isApiError,
     isNotApiError,
     isValidationErrorText,
     isModelValidationError,
+    notifyIfValidationErrorText,
 } from '../utils';
 import { SharedUI } from '@shared';
 import { FormInstance } from 'antd';
@@ -28,9 +29,7 @@ export const useValidationErrorTextNotification = (error: Error | ValidationErro
         }
 
         if (error instanceof Error) {
-            if (isApiError(error) && hasValidationErrorResponse(error) && isValidationErrorText(error.body)) {
-                SharedUI.Model.Notification.notifyErrorFx((error.body as ValidationErrorTextResponse).message);
-            }
+            notifyIfValidationErrorText(error);
         } else {
             if (isValidationErrorText(error)) {
                 SharedUI.Model.Notification.notifyErrorFx(error.message);

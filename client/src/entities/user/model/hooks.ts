@@ -1,16 +1,19 @@
 import { useGate, useUnit } from 'effector-react';
-import { loginFx, recoverPasswordFx, registerFx, sendMailToRecoverPasswordFx } from './effects';
+import { confirmEmailFx, loginFx, recoverPasswordFx, registerFx, sendMailToRecoverPasswordFx } from './effects';
 import {
+    $errorOnEmailConfirmation,
     $errorOnLogin,
     $errorOnPasswordRecovery,
     $errorOnRecoveryPasswordChanging,
     $errorOnRegistration,
+    $isSuccessEmailConfirmation,
     $isSuccessPasswordRecovery,
     $isSuccessRecoveryPasswordChanging,
-    $isSuccessPasswordRecovery as $isSuccessRegistration,
+    $isSuccessRegistration,
+    EmailConfirmationGate,
     LoginGate,
     PasswordRecoveryGate,
-    RecoveryPasswordChanging,
+    RecoveryPasswordChangingGate,
     RegistrationGate,
 } from './model';
 import { Api } from '@shared';
@@ -61,7 +64,7 @@ export const usePasswordRecovery = (onSuccess = () => {}) => {
 };
 
 export const useRecoveryPasswordChanging = (onSuccess = () => {}) => {
-    useGate(RecoveryPasswordChanging);
+    useGate(RecoveryPasswordChangingGate);
 
     const change = (request: Api.Services.RecoverPasswordRequest) => recoverPasswordFx(request);
     const changePending = useUnit(recoverPasswordFx.pending);
@@ -75,4 +78,23 @@ export const useRecoveryPasswordChanging = (onSuccess = () => {}) => {
     }, [isSuccessRecoveryPasswordChanging, onSuccess]);
 
     return { change, changePending, errorOnRecoveryPasswordChanging };
+};
+
+export const useEmailConfirmation = (onSuccess = () => {}, onFail: (error: Error) => void = () => {}) => {
+    useGate(EmailConfirmationGate);
+
+    const confirm = (request: Api.Services.UserEmailConfirmationRequest) => confirmEmailFx(request);
+    const errorOnEmailConfirmation = useUnit($errorOnEmailConfirmation);
+    const isSuccessEmailConfirmation = useUnit($isSuccessEmailConfirmation);
+
+    useEffect(() => {
+        if (isSuccessEmailConfirmation) {
+            onSuccess();
+        }
+        if (!!errorOnEmailConfirmation) {
+            onFail(errorOnEmailConfirmation);
+        }
+    }, [isSuccessEmailConfirmation, errorOnEmailConfirmation, onSuccess, onFail]);
+
+    return { confirm, errorOnEmailConfirmation };
 };

@@ -6,6 +6,7 @@ import { TestPage } from './test';
 import { LoginPage } from './login';
 import { RegistrationPage } from './registration';
 import { PasswordChngingPage, PasswordRecoveryPage } from './passwordRecovery';
+import { EmailConfirmationPage } from './emailConfirmation';
 
 const routes = Config.routes;
 
@@ -28,6 +29,7 @@ export const Routing = () => {
                 <Route path="*" element={<Navigate to={routes.root.path} />} />
                 <Route path={routes.root.path} element={<TestPage />} />
             </Route>
+            <Route path={routes.emailConfiramtion.path} element={<EmailConfirmationPage />} />
         </Routes>
     );
 };
