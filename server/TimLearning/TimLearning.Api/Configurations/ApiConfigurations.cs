@@ -35,7 +35,7 @@ public static class ApiConfigurations
         services.AddCors(
             options =>
                 options.AddPolicy(
-                    CorsNamesConsts.TimLearningSite,
+                    CorsNames.TimLearningSite,
                     builder =>
                         builder
                             .WithOrigins(siteUrl)

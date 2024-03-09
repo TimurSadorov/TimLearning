@@ -17,7 +17,7 @@ using TimLearning.Application.UseCases.Users.Dto;
 
 namespace TimLearning.Api.Features.Controllers.User;
 
-[Route($"{ApiRouteConsts.Prefix}/user/account")]
+[Route($"{ApiRoute.Prefix}/user/account")]
 public class UserAccountController : SiteApiController
 {
     private readonly IMediator _mediator;

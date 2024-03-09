@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TimLearning.Application.Configurations.Options;
 using TimLearning.Application.Data.ValueObjects;
+using TimLearning.Application.Services.CourseServices;
 using TimLearning.Application.Services.UserServices;
 using TimLearning.Application.ToDoServices;
 using TimLearning.Application.UseCases.Users.Commands.RegisterUser;
@@ -52,6 +53,8 @@ public static class ApplicationServicesConfigurations
         services.AddSingleton<IUserTokenGenerator, UserTokenGenerator>();
         services.AddScoped<IUserTokenUpdater, UserTokenUpdater>();
         services.AddSingleton<IUserEmailProvider, UserEmailProvider>();
+
+        services.AddScoped<ICourseEntityService, CourseEntityService>();
 
         services.AddToDoServices();
     }

@@ -9,6 +9,7 @@ public class AppAppDbContext : DbContext, IAppDbContext
 {
     public DbSet<User> Users => Set<User>();
     public DbSet<UserRole> UserRoles => Set<UserRole>();
+    public DbSet<Course> Courses => Set<Course>();
 
     public AppAppDbContext(DbContextOptions options)
         : base(options) { }

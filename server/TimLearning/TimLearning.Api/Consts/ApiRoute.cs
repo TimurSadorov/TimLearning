@@ -1,6 +1,6 @@
 ﻿namespace TimLearning.Api.Consts;
 
-public static class ApiRouteConsts
+public static class ApiRoute
 {
     public const string Prefix = "api";
 }

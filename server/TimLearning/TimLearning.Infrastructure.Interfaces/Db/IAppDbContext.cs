@@ -8,6 +8,8 @@ namespace TimLearning.Infrastructure.Interfaces.Db;
 public interface IAppDbContext
 {
     DbSet<User> Users { get; }
+    DbSet<UserRole> UserRoles { get; }
+    DbSet<Course> Courses { get; }
 
     DatabaseFacade Database { get; }
 

@@ -7,5 +7,5 @@ namespace TimLearning.Api.Features.Controllers;
 
 [ApiController]
 [Produces(MediaTypeNames.Application.Json)]
-[EnableCors(CorsNamesConsts.TimLearningSite)]
+[EnableCors(CorsNames.TimLearningSite)]
 public abstract class SiteApiController : ControllerBase;
