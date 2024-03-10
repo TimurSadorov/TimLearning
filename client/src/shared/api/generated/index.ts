@@ -10,6 +10,10 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 export type { AuthTokensResponse } from './models/AuthTokensResponse';
 export type { ContainerEnvRequest } from './models/ContainerEnvRequest';
 export type { ContainerSettingsRequest } from './models/ContainerSettingsRequest';
+export type { CreateCourseRequest } from './models/CreateCourseRequest';
+export type { FindCoursesRequest } from './models/FindCoursesRequest';
+export type { FindCoursesResponse } from './models/FindCoursesResponse';
+export type { GetAllCoursesResponse } from './models/GetAllCoursesResponse';
 export type { ImageSettingsRequest } from './models/ImageSettingsRequest';
 export type { LoginRequest } from './models/LoginRequest';
 export type { ModelValidationErrorResponse } from './models/ModelValidationErrorResponse';
@@ -22,6 +26,7 @@ export type { UserEmailConfirmationRequest } from './models/UserEmailConfirmatio
 export type { ValidationErrorResponse } from './models/ValidationErrorResponse';
 export type { ValidationErrorTextResponse } from './models/ValidationErrorTextResponse';
 
+export { CourseService } from './services/CourseService';
 export { HelpService } from './services/HelpService';
 export { PracticeExerciseService } from './services/PracticeExerciseService';
 export { UserAccountService } from './services/UserAccountService';

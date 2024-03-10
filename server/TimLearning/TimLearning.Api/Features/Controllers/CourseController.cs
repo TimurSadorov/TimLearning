@@ -13,7 +13,7 @@ using TimLearning.Domain.Entities.Enums;
 
 namespace TimLearning.Api.Features.Controllers;
 
-[Route($"{ApiRoute.Prefix}/course")]
+[Route($"{ApiRoute.Prefix}/courses")]
 public class CourseController : SiteApiController
 {
     private readonly IMediator _mediator;

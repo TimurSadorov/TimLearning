@@ -18,3 +18,8 @@ export const setRefresfToken = (token: string) => {
 export const getRefreshToken = () => {
     return localStorage.getItem(storageKeys.REFRESH_TOKEN);
 };
+
+export const clearTokens = () => {
+    localStorage.removeItem(storageKeys.ACCESS_TOKEN);
+    localStorage.removeItem(storageKeys.REFRESH_TOKEN);
+};

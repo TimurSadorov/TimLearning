@@ -1,22 +1,20 @@
 import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import { useUser } from '../model';
-import { SharedUI } from '@shared';
+import { Navigate } from 'react-router-dom';
+import { useUnit } from 'effector-react';
+import { UserEntity } from '@entities';
 
 interface Props {
     needAuth: boolean;
     navigateLinkIfUnavailable: string;
+    element: JSX.Element;
 }
 
 export const RequiredAuth = (props: Props) => {
-    const { user, isLoging } = useUser();
-    if (!isLoging) {
-        return <SharedUI.PageLoader />;
-    }
+    const user = useUnit(UserEntity.Model.$user);
 
     if (!!user !== props.needAuth) {
         return <Navigate to={props.navigateLinkIfUnavailable} />;
     }
 
-    return <Outlet />;
+    return props.element;
 };
