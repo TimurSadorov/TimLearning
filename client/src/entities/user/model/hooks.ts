@@ -6,10 +6,12 @@ import {
     $errorOnPasswordRecovery,
     $errorOnRecoveryPasswordChanging,
     $errorOnRegistration,
+    $isLoging,
     $isSuccessEmailConfirmation,
     $isSuccessPasswordRecovery,
     $isSuccessRecoveryPasswordChanging,
     $isSuccessRegistration,
+    $user,
     EmailConfirmationGate,
     LoginGate,
     PasswordRecoveryGate,
@@ -18,6 +20,17 @@ import {
 } from './model';
 import { Api } from '@shared';
 import { useEffect } from 'react';
+
+export const useUser = () => {
+    const user = useUnit($user);
+    const isLoging = useUnit($isLoging);
+
+    return {
+        isAuthorized: !!user,
+        user,
+        isLoging,
+    };
+};
 
 export const useLogin = () => {
     useGate(LoginGate);

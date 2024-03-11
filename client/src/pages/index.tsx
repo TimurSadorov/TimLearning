@@ -7,12 +7,12 @@ import { RegistrationPage } from './registration';
 import { PasswordChngingPage, PasswordRecoveryPage } from './passwordRecovery';
 import { EmailConfirmationPage } from './emailConfirmation';
 import { UserCoursesPage } from './course/ui';
-import { UserEntity } from '@entities';
+import { TemplateWidget } from '@widgets';
 
 const routes = Config.routes;
 
 export const Routing = () => {
-    const { user, isLoging } = UserFeature.Auth.Model.useUser();
+    const { isLoging } = UserFeature.Auth.Model.useUser();
     if (!isLoging) {
         return <SharedUI.PageLoader />;
     }
@@ -43,7 +43,7 @@ export const Routing = () => {
                 }
             >
             </Route> */}
-            <Route element={<SharedUI.Header isLoged={!!user} logout={UserEntity.Model.logoutFx} />}>
+            <Route element={<TemplateWidget.UI.Header />}>
                 <Route path="*" element={<Navigate to={routes.root.path} />} />
                 <Route path={routes.root.path} element={<UserCoursesPage />} />
             </Route>

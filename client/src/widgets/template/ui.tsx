@@ -1,31 +1,25 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Config } from '@shared';
 import { Button } from 'antd';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import { UserOutlined } from '@ant-design/icons';
+import { useHeader } from './model';
 
-interface HeaderProps {
-    isLoged: boolean;
-    logout: () => void;
-}
-
-export const Header = ({ isLoged, logout }: HeaderProps) => {
-    const navigate = useNavigate();
-    const login = useCallback(() => navigate(Config.routes.login.path), [navigate]);
-    const toAccount = useCallback(() => navigate(Config.routes.login.path), [navigate]);
+export const Header = () => {
+    const { userIsAuthorized, logout, toAccount, toLogin } = useHeader();
 
     return (
         <PageContainer>
             <HeaderContainer>
                 <MainPageLink to={Config.routes.root.path}>TimLearning</MainPageLink>
-                {isLoged ? (
+                {userIsAuthorized ? (
                     <AccountBlock>
                         <Button onClick={logout}>Выйти</Button>
                         <AccountIcon onClick={toAccount} />
                     </AccountBlock>
                 ) : (
-                    <Button onClick={login}>Войти</Button>
+                    <Button onClick={toLogin}>Войти</Button>
                 )}
             </HeaderContainer>
             <Outlet />
