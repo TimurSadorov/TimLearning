@@ -1,6 +1,5 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useUnit } from 'effector-react';
 import { UserEntity } from '@entities';
 
 interface Props {
@@ -10,9 +9,9 @@ interface Props {
 }
 
 export const RequiredAuth = (props: Props) => {
-    const user = useUnit(UserEntity.Model.$user);
+    const { isAuthorized } = UserEntity.Model.useUser();
 
-    if (!!user !== props.needAuth) {
+    if (isAuthorized !== props.needAuth) {
         return <Navigate to={props.navigateLinkIfUnavailable} />;
     }
 
