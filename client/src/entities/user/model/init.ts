@@ -1,5 +1,5 @@
 import { sample } from 'effector';
-import { loadUserFx, loginFx, logoutFx } from './effects';
+import { loadUserFx, loginFx, logoutFx, setAuthTokensFx } from './effects';
 import { $isLoging } from './model';
 
 sample({
@@ -10,6 +10,11 @@ sample({
 
 sample({
     clock: loginFx.doneData,
+    target: setAuthTokensFx,
+});
+
+sample({
+    clock: setAuthTokensFx.doneData,
     target: loadUserFx,
 });
 

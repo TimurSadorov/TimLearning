@@ -38,7 +38,7 @@ export const EditableCourses = () => {
                     </FilterCheckbox>
                 </FilterBlock>
                 <Buttons>
-                    <ExitButton>Выйти из режима редактирования</ExitButton>
+                    <ExitButton>Пользовательский режим</ExitButton>
                 </Buttons>
             </CoursesHeaderBlock>
             <CoursesContainer>
@@ -77,6 +77,8 @@ const Buttons = styled.div`
 
 const ExitButton = styled(Button)`
     max-width: 30%;
+    justify-content: space-around;
+    display: flex;
 `;
 
 const CoursesContainer = styled.div`

@@ -9,8 +9,10 @@ export const loadUserFx = createEffect(() => {
 });
 
 export const loginFx = createEffect(async (data: Api.Services.LoginRequest) => {
-    const tokens = await Api.Services.UserAccountService.login(data);
+    return await Api.Services.UserAccountService.login(data);
+});
 
+export const setAuthTokensFx = createEffect((tokens: Api.Services.AuthTokensResponse) => {
     SiteLocalStorage.setAccessToken(tokens.accessToken);
     SiteLocalStorage.setRefresfToken(tokens.refreshToken);
 });
