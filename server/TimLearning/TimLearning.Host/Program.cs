@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TimLearning.Api.Configurations;
+using TimLearning.Api.Consts;
 using TimLearning.Application.Configurations;
 using TimLearning.Infrastructure.Implementation.Configurations;
 using TimLearning.Infrastructure.Implementation.Configurations.Options;
@@ -29,10 +30,10 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
+app.UseCors();
+
 app.UseTimLearningAuthentication();
 app.UseTimLearningAuthorization();
-
-app.UseCors();
 
 app.MapControllers();
 

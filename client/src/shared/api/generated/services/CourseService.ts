@@ -40,7 +40,7 @@ requestBody: CreateCourseRequest,
      * @throws ApiError
      */
     public static findCourses(
-requestBody?: FindCoursesRequest,
+requestBody: FindCoursesRequest,
 ): CancelablePromise<Array<FindCoursesResponse>> {
         return __request(OpenAPI, {
             method: 'POST',

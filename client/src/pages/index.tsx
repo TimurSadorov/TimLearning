@@ -6,7 +6,7 @@ import { LoginPage } from './login';
 import { RegistrationPage } from './registration';
 import { PasswordChngingPage, PasswordRecoveryPage } from './passwordRecovery';
 import { EmailConfirmationPage } from './emailConfirmation';
-import { UserCoursesPage } from './course/ui';
+import { EditableCourses, UserCoursesPage } from './course/ui';
 import { TemplateWidget } from '@widgets';
 
 const routes = Config.routes;
@@ -33,16 +33,18 @@ export const Routing = () => {
                 <Route path={routes.passwordRecovery.path} element={<PasswordRecoveryPage />} />
                 <Route path={routes.recoveryPasswordChanging.path} element={<PasswordChngingPage />} />
             </Route>
-            {/* <Route
+            <Route
                 element={
                     <UserFeature.Auth.UI.RequiredAuth
                         needAuth
                         navigateLinkIfUnavailable={routes.login.path}
-                        element={<SharedUI.Header isLoged={!!user} />}
+                        requiredRole="ContentCreator"
+                        element={<TemplateWidget.UI.Header />}
                     />
                 }
             >
-            </Route> */}
+                <Route path={routes.editableCourses.path} element={<EditableCourses />} />
+            </Route>
             <Route element={<TemplateWidget.UI.Header />}>
                 <Route path="*" element={<Navigate to={routes.root.path} />} />
                 <Route path={routes.root.path} element={<UserCoursesPage />} />

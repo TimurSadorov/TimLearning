@@ -5,6 +5,7 @@
 
 export type FindCoursesRequest = {
     id?: string | null;
+    searchName?: string | null;
     isDraft?: boolean | null;
     isDeleted?: boolean | null;
 };

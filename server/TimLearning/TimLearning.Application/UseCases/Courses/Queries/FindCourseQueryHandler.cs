@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TimLearning.Application.UseCases.Courses.Dto;
 using TimLearning.Domain.Entities;
 using TimLearning.Infrastructure.Interfaces.Db;
+using TimLearning.Shared.Extensions;
 using TimLearning.Shared.Specifications.Dynamic;
 
 namespace TimLearning.Application.UseCases.Courses.Queries;
@@ -26,7 +27,15 @@ public class FindCourseQueryHandler : IRequestHandler<FindCourseQuery, List<Cour
         {
             query = query.Where(new EntityByGuidIdSpecification<Course>(request.Id.Value));
         }
-
+        if (request.SearchName.HasText())
+        {
+            var searchName = request.SearchName.ToLower();
+            query = query.Where(
+                p =>
+                    EF.Functions.Like(p.Name.ToLower(), $"%{searchName}%")
+                    || EF.Functions.Like(p.ShortName.ToLower(), $"%{searchName}%")
+            );
+        }
         if (request.IsDeleted is not null)
         {
             query = query.Where(c => c.IsDeleted == request.IsDeleted);

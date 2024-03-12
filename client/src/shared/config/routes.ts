@@ -28,6 +28,11 @@ const emailConfiramtion = {
     getLink: () => '/account/email/confirmation',
 };
 
+const editableCourses = {
+    path: '/courses/editing',
+    getLink: () => '/courses/editing',
+};
+
 export const routes = {
     root,
     login,
@@ -35,4 +40,5 @@ export const routes = {
     passwordRecovery,
     recoveryPasswordChanging,
     emailConfiramtion,
+    editableCourses,
 };

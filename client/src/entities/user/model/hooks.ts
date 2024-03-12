@@ -19,16 +19,19 @@ import {
     RegistrationGate,
 } from './model';
 import { Api } from '@shared';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
+import { UserRole } from 'shared/types';
 
 export const useUser = () => {
     const user = useUnit($user);
     const isLoging = useUnit($isLoging);
+    const isInRole = useCallback((role: UserRole) => !!user && user.roles.some((r) => r === role), [user]);
 
     return {
         isAuthorized: !!user,
         user,
         isLoging,
+        isInRole,
     };
 };
 
