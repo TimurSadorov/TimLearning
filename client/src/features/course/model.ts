@@ -1,7 +1,10 @@
 import { CourseEntity } from '@entities';
+import { Api } from '@shared';
+import { useForm } from 'antd/es/form/Form';
 import { createEvent, restore } from 'effector';
 import { createGate, useGate, useUnit } from 'effector-react';
 import { debounce, reset } from 'patronum';
+import { useCallback, useState } from 'react';
 
 const FilterEditableCourses = createGate();
 
@@ -39,5 +42,34 @@ export const useFilterEditableCourses = () => {
         searchName,
         isDraft,
         isDeleted,
+    };
+};
+
+export type NewCourse = Api.Services.CreateCourseRequest;
+
+export const useCreateCourseModal = () => {
+    const [form] = useForm<NewCourse>();
+    const [showModal, setShowModal] = useState(false);
+    const onShowModal = useCallback(() => setShowModal(true), [setShowModal]);
+
+    const onOkModal = useCallback(() => {
+        form.submit();
+    }, [form]);
+    const onCancelModal = useCallback(() => setShowModal(false), [setShowModal]);
+
+    const loading = useUnit(CourseEntity.Model.createCourseFx.pending);
+    const create = useCallback(async (form: NewCourse) => {
+        await CourseEntity.Model.createCourseFx(form);
+        setShowModal(false);
+    }, []);
+
+    return {
+        form,
+        loading,
+        create,
+        showModal,
+        onShowModal,
+        onOkModal,
+        onCancelModal,
     };
 };

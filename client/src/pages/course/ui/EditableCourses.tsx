@@ -3,6 +3,9 @@ import { CourseFeature } from '@features';
 import { PageLoader } from 'shared/ui';
 import styled from 'styled-components';
 import { Button, Checkbox, Input } from 'antd';
+import { CourseWidget } from '@widgets';
+import { useNavigate } from 'react-router-dom';
+import { Config } from '@shared';
 
 export const EditableCourses = () => {
     const {
@@ -15,6 +18,8 @@ export const EditableCourses = () => {
         isDeleted,
         onChangeIsDeleted,
     } = CourseFeature.Model.useFilterEditableCourses();
+
+    const navigate = useNavigate();
 
     if (isLoading) {
         return <PageLoader />;
@@ -38,12 +43,13 @@ export const EditableCourses = () => {
                     </FilterCheckbox>
                 </FilterBlock>
                 <Buttons>
-                    <ExitButton>Пользовательский режим</ExitButton>
+                    <CreateCourseButton />
+                    <ExitButton onClick={() => navigate(Config.routes.root.path)}>Пользовательский режим</ExitButton>
                 </Buttons>
             </CoursesHeaderBlock>
             <CoursesContainer>
                 {editableCourses.map((course) => (
-                    <CourseFeature.UI.EditableCours key={course.id} {...course} />
+                    <CourseWidget.UI.EditableCours key={course.id} {...course} />
                 ))}
             </CoursesContainer>
         </CoursesPage>
@@ -73,6 +79,10 @@ const Search = styled(Input)`
 const Buttons = styled.div`
     display: flex;
     justify-content: end;
+`;
+
+const CreateCourseButton = styled(CourseFeature.UI.CreateCourseButton)`
+    margin-right: 10px;
 `;
 
 const ExitButton = styled(Button)`

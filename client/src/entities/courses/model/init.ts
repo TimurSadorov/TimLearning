@@ -1,6 +1,6 @@
 import { sample } from 'effector';
 import { EditableCoursesGate, UserCoursesGate } from './model';
-import { findCoursesFx, getAllCoursesFx } from './effects';
+import { createCourseFx, findCoursesFx, getAllCoursesFx } from './effects';
 
 sample({
     clock: UserCoursesGate.open,
@@ -9,5 +9,11 @@ sample({
 
 sample({
     clock: EditableCoursesGate.state,
+    target: findCoursesFx,
+});
+
+sample({
+    clock: createCourseFx.done,
+    source: EditableCoursesGate.state,
     target: findCoursesFx,
 });

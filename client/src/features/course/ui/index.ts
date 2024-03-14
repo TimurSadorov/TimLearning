@@ -1,2 +1,2 @@
 export * from './UserCourse';
-export * from './EditableCours';
+export * from './CreateCourseButton';
