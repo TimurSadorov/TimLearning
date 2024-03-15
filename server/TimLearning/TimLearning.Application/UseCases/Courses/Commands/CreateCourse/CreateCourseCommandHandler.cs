@@ -1,23 +1,31 @@
 using MediatR;
-using TimLearning.Application.Services.CourseServices;
-using TimLearning.Application.Services.CourseServices.Dto;
+using TimLearning.Domain.Entities;
+using TimLearning.Infrastructure.Interfaces.Db;
 
 namespace TimLearning.Application.UseCases.Courses.Commands.CreateCourse;
 
 public class CreateCourseCommandHandler : IRequestHandler<CreateCourseCommand>
 {
-    private readonly ICourseUpsertService _courseUpsertService;
+    private readonly IAppDbContext _dbContext;
 
-    public CreateCourseCommandHandler(ICourseUpsertService courseUpsertService)
+    public CreateCourseCommandHandler(IAppDbContext dbContext)
     {
-        _courseUpsertService = courseUpsertService;
+        _dbContext = dbContext;
     }
 
     public async Task Handle(CreateCourseCommand request, CancellationToken cancellationToken)
     {
         var dto = request.Dto;
-        await _courseUpsertService.Create(
-            new CourseCreateDto(dto.Name, dto.ShortName, dto.Description, true, false)
+        _dbContext.Add(
+            new Course
+            {
+                Name = dto.Name,
+                ShortName = dto.ShortName,
+                Description = dto.Description,
+                IsDraft = true,
+                IsDeleted = false
+            }
         );
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

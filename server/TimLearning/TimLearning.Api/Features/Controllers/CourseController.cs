@@ -7,6 +7,7 @@ using TimLearning.Api.Consts;
 using TimLearning.Api.Requests.Course;
 using TimLearning.Api.Responses.Course;
 using TimLearning.Application.UseCases.Courses.Commands.CreateCourse;
+using TimLearning.Application.UseCases.Courses.Commands.UpdateCourse;
 using TimLearning.Application.UseCases.Courses.Dto;
 using TimLearning.Application.UseCases.Courses.Queries.FindCourse;
 using TimLearning.Application.UseCases.Courses.Queries.GetAllUserCourses;
@@ -62,6 +63,31 @@ public class CourseController : SiteApiController
         await _mediator.Send(
             new CreateCourseCommand(
                 new NewCourseDto(request.Name, request.ShortName, request.Description),
+                UserId
+            )
+        );
+
+        return Ok();
+    }
+
+    [Authorize]
+    [HttpPatch("{courseId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> UpdateCourse(
+        [FromRoute] Guid courseId,
+        [Required] UpdateCourseRequest request
+    )
+    {
+        await _mediator.Send(
+            new UpdateCourseCommand(
+                new CourseUpdateDto(
+                    courseId,
+                    request.Name,
+                    request.ShortName,
+                    request.Description,
+                    request.IsDraft,
+                    request.IsDeleted
+                ),
                 UserId
             )
         );

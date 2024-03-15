@@ -1,4 +1,4 @@
-namespace TimLearning.Application.Services.CourseServices.Dto;
+namespace TimLearning.Application.UseCases.Courses.Dto;
 
 public record CourseCreateDto(
     string Name,

@@ -1,6 +1,6 @@
-namespace TimLearning.Application.Services.CourseServices.Dto;
+namespace TimLearning.Application.UseCases.Courses.Dto;
 
-public record CourseUpsertDto(
+public record CourseUpdateDto(
     Guid Id,
     string? Name,
     string? ShortName,

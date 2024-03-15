@@ -8,6 +8,12 @@ public class LocalizedValidationException(LocalizedError error) : Exception
     public LocalizedError Error { get; } = error;
 
     [DoesNotReturn]
+    public static void ThrowNotFoundTextError()
+    {
+        ThrowWithSimpleTextError("Сущность не найдена.");
+    }
+
+    [DoesNotReturn]
     public static void ThrowWithSimpleTextError(string message)
     {
         throw new LocalizedValidationException(new SimpleTextError(message));
