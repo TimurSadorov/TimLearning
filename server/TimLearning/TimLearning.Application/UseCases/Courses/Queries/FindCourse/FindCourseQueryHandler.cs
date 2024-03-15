@@ -1,12 +1,10 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TimLearning.Application.UseCases.Courses.Dto;
-using TimLearning.Domain.Entities;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Shared.Extensions;
-using TimLearning.Shared.Specifications.Dynamic;
 
-namespace TimLearning.Application.UseCases.Courses.Queries;
+namespace TimLearning.Application.UseCases.Courses.Queries.FindCourse;
 
 public class FindCourseQueryHandler : IRequestHandler<FindCourseQuery, List<CourseDto>>
 {
@@ -23,10 +21,6 @@ public class FindCourseQueryHandler : IRequestHandler<FindCourseQuery, List<Cour
     )
     {
         var query = _dbContext.Courses.AsQueryable();
-        if (request.Id is not null)
-        {
-            query = query.Where(new EntityByGuidIdSpecification<Course>(request.Id.Value));
-        }
         if (request.SearchName.HasText())
         {
             var searchName = request.SearchName.ToLower();

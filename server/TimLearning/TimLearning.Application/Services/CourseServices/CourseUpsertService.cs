@@ -7,11 +7,11 @@ using TimLearning.Shared.Specifications.Dynamic;
 
 namespace TimLearning.Application.Services.CourseServices;
 
-public class CourseEntityService : ICourseEntityService
+public class CourseUpsertService : ICourseUpsertService
 {
     private readonly IAppDbContext _dbContext;
 
-    public CourseEntityService(IAppDbContext dbContext)
+    public CourseUpsertService(IAppDbContext dbContext)
     {
         _dbContext = dbContext;
     }

@@ -7,6 +7,6 @@ public static class ClaimsPrincipalExtensions
 {
     public static Guid GetUserId(this ClaimsPrincipal principal)
     {
-        return principal.FindRequiredFirstGuid(ExtendedClaimTypes.Id);
+        return principal.GetRequiredFirstGuid(ExtendedClaimTypes.Id);
     }
 }

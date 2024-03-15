@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TimLearning.Application.Configurations.Options;
 using TimLearning.Application.Data.ValueObjects;
+using TimLearning.Application.Mediator.Pipelines.RoleAccess;
 using TimLearning.Application.Services.CourseServices;
 using TimLearning.Application.Services.UserServices;
 using TimLearning.Application.ToDoServices;
@@ -26,9 +27,11 @@ public static class ApplicationServicesConfigurations
         IConfiguration config
     )
     {
-        services.AddMediatR(
-            cfg => cfg.RegisterServicesFromAssembly(typeof(RegisterUserCommand).Assembly)
-        );
+        services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssembly(typeof(RegisterUserCommand).Assembly);
+            cfg.AddOpenBehavior(typeof(AccessByRolePipelineBehavior<,>));
+        });
 
         services.AddAppOptions();
 
@@ -54,7 +57,7 @@ public static class ApplicationServicesConfigurations
         services.AddScoped<IUserTokenUpdater, UserTokenUpdater>();
         services.AddSingleton<IUserEmailProvider, UserEmailProvider>();
 
-        services.AddScoped<ICourseEntityService, CourseEntityService>();
+        services.AddScoped<ICourseUpsertService, CourseUpsertService>();
 
         services.AddToDoServices();
     }
