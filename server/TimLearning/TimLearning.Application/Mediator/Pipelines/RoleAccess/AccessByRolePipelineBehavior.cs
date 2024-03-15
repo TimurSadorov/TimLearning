@@ -7,7 +7,7 @@ namespace TimLearning.Application.Mediator.Pipelines.RoleAccess;
 
 public class AccessByRolePipelineBehavior<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>, IAccessByRole
+    where TRequest : IBaseRequest, IAccessByRole
 {
     private readonly IAppDbContext _dbContext;
 

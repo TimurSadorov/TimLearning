@@ -31,6 +31,7 @@ public class CourseController : SiteApiController
         return courses.Select(c => new GetAllCoursesResponse(c.Id, c.Name, c.Description)).ToList();
     }
 
+    [Authorize]
     [HttpPost("find")]
     public async Task<List<FindCoursesResponse>> FindCourses([Required] FindCoursesRequest request)
     {
@@ -53,8 +54,8 @@ public class CourseController : SiteApiController
             .ToList();
     }
 
-    [HttpPost]
     [Authorize]
+    [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> CreateCourse([Required] CreateCourseRequest request)
     {
