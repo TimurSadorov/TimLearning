@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 using MediatR;
-using TimLearning.Application.Services.UserServices;
 using TimLearning.Application.UseCases.Users.Commands.SendUserEmailConfirmation;
 using TimLearning.Application.UseCases.Users.Dto;
 using TimLearning.Domain.Entities;
 using TimLearning.Domain.Entities.Enums;
+using TimLearning.Domain.Services.UserServices;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Shared.Validation.FluentValidator.Extensions;
 

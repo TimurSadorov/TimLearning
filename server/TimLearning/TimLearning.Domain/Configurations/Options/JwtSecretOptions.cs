@@ -2,7 +2,7 @@
 using TimLearning.Shared.Configuration;
 using TimLearning.Shared.Extensions;
 
-namespace TimLearning.Application.Configurations.Options;
+namespace TimLearning.Domain.Configurations.Options;
 
 public class JwtSecretOptions : IConfigurationOptions
 {

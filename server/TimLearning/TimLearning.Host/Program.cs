@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TimLearning.Api.Configurations;
-using TimLearning.Api.Consts;
 using TimLearning.Application.Configurations;
+using TimLearning.Domain.Configurations;
 using TimLearning.Infrastructure.Implementation.Configurations;
 using TimLearning.Infrastructure.Implementation.Configurations.Options;
 using TimLearning.Infrastructure.Interfaces.Db;
@@ -18,6 +18,8 @@ services.AddAllApiServices(config, siteOptions.Url);
 services.AddAllInfrastructureServices(config);
 
 services.AddAllApplicationServices(config);
+
+services.AddAllDomainServices();
 
 var app = builder.Build();
 

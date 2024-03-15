@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using TimLearning.Application.Data.ValueObjects;
+using TimLearning.Domain.Data.ValueObjects;
 
-namespace TimLearning.Application.Validators.Users;
+namespace TimLearning.Domain.Validators;
 
 public class UserPasswordValidator : AbstractValidator<UserPasswordValueObject>
 {

@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using TimLearning.Application.Services.UserServices.Dto;
 using TimLearning.Application.UseCases.Users.Dto;
+using TimLearning.Domain.Services.UserServices.Dto;
 
 namespace TimLearning.Application.UseCases.Users.Commands.RefreshUserToken;
 

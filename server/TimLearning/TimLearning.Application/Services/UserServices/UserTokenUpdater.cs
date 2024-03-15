@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TimLearning.Application.Services.UserServices.Dto;
-using TimLearning.Application.Services.UserServices.Mappers;
+using TimLearning.Domain.Services.UserServices;
+using TimLearning.Domain.Services.UserServices.Dto;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Infrastructure.Interfaces.Providers.Clock;
 
@@ -8,32 +8,30 @@ namespace TimLearning.Application.Services.UserServices;
 
 public class UserTokenUpdater : IUserTokenUpdater
 {
-    private static readonly TimeSpan RefreshTokenLifeTime = TimeSpan.FromDays(30);
-
     private readonly IAppDbContext _db;
-    private readonly IUserTokenGenerator _userTokenGenerator;
     private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly IUserTokenService _userTokenService;
 
     public UserTokenUpdater(
         IAppDbContext db,
-        IUserTokenGenerator userTokenGenerator,
-        IDateTimeProvider dateTimeProvider
+        IDateTimeProvider dateTimeProvider,
+        IUserTokenService userTokenService
     )
     {
         _db = db;
-        _userTokenGenerator = userTokenGenerator;
         _dateTimeProvider = dateTimeProvider;
+        _userTokenService = userTokenService;
     }
 
     public async Task<AuthTokensDto> UpdateUserTokens(string email)
     {
         var user = await _db.Users.Include(u => u.Roles).FirstAsync(u => u.Email == email);
 
-        var tokens = await _userTokenGenerator.GenerateTokens(user.ToUserClaimsDto(user.Roles));
-
-        var now = await _dateTimeProvider.GetUtcNow();
-        user.RefreshToken = tokens.RefreshToken;
-        user.RefreshTokenExpireAt = now.Add(RefreshTokenLifeTime);
+        var tokens = _userTokenService.UpdateTokens(
+            user,
+            user.Roles.Select(r => r.Type).ToList(),
+            await _dateTimeProvider.GetUtcNow()
+        );
 
         await _db.SaveChangesAsync();
 

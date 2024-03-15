@@ -1,4 +1,4 @@
-﻿namespace TimLearning.Application.Auth.Claim;
+﻿namespace TimLearning.Domain.Auth.Claim;
 
 public static class ExtendedClaimTypes
 {

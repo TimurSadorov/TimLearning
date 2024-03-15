@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
-using TimLearning.Application.Services.UserServices;
 using TimLearning.Application.UseCases.Users.Dto;
+using TimLearning.Domain.Services.UserServices;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Shared.Validation.Exceptions.Localized;
 using TimLearning.Shared.Validation.Validators;

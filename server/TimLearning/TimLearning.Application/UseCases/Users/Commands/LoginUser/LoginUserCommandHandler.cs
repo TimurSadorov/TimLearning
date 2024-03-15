@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using TimLearning.Application.Services.UserServices;
-using TimLearning.Application.Services.UserServices.Dto;
 using TimLearning.Application.UseCases.Users.Dto;
+using TimLearning.Domain.Services.UserServices.Dto;
 using TimLearning.Shared.Validation.Validators;
 
 namespace TimLearning.Application.UseCases.Users.Commands.LoginUser;

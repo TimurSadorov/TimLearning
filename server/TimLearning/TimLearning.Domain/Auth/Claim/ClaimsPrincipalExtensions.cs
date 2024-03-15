@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using TimLearning.Shared.Auth.Extensions;
 
-namespace TimLearning.Application.Auth.Claim;
+namespace TimLearning.Domain.Auth.Claim;
 
 public static class ClaimsPrincipalExtensions
 {

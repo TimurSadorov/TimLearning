@@ -4,7 +4,7 @@ namespace TimLearning.Domain.Entities;
 
 public class UserRole
 {
-    public required UserRoleType Type { get; set; }
+    public required UserRoleType Type { get; init; }
 
     public Guid UserId { get; init; }
     public User User { get; init; } = null!;

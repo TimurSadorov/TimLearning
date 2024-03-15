@@ -9,7 +9,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using TimLearning.Api.Consts;
 using TimLearning.Api.Features.Controllers.User;
 using TimLearning.Api.Filters;
-using TimLearning.Application.Configurations.Options;
+using TimLearning.Domain.Configurations.Options;
 using TimLearning.Shared.AspNet.Swagger.Filters.Validation;
 using TimLearning.Shared.AspNet.Validations.Filters;
 using TimLearning.Shared.Configuration.Extensions;

@@ -1,5 +1,5 @@
 ﻿using TimLearning.Api.Responses.User;
-using TimLearning.Application.Services.UserServices.Dto;
+using TimLearning.Domain.Services.UserServices.Dto;
 
 namespace TimLearning.Api.Mappers.User;
 

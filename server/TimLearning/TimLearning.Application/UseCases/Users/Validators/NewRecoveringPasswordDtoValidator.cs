@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using TimLearning.Application.Data.ValueObjects;
 using TimLearning.Application.Services.UserServices;
 using TimLearning.Application.UseCases.Users.Dto;
+using TimLearning.Domain.Data.ValueObjects;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Shared.Validation.Exceptions.Localized;
 using TimLearning.Shared.Validation.FluentValidator.Validators;

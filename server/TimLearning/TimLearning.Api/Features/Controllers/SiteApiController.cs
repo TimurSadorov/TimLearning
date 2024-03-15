@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using TimLearning.Api.Consts;
-using TimLearning.Application.Auth.Claim;
+using TimLearning.Domain.Auth.Claim;
 
 namespace TimLearning.Api.Features.Controllers;
 

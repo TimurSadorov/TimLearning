@@ -1,8 +1,6 @@
-﻿using System.Security.Cryptography;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TimLearning.Application.Configurations.Options;
 using TimLearning.Application.Data.ValueObjects;
 using TimLearning.Application.Mediator.Pipelines.RoleAccess;
 using TimLearning.Application.Services.CourseServices;
@@ -14,7 +12,6 @@ using TimLearning.Application.UseCases.Users.Validators;
 using TimLearning.Application.Validators.Users;
 using TimLearning.Shared.Configuration.Extensions;
 using TimLearning.Shared.Services.Encryptors.DataEncryptor;
-using TimLearning.Shared.Services.Encryptors.PasswordEncryptor;
 using TimLearning.Shared.Validation.FluentValidator.Validators;
 using TimLearning.Shared.Validation.Validators;
 
@@ -33,27 +30,15 @@ public static class ApplicationServicesConfigurations
             cfg.AddOpenBehavior(typeof(AccessByRolePipelineBehavior<,>));
         });
 
-        services.AddAppOptions();
-
         services.AddPrivateServices(config);
         services.AddValidators();
-    }
-
-    private static void AddAppOptions(this IServiceCollection services)
-    {
-        services.AddRequiredOptions<JwtSecretOptions>();
     }
 
     private static void AddPrivateServices(this IServiceCollection services, IConfiguration config)
     {
         services.AddDataHasher(config.GetRequiredStringValue("DataEncryptor:SharedKey"));
 
-        services.AddSingleton<IUserPasswordService>(
-            new UserPasswordService(new PasswordEncryptor(SHA512.Create()))
-        );
         services.AddSingleton<IUserDataEncryptor, UserDataEncryptor>();
-        services.AddSingleton<IJwtTokensGenerator, JwtTokenGenerator>();
-        services.AddSingleton<IUserTokenGenerator, UserTokenGenerator>();
         services.AddScoped<IUserTokenUpdater, UserTokenUpdater>();
         services.AddSingleton<IUserEmailProvider, UserEmailProvider>();
 
@@ -85,7 +70,6 @@ public static class ApplicationServicesConfigurations
             RefreshableTokenDtoValidator
         >();
         services.AddScoped<IAsyncSimpleValidator<UserEmailValueObject>, UserEmailValidator>();
-        services.AddSingleton<IValidator<UserPasswordValueObject>, UserPasswordValidator>();
         services.AddScoped<
             ICombinedFluentAndSimpleValidator<NewRecoveringPasswordDto>,
             NewRecoveringPasswordDtoValidator

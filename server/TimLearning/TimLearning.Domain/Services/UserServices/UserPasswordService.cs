@@ -1,6 +1,6 @@
 ﻿using TimLearning.Shared.Services.Encryptors.PasswordEncryptor;
 
-namespace TimLearning.Application.Services.UserServices;
+namespace TimLearning.Domain.Services.UserServices;
 
 public class UserPasswordService : IUserPasswordService
 {
