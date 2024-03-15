@@ -14,21 +14,14 @@ import { request as __request } from '../core/request';
 export class CourseService {
 
     /**
-     * @param requestBody 
-     * @returns any Success
+     * @returns GetAllCoursesResponse Success
      * @throws ApiError
      */
-    public static createCourse(
-requestBody: CreateCourseRequest,
-): CancelablePromise<any> {
+    public static getAllCourses(): CancelablePromise<Array<GetAllCoursesResponse>> {
         return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/courses',
-            body: requestBody,
-            mediaType: 'application/json',
+            method: 'GET',
+            url: '/api/courses/all',
             errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
                 422: `Request validation error.`,
             },
         });
@@ -56,14 +49,21 @@ requestBody: FindCoursesRequest,
     }
 
     /**
-     * @returns GetAllCoursesResponse Success
+     * @param requestBody 
+     * @returns any Success
      * @throws ApiError
      */
-    public static getAllCourses(): CancelablePromise<Array<GetAllCoursesResponse>> {
+    public static createCourse(
+requestBody: CreateCourseRequest,
+): CancelablePromise<any> {
         return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/courses/all',
+            method: 'POST',
+            url: '/api/courses',
+            body: requestBody,
+            mediaType: 'application/json',
             errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
                 422: `Request validation error.`,
             },
         });
