@@ -10,7 +10,7 @@ export const Header = () => {
     const { userIsAuthorized, logout, toAccount, toLogin } = useHeader();
 
     return (
-        <PageContainer>
+        <>
             <HeaderContainer>
                 <MainPageLink to={Config.routes.root.path}>TimLearning</MainPageLink>
                 {userIsAuthorized ? (
@@ -23,16 +23,9 @@ export const Header = () => {
                 )}
             </HeaderContainer>
             <Outlet />
-        </PageContainer>
+        </>
     );
 };
-
-const PageContainer = styled.div`
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-    flex-direction: column;
-`;
 
 const HeaderContainer = styled.header`
     position: sticky;
