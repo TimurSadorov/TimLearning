@@ -1,9 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TimLearning.Application.Services.CourseServices.Dto;
 using TimLearning.Application.Services.CourseServices.Mappers;
-using TimLearning.Domain.Entities;
 using TimLearning.Infrastructure.Interfaces.Db;
-using TimLearning.Shared.Specifications.Dynamic;
 
 namespace TimLearning.Application.Services.CourseServices;
 
@@ -27,9 +25,7 @@ public class CourseUpsertService : ICourseUpsertService
 
     public async Task Update(CourseUpsertDto dto)
     {
-        var course = await _dbContext.Courses.SingleAsync(
-            new EntityByGuidIdSpecification<Course>(dto.Id)
-        );
+        var course = await _dbContext.Courses.FirstAsync(c => c.Id == dto.Id);
 
         if (dto.Name is not null)
         {
