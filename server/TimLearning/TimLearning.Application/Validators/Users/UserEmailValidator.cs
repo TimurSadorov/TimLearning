@@ -22,7 +22,7 @@ public class UserEmailValidator : IAsyncSimpleValidator<UserEmailValueObject>
     {
         if (await _db.Users.AnyAsync(u => u.Email == entity.Value, ct) == false)
         {
-            LocalizedValidationException.ThrowWithSimpleTextError(
+            LocalizedValidationException.ThrowSimpleTextError(
                 "Пользователь с такой почтой не найден."
             );
         }

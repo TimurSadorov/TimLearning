@@ -29,19 +29,19 @@ public class UserEmailConfirmationDtoValidator : IAsyncSimpleValidator<UserEmail
             .FirstOrDefaultAsync(ct);
         if (user is null)
         {
-            LocalizedValidationException.ThrowWithSimpleTextError(
+            LocalizedValidationException.ThrowSimpleTextError(
                 $"Пользователь с почтой[{entity.Email}] не найден."
             );
         }
 
         if (user.IsEmailConfirmed)
         {
-            LocalizedValidationException.ThrowWithSimpleTextError("Почта уже подтверждена.");
+            LocalizedValidationException.ThrowSimpleTextError("Почта уже подтверждена.");
         }
 
         if (_userUserDataEncryptor.VerifyEmail(entity.Signature, entity.Email) == false)
         {
-            LocalizedValidationException.ThrowWithSimpleTextError(
+            LocalizedValidationException.ThrowSimpleTextError(
                 "Подтверждение не предназначено для этой почты."
             );
         }

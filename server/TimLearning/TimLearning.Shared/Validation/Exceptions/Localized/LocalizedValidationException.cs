@@ -10,17 +10,17 @@ public class LocalizedValidationException(LocalizedError error) : Exception
     [DoesNotReturn]
     public static void ThrowNotFoundTextError()
     {
-        ThrowWithSimpleTextError("Сущность не найдена.");
+        ThrowSimpleTextError("Сущность не найдена.");
     }
 
     [DoesNotReturn]
-    public static void ThrowWithSimpleTextError(string message)
+    public static void ThrowSimpleTextError(string message)
     {
         throw new LocalizedValidationException(new SimpleTextError(message));
     }
 
     [DoesNotReturn]
-    public static void ThrowWithModelError(List<PropertyError> propertiesErrors)
+    public static void ThrowModelError(List<PropertyError> propertiesErrors)
     {
         throw new LocalizedValidationException(new ModelError(propertiesErrors));
     }

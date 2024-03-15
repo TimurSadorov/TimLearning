@@ -46,7 +46,7 @@ public class AuthorizationDtoValidator : IAsyncSimpleValidator<AuthorizationDto>
     [DoesNotReturn]
     private static void ThrowInvalidEmailOrPassword()
     {
-        LocalizedValidationException.ThrowWithSimpleTextError(
+        LocalizedValidationException.ThrowSimpleTextError(
             "Неверный пароль или пользователь с такой почтой не существует."
         );
     }

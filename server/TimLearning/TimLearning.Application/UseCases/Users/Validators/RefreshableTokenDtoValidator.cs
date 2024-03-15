@@ -30,13 +30,13 @@ public class RefreshableTokenDtoValidator : IAsyncSimpleValidator<RefreshableTok
 
         if (user is null)
         {
-            LocalizedValidationException.ThrowWithSimpleTextError(
+            LocalizedValidationException.ThrowSimpleTextError(
                 $"Пользователя с почтой[{entity.UserEmail}] не существует."
             );
         }
         if (user.RefreshToken != entity.RefreshToken)
         {
-            LocalizedValidationException.ThrowWithSimpleTextError(
+            LocalizedValidationException.ThrowSimpleTextError(
                 "У данного пользователя другой refresh token."
             );
         }
@@ -44,7 +44,7 @@ public class RefreshableTokenDtoValidator : IAsyncSimpleValidator<RefreshableTok
         var now = await _dateTimeProvider.GetUtcNow();
         if (user.RefreshTokenExpireAt < now)
         {
-            LocalizedValidationException.ThrowWithSimpleTextError("Refresh token просрочен.");
+            LocalizedValidationException.ThrowSimpleTextError("Refresh token просрочен.");
         }
     }
 }

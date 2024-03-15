@@ -28,14 +28,14 @@ public class NewUserEmailConfirmationDtoValidator
 
         if (user is null)
         {
-            LocalizedValidationException.ThrowWithSimpleTextError(
+            LocalizedValidationException.ThrowSimpleTextError(
                 "Пользователь с такой почтой не найден."
             );
         }
 
         if (user.IsEmailConfirmed)
         {
-            LocalizedValidationException.ThrowWithSimpleTextError("Почта уже подтверждена.");
+            LocalizedValidationException.ThrowSimpleTextError("Почта уже подтверждена.");
         }
     }
 }

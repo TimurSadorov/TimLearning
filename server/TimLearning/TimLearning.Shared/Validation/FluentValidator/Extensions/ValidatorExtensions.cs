@@ -32,7 +32,7 @@ public static class ValidatorExtensions
     {
         if (validationResult.IsValid is false)
         {
-            LocalizedValidationException.ThrowWithModelError(
+            LocalizedValidationException.ThrowModelError(
                 validationResult.Errors
                     .ToLookup(e => e.PropertyName, e => e.ErrorMessage)
                     .Select(

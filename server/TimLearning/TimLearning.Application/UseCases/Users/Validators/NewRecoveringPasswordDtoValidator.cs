@@ -50,7 +50,7 @@ public class NewRecoveringPasswordDtoValidator
             .FirstOrDefaultAsync(ct);
         if (user is null)
         {
-            LocalizedValidationException.ThrowWithSimpleTextError(
+            LocalizedValidationException.ThrowSimpleTextError(
                 $"Пользователь с почтой[{entity.UserEmail}] не найден."
             );
         }
@@ -63,7 +63,7 @@ public class NewRecoveringPasswordDtoValidator
             ) == false
         )
         {
-            LocalizedValidationException.ThrowWithSimpleTextError(
+            LocalizedValidationException.ThrowSimpleTextError(
                 "Невалидная ссылка для смены пароля."
             );
         }
