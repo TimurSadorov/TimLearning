@@ -54,7 +54,7 @@ public class SendUserPasswordRecoveringCommandHandler
         var userPasswordHash = await _db.Users
             .Where(u => u.Email == userEmail)
             .Select(u => u.PasswordHash)
-            .SingleAsync(cancellationToken);
+            .FirstAsync(cancellationToken);
 
         var signedEmailAndPassword = _userDataEncryptor.SingEmailAndPassword(
             userEmail,

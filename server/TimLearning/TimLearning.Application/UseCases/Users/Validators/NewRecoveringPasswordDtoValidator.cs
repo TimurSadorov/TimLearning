@@ -47,7 +47,7 @@ public class NewRecoveringPasswordDtoValidator
         var user = await _db.Users
             .Where(u => u.Email == entity.UserEmail)
             .Select(u => new { u.PasswordHash })
-            .SingleOrDefaultAsync(ct);
+            .FirstOrDefaultAsync(ct);
         if (user is null)
         {
             LocalizedValidationException.ThrowWithSimpleTextError(

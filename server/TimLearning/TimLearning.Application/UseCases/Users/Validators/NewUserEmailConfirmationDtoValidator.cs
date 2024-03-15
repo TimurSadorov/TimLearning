@@ -24,7 +24,7 @@ public class NewUserEmailConfirmationDtoValidator
         var user = await _dbContext.Users
             .Where(u => u.Email == entity.UserEmail)
             .Select(u => new { u.IsEmailConfirmed })
-            .SingleOrDefaultAsync(ct);
+            .FirstOrDefaultAsync(ct);
 
         if (user is null)
         {

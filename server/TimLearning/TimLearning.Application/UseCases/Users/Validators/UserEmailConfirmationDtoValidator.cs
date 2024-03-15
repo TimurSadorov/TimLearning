@@ -26,7 +26,7 @@ public class UserEmailConfirmationDtoValidator : IAsyncSimpleValidator<UserEmail
         var user = await _db.Users
             .Where(u => u.Email == entity.Email)
             .Select(u => new { u.IsEmailConfirmed })
-            .SingleOrDefaultAsync(ct);
+            .FirstOrDefaultAsync(ct);
         if (user is null)
         {
             LocalizedValidationException.ThrowWithSimpleTextError(

@@ -24,7 +24,7 @@ public class AuthorizationDtoValidator : IAsyncSimpleValidator<AuthorizationDto>
         var user = await _db.Users
             .Where(u => u.Email == entity.Email)
             .Select(u => new { u.PasswordHash, u.PasswordSalt })
-            .SingleOrDefaultAsync(ct);
+            .FirstOrDefaultAsync(ct);
 
         if (user is null)
         {
