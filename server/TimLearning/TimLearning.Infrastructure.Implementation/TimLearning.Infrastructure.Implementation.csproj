@@ -15,10 +15,4 @@
       <ProjectReference Include="..\TimLearning.Domain\TimLearning.Domain.csproj" />
       <ProjectReference Include="..\TimLearning.Shared\TimLearning.Shared.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Db\Migrations\" />
-      <Folder Include="Services\" />
-    </ItemGroup>
-
 </Project>
