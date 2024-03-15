@@ -1,16 +1,32 @@
 import { CourseEntity } from '@entities';
+import { CourseFeature } from '@features';
 import React from 'react';
 import styled from 'styled-components';
 
-type CourseProps = Omit<CourseEntity.Type.EditableCours, 'id'>;
+type Props = { course: CourseEntity.Type.EditableCours };
 
-export const EditableCours = (course: CourseProps) => {
+export const EditableCours = ({ course }: Props) => {
     return (
         <CourseBlock>
-            <CoursePropertyBlock>
-                <CoursePropertyName>Название:</CoursePropertyName>
-                <div>{course.name}</div>
-            </CoursePropertyBlock>
+            <PropertyWithBittons>
+                <CoursePropertyBlock>
+                    <CoursePropertyName>Название:</CoursePropertyName>
+                    <div>{course.name}</div>
+                </CoursePropertyBlock>
+                <Buttons>
+                    <CourseFeature.UI.UpdateCourseButton course={course} />
+                    {course.isDraft ? (
+                        <CourseFeature.UI.PublishCourseButton courseId={course.id} />
+                    ) : (
+                        <CourseFeature.UI.DraftCourseButton courseId={course.id} />
+                    )}
+                    {course.isDeleted ? (
+                        <CourseFeature.UI.RecoverCourseButton courseId={course.id} />
+                    ) : (
+                        <CourseFeature.UI.DeleteCourseButton courseId={course.id} />
+                    )}
+                </Buttons>
+            </PropertyWithBittons>
             <CoursePropertyBlock>
                 <CoursePropertyName>Короткое название:</CoursePropertyName>
                 <div>{course.shortName}</div>
@@ -38,6 +54,16 @@ const CourseBlock = styled.div`
     display: flex;
     flex-direction: column;
     row-gap: 10px;
+`;
+
+const PropertyWithBittons = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+
+const Buttons = styled.div`
+    display: flex;
+    column-gap: 10px;
 `;
 
 const CoursePropertyBlock = styled.div`

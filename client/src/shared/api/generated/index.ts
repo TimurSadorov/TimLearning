@@ -22,6 +22,7 @@ export type { RecoverPasswordRequest } from './models/RecoverPasswordRequest';
 export type { RefreshRequest } from './models/RefreshRequest';
 export type { SendEmailConfirmationRequest } from './models/SendEmailConfirmationRequest';
 export type { SendMailToRecoverPasswordRequest } from './models/SendMailToRecoverPasswordRequest';
+export type { UpdateCourseRequest } from './models/UpdateCourseRequest';
 export type { UserEmailConfirmationRequest } from './models/UserEmailConfirmationRequest';
 export type { ValidationErrorResponse } from './models/ValidationErrorResponse';
 export type { ValidationErrorTextResponse } from './models/ValidationErrorTextResponse';

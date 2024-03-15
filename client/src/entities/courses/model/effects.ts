@@ -11,3 +11,8 @@ export const findCoursesFx = createEffect(
 export const createCourseFx = createEffect(
     async (request: Api.Services.CreateCourseRequest) => await Api.Services.CourseService.createCourse(request),
 );
+
+export const updateCourseFx = createEffect(
+    async (request: { courseId: string; data: Api.Services.UpdateCourseRequest }) =>
+        await Api.Services.CourseService.updateCourse(request.courseId, request.data),
+);

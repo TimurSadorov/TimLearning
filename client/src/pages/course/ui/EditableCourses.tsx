@@ -17,6 +17,7 @@ export const EditableCourses = () => {
         onChangeIsDraft,
         isDeleted,
         onChangeIsDeleted,
+        draftFilterIsDisabled,
     } = CourseFeature.Model.useFilterEditableCourses();
 
     const navigate = useNavigate();
@@ -35,7 +36,11 @@ export const EditableCourses = () => {
                         value={searchName}
                         autoFocus
                     />
-                    <FilterCheckbox onChange={(e) => onChangeIsDraft(e.target.checked)} checked={isDraft}>
+                    <FilterCheckbox
+                        onChange={(e) => onChangeIsDraft(e.target.checked)}
+                        checked={isDraft}
+                        disabled={draftFilterIsDisabled}
+                    >
                         Черновик
                     </FilterCheckbox>
                     <FilterCheckbox onChange={(e) => onChangeIsDeleted(e.target.checked)} checked={isDeleted}>
@@ -49,7 +54,7 @@ export const EditableCourses = () => {
             </CoursesHeaderBlock>
             <CoursesContainer>
                 {editableCourses.map((course) => (
-                    <CourseWidget.UI.EditableCours key={course.id} {...course} />
+                    <CourseWidget.UI.EditableCours key={course.id} course={course} />
                 ))}
             </CoursesContainer>
         </CoursesPage>

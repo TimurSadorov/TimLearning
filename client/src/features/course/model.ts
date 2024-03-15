@@ -18,6 +18,8 @@ const $isDraft = restore(onChangeIsDraft, true);
 const onChangeIsDeleted = createEvent<boolean>();
 const $isDeleted = restore(onChangeIsDeleted, false);
 
+const $draftFilterIsDisabled = $isDeleted;
+
 reset({ clock: FilterEditableCourses.close, target: [$searchName, $isDraft, $isDeleted] });
 
 export const useFilterEditableCourses = () => {
@@ -26,10 +28,11 @@ export const useFilterEditableCourses = () => {
     const debouncedSearchName = useUnit($debouncedSearchName);
     const isDraft = useUnit($isDraft);
     const isDeleted = useUnit($isDeleted);
+    const draftFilterIsDisabled = useUnit($draftFilterIsDisabled);
 
     const { isLoading, editableCourses } = CourseEntity.Model.useEditableCourses({
         searchName: debouncedSearchName,
-        isDraft,
+        isDraft: draftFilterIsDisabled ? null : isDraft,
         isDeleted,
     });
 
@@ -42,6 +45,7 @@ export const useFilterEditableCourses = () => {
         searchName,
         isDraft,
         isDeleted,
+        draftFilterIsDisabled,
     };
 };
 
@@ -67,6 +71,89 @@ export const useCreateCourseModal = () => {
         form,
         loading,
         create,
+        showModal,
+        onShowModal,
+        onOkModal,
+        onCancelModal,
+    };
+};
+
+export const useDeleteCourse = (courseId: string) => {
+    const loading = useUnit(CourseEntity.Model.updateCourseFx.pending);
+    const deleteCourse = useCallback(async () => {
+        await CourseEntity.Model.updateCourseFx({ courseId: courseId, data: { isDeleted: true } });
+    }, [courseId]);
+
+    return {
+        loading,
+        deleteCourse,
+    };
+};
+
+export const useRecoverCourse = (courseId: string) => {
+    const loading = useUnit(CourseEntity.Model.updateCourseFx.pending);
+    const recoverCourse = useCallback(async () => {
+        await CourseEntity.Model.updateCourseFx({ courseId: courseId, data: { isDeleted: false } });
+    }, [courseId]);
+
+    return {
+        loading,
+        recoverCourse,
+    };
+};
+
+export const usePublishCourse = (courseId: string) => {
+    const loading = useUnit(CourseEntity.Model.updateCourseFx.pending);
+    const publishCourse = useCallback(async () => {
+        await CourseEntity.Model.updateCourseFx({ courseId: courseId, data: { isDraft: false } });
+    }, [courseId]);
+
+    return {
+        loading,
+        publishCourse,
+    };
+};
+
+export const useDraftCourse = (courseId: string) => {
+    const loading = useUnit(CourseEntity.Model.updateCourseFx.pending);
+    const toDraft = useCallback(async () => {
+        await CourseEntity.Model.updateCourseFx({ courseId: courseId, data: { isDraft: true } });
+    }, [courseId]);
+
+    return {
+        loading,
+        toDraft,
+    };
+};
+
+export type CourseUpdating = Pick<Api.Services.UpdateCourseRequest, 'name' | 'shortName' | 'description'>;
+
+export const useUpdateCourseModal = (courseId: string) => {
+    const [form] = useForm<CourseUpdating>();
+    const [showModal, setShowModal] = useState(false);
+    const onShowModal = useCallback(() => setShowModal(true), [setShowModal]);
+
+    const onOkModal = useCallback(() => {
+        form.submit();
+    }, [form]);
+    const onCancelModal = useCallback(() => {
+        setShowModal(false);
+        form.resetFields();
+    }, [form, setShowModal]);
+
+    const loading = useUnit(CourseEntity.Model.updateCourseFx.pending);
+    const update = useCallback(
+        async (formData: CourseUpdating) => {
+            await CourseEntity.Model.updateCourseFx({ courseId, data: formData });
+            setShowModal(false);
+        },
+        [courseId],
+    );
+
+    return {
+        form,
+        loading,
+        update,
         showModal,
         onShowModal,
         onOkModal,
