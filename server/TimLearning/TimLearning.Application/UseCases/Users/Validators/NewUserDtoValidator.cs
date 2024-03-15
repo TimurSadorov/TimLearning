@@ -1,7 +1,6 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using TimLearning.Application.Data.ValueObjects;
-using TimLearning.Application.Specifications.Dynamic.Users;
 using TimLearning.Application.UseCases.Users.Dto;
 using TimLearning.Infrastructure.Interfaces.Db;
 
@@ -21,8 +20,7 @@ public class NewUserDtoValidator : AbstractValidator<NewUserDto>
             .EmailAddress()
             .WithMessage("Email имеет невалидный формат.")
             .MustAsync(
-                async (email, ct) =>
-                    await db.Users.AnyAsync(new UserByEmailSpecification(email), ct) == false
+                async (email, ct) => await db.Users.AnyAsync(u => u.Email == email, ct) == false
             )
             .WithMessage("Пользователь с такой почтой уже существует.");
 

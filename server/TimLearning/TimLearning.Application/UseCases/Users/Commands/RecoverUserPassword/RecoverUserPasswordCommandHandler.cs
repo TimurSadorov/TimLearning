@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TimLearning.Application.Services.UserServices;
-using TimLearning.Application.Specifications.Dynamic.Users;
 using TimLearning.Application.UseCases.Users.Dto;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Shared.Validation.FluentValidator.Validators;
@@ -39,7 +38,7 @@ public class RecoverUserPasswordCommandHandler : IRequestHandler<RecoverUserPass
         var newPasswordWithSalt = _userPasswordService.GetPasswordHash(newPasswordInfo.NewPassword);
 
         await _db.Users
-            .Where(new UserByEmailSpecification(newPasswordInfo.UserEmail))
+            .Where(u => u.Email == newPasswordInfo.UserEmail)
             .ExecuteUpdateAsync(
                 setter =>
                     setter

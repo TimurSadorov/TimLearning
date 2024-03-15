@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TimLearning.Application.Specifications.Dynamic.Users;
 using TimLearning.Application.UseCases.Users.Dto;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Infrastructure.Interfaces.Providers.Clock;
@@ -25,7 +24,7 @@ public class RefreshableTokenDtoValidator : IAsyncSimpleValidator<RefreshableTok
     )
     {
         var user = await _db.Users
-            .Where(new UserByEmailSpecification(entity.UserEmail))
+            .Where(u => u.Email == entity.UserEmail)
             .Select(u => new { u.RefreshToken, u.RefreshTokenExpireAt })
             .SingleOrDefaultAsync(ct);
 

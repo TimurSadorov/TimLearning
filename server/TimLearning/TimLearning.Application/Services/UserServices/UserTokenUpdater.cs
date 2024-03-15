@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TimLearning.Application.Services.UserServices.Dto;
 using TimLearning.Application.Services.UserServices.Mappers;
-using TimLearning.Application.Specifications.Dynamic.Users;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Infrastructure.Interfaces.Providers.Clock;
 
@@ -28,9 +27,7 @@ public class UserTokenUpdater : IUserTokenUpdater
 
     public async Task<AuthTokensDto> UpdateUserTokens(string email)
     {
-        var user = await _db.Users
-            .Include(u => u.Roles)
-            .SingleAsync(new UserByEmailSpecification(email));
+        var user = await _db.Users.Include(u => u.Roles).SingleAsync(u => u.Email == email);
 
         var tokens = await _userTokenGenerator.GenerateTokens(user.ToUserClaimsDto(user.Roles));
 

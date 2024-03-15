@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TimLearning.Application.Data.ValueObjects;
-using TimLearning.Application.Specifications.Dynamic.Users;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Shared.Validation.Exceptions.Localized;
 using TimLearning.Shared.Validation.Validators;
@@ -21,7 +20,7 @@ public class UserEmailValidator : IAsyncSimpleValidator<UserEmailValueObject>
         CancellationToken ct = default
     )
     {
-        if (await _db.Users.AnyAsync(new UserByEmailSpecification(entity.Value), ct) == false)
+        if (await _db.Users.AnyAsync(u => u.Email == entity.Value, ct) == false)
         {
             LocalizedValidationException.ThrowWithSimpleTextError(
                 "Пользователь с такой почтой не найден."

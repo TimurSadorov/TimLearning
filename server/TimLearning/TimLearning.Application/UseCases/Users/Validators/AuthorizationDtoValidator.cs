@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using TimLearning.Application.Services.UserServices;
-using TimLearning.Application.Specifications.Dynamic.Users;
 using TimLearning.Application.UseCases.Users.Dto;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Shared.Validation.Exceptions.Localized;
@@ -23,7 +22,7 @@ public class AuthorizationDtoValidator : IAsyncSimpleValidator<AuthorizationDto>
     public async Task ValidateAndThrowAsync(AuthorizationDto entity, CancellationToken ct = default)
     {
         var user = await _db.Users
-            .Where(new UserByEmailSpecification(entity.Email))
+            .Where(u => u.Email == entity.Email)
             .Select(u => new { u.PasswordHash, u.PasswordSalt })
             .SingleOrDefaultAsync(ct);
 

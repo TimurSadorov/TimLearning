@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TimLearning.Application.Specifications.Dynamic.Users;
 using TimLearning.Application.UseCases.Users.Dto;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Shared.Validation.Validators;
@@ -30,7 +29,7 @@ public class ConfirmUserEmailCommandHandler : IRequestHandler<ConfirmUserEmailCo
         );
 
         await _db.Users
-            .Where(new UserByEmailSpecification(confirmation.Email))
+            .Where(u => u.Email == confirmation.Email)
             .ExecuteUpdateAsync(
                 setter => setter.SetProperty(user => user.IsEmailConfirmed, true),
                 cancellationToken

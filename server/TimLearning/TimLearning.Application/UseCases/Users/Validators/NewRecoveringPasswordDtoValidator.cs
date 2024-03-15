@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using TimLearning.Application.Data.ValueObjects;
 using TimLearning.Application.Services.UserServices;
-using TimLearning.Application.Specifications.Dynamic.Users;
 using TimLearning.Application.UseCases.Users.Dto;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Shared.Validation.Exceptions.Localized;
@@ -46,7 +45,7 @@ public class NewRecoveringPasswordDtoValidator
     )
     {
         var user = await _db.Users
-            .Where(new UserByEmailSpecification(entity.UserEmail))
+            .Where(u => u.Email == entity.UserEmail)
             .Select(u => new { u.PasswordHash })
             .SingleOrDefaultAsync(ct);
         if (user is null)

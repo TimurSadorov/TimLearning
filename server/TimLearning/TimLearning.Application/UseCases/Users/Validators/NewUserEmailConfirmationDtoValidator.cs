@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TimLearning.Application.Specifications.Dynamic.Users;
 using TimLearning.Application.UseCases.Users.Dto;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Shared.Validation.Exceptions.Localized;
@@ -23,7 +22,7 @@ public class NewUserEmailConfirmationDtoValidator
     )
     {
         var user = await _dbContext.Users
-            .Where(new UserByEmailSpecification(entity.UserEmail))
+            .Where(u => u.Email == entity.UserEmail)
             .Select(u => new { u.IsEmailConfirmed })
             .SingleOrDefaultAsync(ct);
 

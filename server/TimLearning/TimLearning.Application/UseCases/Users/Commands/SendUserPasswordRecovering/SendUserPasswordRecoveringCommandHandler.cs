@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using TimLearning.Application.Data.ValueObjects;
 using TimLearning.Application.Services.UserServices;
-using TimLearning.Application.Specifications.Dynamic.Users;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Infrastructure.Interfaces.Factories.Link;
 using TimLearning.Infrastructure.Interfaces.Providers.Clock;
@@ -53,7 +52,7 @@ public class SendUserPasswordRecoveringCommandHandler
         );
 
         var userPasswordHash = await _db.Users
-            .Where(new UserByEmailSpecification(userEmail))
+            .Where(u => u.Email == userEmail)
             .Select(u => u.PasswordHash)
             .SingleAsync(cancellationToken);
 
