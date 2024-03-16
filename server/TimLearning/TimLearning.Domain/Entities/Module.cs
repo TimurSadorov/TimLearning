@@ -8,9 +8,12 @@ public class Module : IIdHolder<Guid>
 
     public required string Name { get; init; }
 
+    public required int? Order { get; set; }
+
     public required Guid CourseId { get; init; }
     public Course Course { get; init; } = null!;
 
-    public Guid? NextModuleId { get; set; }
-    public Module? NextModule { get; set; }
+    public required bool IsDraft { get; set; }
+
+    public required bool IsDeleted { get; set; }
 }

@@ -5,11 +5,10 @@ using TimLearning.Application.Data.ValueObjects;
 using TimLearning.Application.Mediator.Pipelines.RoleAccess;
 using TimLearning.Application.Services.UserServices;
 using TimLearning.Application.ToDoServices;
-using TimLearning.Application.UseCases.Modules.Commands.Dto;
-using TimLearning.Application.UseCases.Modules.Commands.Validators;
 using TimLearning.Application.UseCases.Users.Commands.RegisterUser;
 using TimLearning.Application.UseCases.Users.Dto;
 using TimLearning.Application.UseCases.Users.Validators;
+using TimLearning.Application.Validators.Course;
 using TimLearning.Application.Validators.Users;
 using TimLearning.Shared.Configuration.Extensions;
 using TimLearning.Shared.Services.Encryptors.DataEncryptor;
@@ -74,6 +73,6 @@ public static class ApplicationServicesConfigurations
             NewRecoveringPasswordDtoValidator
         >();
 
-        services.AddScoped<IAsyncSimpleValidator<NewModuleDto>, NewModuleDtoValidator>();
+        services.AddScoped<IAsyncSimpleValidator<CourseIdValueObject>, CourseIdValidator>();
     }
 }

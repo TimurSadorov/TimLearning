@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TimLearning.Application.UseCases.Modules.Commands.Dto;
+using TimLearning.Application.Data.ValueObjects;
 using TimLearning.Domain.Entities;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Shared.Validation.Validators;
@@ -9,11 +9,11 @@ namespace TimLearning.Application.UseCases.Modules.Commands.CreateModule;
 
 public class CreateModuleCommandHandler : IRequestHandler<CreateModuleCommand>
 {
-    private readonly IAsyncSimpleValidator<NewModuleDto> _validator;
+    private readonly IAsyncSimpleValidator<CourseIdValueObject> _validator;
     private readonly IAppDbContext _dbContext;
 
     public CreateModuleCommandHandler(
-        IAsyncSimpleValidator<NewModuleDto> validator,
+        IAsyncSimpleValidator<CourseIdValueObject> validator,
         IAppDbContext dbContext
     )
     {
@@ -24,18 +24,25 @@ public class CreateModuleCommandHandler : IRequestHandler<CreateModuleCommand>
     public async Task Handle(CreateModuleCommand request, CancellationToken cancellationToken)
     {
         var dto = request.Dto;
-        await _validator.ValidateAndThrowAsync(dto, cancellationToken);
+        await _validator.ValidateAndThrowAsync(
+            new CourseIdValueObject(dto.CourseId),
+            cancellationToken
+        );
 
-        var newModule = new Module { Name = dto.Name, CourseId = dto.CourseId };
-        _dbContext.Add(newModule);
-
-        var lastModule = await _dbContext.Modules
-            .Where(m => m.CourseId == dto.CourseId && m.NextModule == null)
-            .SingleOrDefaultAsync(cancellationToken);
-        if (lastModule is not null)
+        var lastOrder = await _dbContext.Modules
+            .Where(m => m.CourseId == dto.CourseId)
+            .OrderByDescending(m => m.Order ?? 0)
+            .Select(m => m.Order)
+            .FirstOrDefaultAsync(cancellationToken);
+        var newModule = new Module
         {
-            lastModule.NextModule = newModule;
-        }
+            Name = dto.Name,
+            CourseId = dto.CourseId,
+            Order = lastOrder + 1 ?? 1,
+            IsDeleted = false,
+            IsDraft = true
+        };
+        _dbContext.Add(newModule);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
     }

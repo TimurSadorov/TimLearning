@@ -17,34 +17,28 @@ namespace TimLearning.Infrastructure.Implementation.Db.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
+                    Order = table.Column<int>(type: "integer", nullable: true),
                     CourseId = table.Column<Guid>(type: "uuid", nullable: false),
-                    NextModuleId = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsDraft = table.Column<bool>(type: "boolean", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Modules", x => x.Id);
+                    table.CheckConstraint("CK_Modules_NotNegativeOrder", "\"Order\" > 0");
+                    table.CheckConstraint("CK_Modules_OrderHasValue", "(\"IsDeleted\" = false and \"Order\" is not null) or (\"IsDeleted\" = true and \"Order\" is null)");
                     table.ForeignKey(
                         name: "FK_Modules_Courses_CourseId",
                         column: x => x.CourseId,
                         principalTable: "Courses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Modules_Modules_NextModuleId",
-                        column: x => x.NextModuleId,
-                        principalTable: "Modules",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Modules_CourseId",
+                name: "IX_Modules_CourseId_Order",
                 table: "Modules",
-                column: "CourseId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Modules_NextModuleId",
-                table: "Modules",
-                column: "NextModuleId",
+                columns: new[] { "CourseId", "Order" },
                 unique: true);
         }
 

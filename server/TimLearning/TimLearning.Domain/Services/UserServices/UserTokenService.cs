@@ -8,7 +8,7 @@ namespace TimLearning.Domain.Services.UserServices;
 
 public class UserTokenService : IUserTokenService
 {
-    private static readonly TimeSpan JwtTokenLifetime = TimeSpan.FromMinutes(5);
+    private static readonly TimeSpan JwtTokenLifetime = TimeSpan.FromDays(1);
     private static readonly TimeSpan RefreshTokenLifetime = TimeSpan.FromDays(30);
 
     private readonly ITokenGenerator _tokenGenerator;

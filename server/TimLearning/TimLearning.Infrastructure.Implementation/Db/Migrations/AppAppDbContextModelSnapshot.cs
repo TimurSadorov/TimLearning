@@ -60,21 +60,30 @@ namespace TimLearning.Infrastructure.Implementation.Db.Migrations
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDraft")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("NextModuleId")
-                        .HasColumnType("uuid");
+                    b.Property<int?>("Order")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("NextModuleId")
+                    b.HasIndex("CourseId", "Order")
                         .IsUnique();
 
-                    b.ToTable("Modules");
+                    b.ToTable("Modules", t =>
+                        {
+                            t.HasCheckConstraint("CK_Modules_NotNegativeOrder", "\"Order\" > 0");
+
+                            t.HasCheckConstraint("CK_Modules_OrderHasValue", "(\"IsDeleted\" = false and \"Order\" is not null) or (\"IsDeleted\" = true and \"Order\" is null)");
+                        });
                 });
 
             modelBuilder.Entity("TimLearning.Domain.Entities.User", b =>
@@ -135,13 +144,7 @@ namespace TimLearning.Infrastructure.Implementation.Db.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TimLearning.Domain.Entities.Module", "NextModule")
-                        .WithMany()
-                        .HasForeignKey("NextModuleId");
-
                     b.Navigation("Course");
-
-                    b.Navigation("NextModule");
                 });
 
             modelBuilder.Entity("TimLearning.Domain.Entities.UserRole", b =>

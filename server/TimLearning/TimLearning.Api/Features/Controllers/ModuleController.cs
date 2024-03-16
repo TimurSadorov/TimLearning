@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TimLearning.Api.Consts;
 using TimLearning.Api.Requests.Module;
+using TimLearning.Api.Responses.Module;
 using TimLearning.Application.UseCases.Modules.Commands.CreateModule;
-using TimLearning.Application.UseCases.Modules.Commands.Dto;
+using TimLearning.Application.UseCases.Modules.Dto;
+using TimLearning.Application.UseCases.Modules.Queries.FindOrderedModules;
 
 namespace TimLearning.Api.Features.Controllers;
 
@@ -19,6 +21,24 @@ public class ModuleController : SiteApiController
     public ModuleController(IMediator mediator)
     {
         _mediator = mediator;
+    }
+
+    [HttpPost("find")]
+    public async Task<List<FindOrderedModulesResponse>> FindOrderedModules(
+        [FromRoute] Guid courseId,
+        [Required] FindOrderedModulesRequest request
+    )
+    {
+        var modules = await _mediator.Send(
+            new FindOrderedModulesQuery(
+                new ModulesFindDto(courseId, request.IsDeleted, request.IsDraft),
+                UserId
+            )
+        );
+
+        return modules
+            .Select(m => new FindOrderedModulesResponse(m.Id, m.Name, m.IsDraft, m.IsDeleted))
+            .ToList();
     }
 
     [HttpPost]

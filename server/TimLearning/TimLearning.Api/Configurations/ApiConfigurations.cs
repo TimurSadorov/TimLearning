@@ -29,6 +29,7 @@ public static class ApiConfigurations
             {
                 options.Filters.Add<LocalizedValidationExceptionFilter>();
                 options.Filters.Add<AccessExceptionFilter>();
+                options.Filters.Add<NotFoundExceptionFilter>();
             })
             .AddApplicationPart(typeof(UserAccountController).Assembly);
 
