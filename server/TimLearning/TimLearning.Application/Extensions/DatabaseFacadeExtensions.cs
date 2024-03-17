@@ -12,8 +12,8 @@ public static class DatabaseFacadeExtensions
     public static async Task ExecuteInTransaction(
         this DatabaseFacade database,
         Func<Task> operation,
-        IsolationLevel isolationLevel = DefaultIsolationLevel,
-        CancellationToken cancellationToken = default
+        CancellationToken cancellationToken = default,
+        IsolationLevel isolationLevel = DefaultIsolationLevel
     )
     {
         await database.ExecuteInTransaction(
@@ -22,16 +22,16 @@ public static class DatabaseFacadeExtensions
                 await operation();
                 return 0;
             },
-            isolationLevel,
-            cancellationToken
+            cancellationToken,
+            isolationLevel
         );
     }
 
     public static async Task<TResult> ExecuteInTransaction<TResult>(
         this DatabaseFacade database,
         Func<Task<TResult>> operation,
-        IsolationLevel isolationLevel = DefaultIsolationLevel,
-        CancellationToken cancellationToken = default
+        CancellationToken cancellationToken = default,
+        IsolationLevel isolationLevel = DefaultIsolationLevel
     )
     {
         var currentTransaction = database.CurrentTransaction;

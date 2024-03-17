@@ -6,13 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using TimLearning.Api.Consts;
 using TimLearning.Api.Requests.Module;
 using TimLearning.Api.Responses.Module;
+using TimLearning.Application.UseCases.Modules.Commands.ChangeOrderModule;
 using TimLearning.Application.UseCases.Modules.Commands.CreateModule;
 using TimLearning.Application.UseCases.Modules.Dto;
 using TimLearning.Application.UseCases.Modules.Queries.FindOrderedModules;
 
 namespace TimLearning.Api.Features.Controllers;
 
-[Route($"{ApiRoute.Prefix}/courses/{{courseId:guid}}/modules")]
+[Route($"{ApiRoute.Prefix}")]
 [Authorize]
 public class ModuleController : SiteApiController
 {
@@ -23,7 +24,7 @@ public class ModuleController : SiteApiController
         _mediator = mediator;
     }
 
-    [HttpPost("find")]
+    [HttpPost("courses/{courseId:guid}/modules/find")]
     public async Task<List<FindOrderedModulesResponse>> FindOrderedModules(
         [FromRoute] Guid courseId,
         [Required] FindOrderedModulesRequest request
@@ -41,12 +42,27 @@ public class ModuleController : SiteApiController
             .ToList();
     }
 
-    [HttpPost]
+    [HttpPost("courses/{courseId:guid}/modules")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public Task CreateModule([FromRoute] Guid courseId, [Required] CreateModuleRequest request)
     {
         return _mediator.Send(
             new CreateModuleCommand(new NewModuleDto(request.Name, courseId), UserId)
+        );
+    }
+
+    [HttpPut("modules/{moduleId:guid}/order")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public Task ChangeModuleOrder(
+        [FromRoute] Guid moduleId,
+        [Required] ChangeModuleOrderRequest request
+    )
+    {
+        return _mediator.Send(
+            new ChangeModuleOrderCommand(
+                new ModuleOrderChangingDto(moduleId, request.Order),
+                UserId
+            )
         );
     }
 }

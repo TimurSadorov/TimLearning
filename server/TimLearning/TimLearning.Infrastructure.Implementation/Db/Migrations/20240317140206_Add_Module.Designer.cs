@@ -12,7 +12,7 @@ using TimLearning.Infrastructure.Implementation.Db;
 namespace TimLearning.Infrastructure.Implementation.Db.Migrations
 {
     [DbContext(typeof(AppAppDbContext))]
-    [Migration("20240316225131_Add_Module")]
+    [Migration("20240317140206_Add_Module")]
     partial class Add_Module
     {
         /// <inheritdoc />

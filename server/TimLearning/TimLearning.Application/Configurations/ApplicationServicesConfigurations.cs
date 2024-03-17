@@ -5,6 +5,8 @@ using TimLearning.Application.Data.ValueObjects;
 using TimLearning.Application.Mediator.Pipelines.RoleAccess;
 using TimLearning.Application.Services.UserServices;
 using TimLearning.Application.ToDoServices;
+using TimLearning.Application.UseCases.Modules.Dto;
+using TimLearning.Application.UseCases.Modules.Validators;
 using TimLearning.Application.UseCases.Users.Commands.RegisterUser;
 using TimLearning.Application.UseCases.Users.Dto;
 using TimLearning.Application.UseCases.Users.Validators;
@@ -74,5 +76,10 @@ public static class ApplicationServicesConfigurations
         >();
 
         services.AddScoped<IAsyncSimpleValidator<CourseIdValueObject>, CourseIdValidator>();
+
+        services.AddScoped<
+            IAsyncSimpleValidator<ModuleOrderChangingDto>,
+            ModuleOrderChangingDtoValidator
+        >();
     }
 }

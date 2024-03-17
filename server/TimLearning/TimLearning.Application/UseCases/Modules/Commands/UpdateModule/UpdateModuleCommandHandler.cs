@@ -51,17 +51,7 @@ public class UpdateModuleCommandHandler : IRequestHandler<UpdateModuleCommand>
         }
         if (dto.Order is not null && dto.Order != module.Order)
         {
-            var maxOrder = Math.Max(dto.Order.Value, module.Order!.Value);
-            var minOrder = Math.Min(dto.Order.Value, module.Order!.Value);
-            var increment = module.Order < dto.Order ? -1 : 1;
-            await _dbContext
-                .Modules.Where(m => minOrder <= m.Order && m.Order <= maxOrder)
-                .ExecuteUpdateAsync(
-                    setter => setter.SetProperty(m => m.Order, m => m.Order + increment),
-                    cancellationToken
-                );
-
-            module.Order = dto.Order;
+            
         }
     }
 }
