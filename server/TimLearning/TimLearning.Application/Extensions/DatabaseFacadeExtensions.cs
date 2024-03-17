@@ -9,14 +9,14 @@ public static class DatabaseFacadeExtensions
 {
     private const IsolationLevel DefaultIsolationLevel = IsolationLevel.ReadCommitted;
 
-    public static async Task ExecuteInTransaction(
+    public static Task ExecuteInTransactionAsync(
         this DatabaseFacade database,
         Func<Task> operation,
         CancellationToken cancellationToken = default,
         IsolationLevel isolationLevel = DefaultIsolationLevel
     )
     {
-        await database.ExecuteInTransaction(
+        return database.ExecuteInTransactionAsync(
             async () =>
             {
                 await operation();
@@ -27,7 +27,7 @@ public static class DatabaseFacadeExtensions
         );
     }
 
-    public static async Task<TResult> ExecuteInTransaction<TResult>(
+    public static Task<TResult> ExecuteInTransactionAsync<TResult>(
         this DatabaseFacade database,
         Func<Task<TResult>> operation,
         CancellationToken cancellationToken = default,
@@ -44,27 +44,30 @@ public static class DatabaseFacadeExtensions
                 );
             }
 
-            return await operation();
+            return operation();
         }
 
         var executionStrategy = database.CreateExecutionStrategy();
-        return await executionStrategy.ExecuteAsync(async () =>
+        return executionStrategy.ExecuteAsync(async () =>
         {
             await using var transaction = await database.BeginTransactionAsync(
                 isolationLevel,
                 cancellationToken
             );
+
+            TResult? result;
             try
             {
-                var result = await operation();
-                await transaction.CommitAsync(cancellationToken);
-                return result;
+                result = await operation();
             }
             catch
             {
                 await transaction.RollbackAsync(cancellationToken);
                 throw;
             }
+
+            await transaction.CommitAsync(cancellationToken);
+            return result;
         });
     }
 }

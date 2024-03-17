@@ -26,7 +26,7 @@ public class ChangeModuleOrderCommandHandler : IRequestHandler<ChangeModuleOrder
         var dto = request.Dto;
         await _validator.ValidateAndThrowAsync(dto, cancellationToken);
 
-        await _dbContext.Database.ExecuteInTransaction(
+        await _dbContext.Database.ExecuteInTransactionAsync(
             async () =>
             {
                 var module = await _dbContext.Modules.FirstAsync(
@@ -51,7 +51,7 @@ public class ChangeModuleOrderCommandHandler : IRequestHandler<ChangeModuleOrder
                         cancellationToken
                     );
 
-                module.Order = dto.Order;
+                module.SetOrder(newOrder);
                 await _dbContext.SaveChangesAsync(cancellationToken);
             },
             cancellationToken

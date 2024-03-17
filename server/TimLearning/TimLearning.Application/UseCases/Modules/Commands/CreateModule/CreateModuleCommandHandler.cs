@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using TimLearning.Application.Data.ValueObjects;
+using TimLearning.Application.Services.ModuleServices;
 using TimLearning.Domain.Entities;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Shared.Validation.Validators;
@@ -11,14 +11,17 @@ public class CreateModuleCommandHandler : IRequestHandler<CreateModuleCommand>
 {
     private readonly IAsyncSimpleValidator<CourseIdValueObject> _validator;
     private readonly IAppDbContext _dbContext;
+    private readonly IModuleOrderService _moduleOrderService;
 
     public CreateModuleCommandHandler(
         IAsyncSimpleValidator<CourseIdValueObject> validator,
-        IAppDbContext dbContext
+        IAppDbContext dbContext,
+        IModuleOrderService moduleOrderService
     )
     {
         _validator = validator;
         _dbContext = dbContext;
+        _moduleOrderService = moduleOrderService;
     }
 
     public async Task Handle(CreateModuleCommand request, CancellationToken cancellationToken)
@@ -29,17 +32,14 @@ public class CreateModuleCommandHandler : IRequestHandler<CreateModuleCommand>
             cancellationToken
         );
 
-        var lastOrder = await _dbContext.Modules
-            .Where(m => m.CourseId == dto.CourseId)
-            .OrderByDescending(m => m.Order ?? 0)
-            .Select(m => m.Order)
-            .FirstOrDefaultAsync(cancellationToken);
-        var newModule = new Module
+        var lastOrder = await _moduleOrderService.GetLastOrderAsync(
+            dto.CourseId,
+            cancellationToken
+        );
+        var newModule = new Module(lastOrder + 1 ?? 1)
         {
             Name = dto.Name,
             CourseId = dto.CourseId,
-            Order = lastOrder + 1 ?? 1,
-            IsDeleted = false,
             IsDraft = true
         };
         _dbContext.Add(newModule);

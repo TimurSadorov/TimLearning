@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TimLearning.Application.Data.ValueObjects;
 using TimLearning.Application.Mediator.Pipelines.RoleAccess;
+using TimLearning.Application.Services.ModuleServices;
 using TimLearning.Application.Services.UserServices;
 using TimLearning.Application.ToDoServices;
 using TimLearning.Application.UseCases.Modules.Dto;
@@ -43,6 +44,8 @@ public static class ApplicationServicesConfigurations
         services.AddSingleton<IUserDataEncryptor, UserDataEncryptor>();
         services.AddScoped<IUserTokenUpdater, UserTokenUpdater>();
         services.AddSingleton<IUserEmailProvider, UserEmailProvider>();
+
+        services.AddScoped<IModuleOrderService, ModuleOrderService>();
 
         services.AddToDoServices();
     }

@@ -8,6 +8,9 @@ using TimLearning.Api.Requests.Module;
 using TimLearning.Api.Responses.Module;
 using TimLearning.Application.UseCases.Modules.Commands.ChangeOrderModule;
 using TimLearning.Application.UseCases.Modules.Commands.CreateModule;
+using TimLearning.Application.UseCases.Modules.Commands.DeleteModule;
+using TimLearning.Application.UseCases.Modules.Commands.RestoreModule;
+using TimLearning.Application.UseCases.Modules.Commands.UpdateModule;
 using TimLearning.Application.UseCases.Modules.Dto;
 using TimLearning.Application.UseCases.Modules.Queries.FindOrderedModules;
 
@@ -51,7 +54,19 @@ public class ModuleController : SiteApiController
         );
     }
 
-    [HttpPut("modules/{moduleId:guid}/order")]
+    [HttpPatch("modules/{moduleId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public Task UpdateModule([FromRoute] Guid moduleId, [Required] UpdateModuleRequest request)
+    {
+        return _mediator.Send(
+            new UpdateModuleCommand(
+                new UpdatedModuleDto(moduleId, request.Name, request.IsDraft),
+                UserId
+            )
+        );
+    }
+
+    [HttpPatch("modules/{moduleId:guid}/order")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public Task ChangeModuleOrder(
         [FromRoute] Guid moduleId,
@@ -64,5 +79,19 @@ public class ModuleController : SiteApiController
                 UserId
             )
         );
+    }
+
+    [HttpPatch("modules/{moduleId:guid}/delete")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public Task DeleteModule([FromRoute] Guid moduleId)
+    {
+        return _mediator.Send(new DeleteModuleCommand(moduleId, UserId));
+    }
+
+    [HttpPatch("modules/{moduleId:guid}/restore")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public Task RestoreModule([FromRoute] Guid moduleId)
+    {
+        return _mediator.Send(new RestoreModuleCommand(moduleId, UserId));
     }
 }

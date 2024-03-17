@@ -2,7 +2,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TimLearning.Domain.Exceptions;
 using TimLearning.Infrastructure.Interfaces.Db;
-using TimLearning.Shared.Validation.Exceptions.Localized;
 
 namespace TimLearning.Application.UseCases.Modules.Commands.UpdateModule;
 
@@ -27,20 +26,6 @@ public class UpdateModuleCommandHandler : IRequestHandler<UpdateModuleCommand>
             throw new NotFoundException();
         }
 
-        if (dto.Order is not null && dto.Order <= 0)
-        {
-            LocalizedValidationException.ThrowSimpleTextError(
-                "Значение порядка модуля должен быть больше нуля."
-            );
-        }
-        var deleted = dto.IsDeleted ?? module.IsDeleted;
-        if (dto.Order is not null && deleted)
-        {
-            LocalizedValidationException.ThrowSimpleTextError(
-                "Невозможно сменить порядок модуля, который удален."
-            );
-        }
-
         if (dto.Name is not null)
         {
             module.Name = dto.Name;
@@ -49,9 +34,7 @@ public class UpdateModuleCommandHandler : IRequestHandler<UpdateModuleCommand>
         {
             module.IsDraft = dto.IsDraft.Value;
         }
-        if (dto.Order is not null && dto.Order != module.Order)
-        {
-            
-        }
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }
