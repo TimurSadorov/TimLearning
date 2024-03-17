@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TimLearning.Domain.Exceptions;
 using TimLearning.Infrastructure.Interfaces.Db;
-using TimLearning.Shared.Validation.Exceptions.Localized;
 
 namespace TimLearning.Application.UseCases.Courses.Commands.UpdateCourse;
 
@@ -23,7 +23,7 @@ public class UpdateCourseCommandHandler : IRequestHandler<UpdateCourseCommand>
         );
         if (course is null)
         {
-            LocalizedValidationException.ThrowNotFoundTextError();
+            throw new NotFoundException();
         }
 
         if (dto.Name is not null)

@@ -6,7 +6,7 @@ public class Module : IIdHolder<Guid>
 {
     public Guid Id { get; init; }
 
-    public required string Name { get; init; }
+    public required string Name { get; set; }
 
     public required int? Order { get; set; }
 

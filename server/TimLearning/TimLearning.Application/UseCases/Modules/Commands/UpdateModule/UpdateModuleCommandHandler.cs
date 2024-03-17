@@ -1,0 +1,67 @@
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using TimLearning.Domain.Exceptions;
+using TimLearning.Infrastructure.Interfaces.Db;
+using TimLearning.Shared.Validation.Exceptions.Localized;
+
+namespace TimLearning.Application.UseCases.Modules.Commands.UpdateModule;
+
+public class UpdateModuleCommandHandler : IRequestHandler<UpdateModuleCommand>
+{
+    private readonly IAppDbContext _dbContext;
+
+    public UpdateModuleCommandHandler(IAppDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
+    public async Task Handle(UpdateModuleCommand request, CancellationToken cancellationToken)
+    {
+        var dto = request.Dto;
+        var module = await _dbContext.Modules.FirstOrDefaultAsync(
+            m => m.Id == dto.Id,
+            cancellationToken
+        );
+        if (module is null)
+        {
+            throw new NotFoundException();
+        }
+
+        if (dto.Order is not null && dto.Order <= 0)
+        {
+            LocalizedValidationException.ThrowSimpleTextError(
+                "Значение порядка модуля должен быть больше нуля."
+            );
+        }
+        var deleted = dto.IsDeleted ?? module.IsDeleted;
+        if (dto.Order is not null && deleted)
+        {
+            LocalizedValidationException.ThrowSimpleTextError(
+                "Невозможно сменить порядок модуля, который удален."
+            );
+        }
+
+        if (dto.Name is not null)
+        {
+            module.Name = dto.Name;
+        }
+        if (dto.IsDraft is not null)
+        {
+            module.IsDraft = dto.IsDraft.Value;
+        }
+        if (dto.Order is not null && dto.Order != module.Order)
+        {
+            var maxOrder = Math.Max(dto.Order.Value, module.Order!.Value);
+            var minOrder = Math.Min(dto.Order.Value, module.Order!.Value);
+            var increment = module.Order < dto.Order ? -1 : 1;
+            await _dbContext
+                .Modules.Where(m => minOrder <= m.Order && m.Order <= maxOrder)
+                .ExecuteUpdateAsync(
+                    setter => setter.SetProperty(m => m.Order, m => m.Order + increment),
+                    cancellationToken
+                );
+
+            module.Order = dto.Order;
+        }
+    }
+}

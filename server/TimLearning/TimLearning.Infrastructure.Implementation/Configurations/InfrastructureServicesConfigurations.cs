@@ -38,7 +38,10 @@ public static class InfrastructureServicesConfigurations
     {
         services.AddDbContext<IAppDbContext, AppAppDbContext>(builder =>
         {
-            builder.UseNpgsql(config.GetRequiredStringValue("DbConnectionStrings:Postgres"));
+            builder.UseNpgsql(
+                config.GetRequiredStringValue("DbConnectionStrings:Postgres"),
+                psqlOptions => psqlOptions.EnableRetryOnFailure()
+            );
         });
     }
 
