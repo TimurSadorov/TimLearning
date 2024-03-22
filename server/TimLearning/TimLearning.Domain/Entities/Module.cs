@@ -34,6 +34,7 @@ public class Module : IIdHolder<Guid>
     {
         IsDeleted = false;
         Order = order;
+        IsDraft = true;
     }
 
     public void SetOrder(int order)
