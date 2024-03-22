@@ -3,8 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type GetAllCoursesResponse = {
-    id: string;
-    name: string;
-    description: string;
+export type UpdateModuleRequest = {
+    name?: string | null;
+    isDraft?: boolean | null;
 };

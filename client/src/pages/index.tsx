@@ -8,13 +8,14 @@ import { PasswordChngingPage, PasswordRecoveryPage } from './passwordRecovery';
 import { EmailConfirmationPage } from './emailConfirmation';
 import { EditableCourses, UserCoursesPage } from './course/ui';
 import { TemplateWidget } from '@widgets';
+import { EditableLeasons } from './lesson/ui';
 
 const routes = Config.routes;
 
 export const Routing = () => {
     const { isLoging } = UserFeature.Auth.Model.useUser();
     if (!isLoging) {
-        return <SharedUI.PageLoader />;
+        return <SharedUI.Loader />;
     }
 
     return (
@@ -44,6 +45,7 @@ export const Routing = () => {
                 }
             >
                 <Route path={routes.editableCourses.path} element={<EditableCourses />} />
+                <Route path={routes.editableModules.path} element={<EditableLeasons />} />
             </Route>
             <Route element={<TemplateWidget.UI.Header />}>
                 <Route path="*" element={<Navigate to={routes.root.path} />} />

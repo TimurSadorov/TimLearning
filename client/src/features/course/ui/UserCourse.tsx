@@ -1,3 +1,4 @@
+import { Card } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -8,34 +9,12 @@ interface UserCourseProps {
 
 export const UserCourse = ({ name, description }: UserCourseProps) => {
     return (
-        <CourseBlock>
-            <CourseName>{name}</CourseName>
-            <CourseDescription>
-                <DescriptionWord>Описание: </DescriptionWord>
-                {description}
-            </CourseDescription>
-        </CourseBlock>
+        <Card title={name} hoverable>
+            <CourseDescription>{description}</CourseDescription>
+        </Card>
     );
 };
 
-const CourseBlock = styled.div`
-    border: solid 1px;
-    border-radius: 10px;
-    padding: 10px 15px;
-    display: flex;
-    flex-direction: column;
-`;
-
-const CourseName = styled.div`
-    font-size: 1.4em;
-    font-weight: 600;
-`;
-
-const DescriptionWord = styled.span`
-    font-weight: 600;
-`;
-
-const CourseDescription = styled.header`
+const CourseDescription = styled.div`
     font-size: 1em;
-    margin-top: 10px;
 `;

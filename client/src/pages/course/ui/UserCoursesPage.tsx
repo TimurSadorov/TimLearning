@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { CourseEntity, UserEntity } from '@entities';
 import { CourseFeature } from '@features';
-import { PageLoader } from 'shared/ui';
+import { Loader } from 'shared/ui';
 import styled from 'styled-components';
 import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -14,24 +14,39 @@ export const UserCoursesPage = () => {
 
     const toEditableCourses = useCallback(() => navigate(Config.routes.editableCourses.path), [navigate]);
 
-    if (isLoading) {
-        return <PageLoader />;
-    }
-
     return (
         <CoursesPage>
             <CoursesHeaderBlock>
                 <CoursesHeader>Курсы</CoursesHeader>
                 {isInRole('ContentCreator') ? <Button onClick={toEditableCourses}>Режим редактирования</Button> : <></>}
             </CoursesHeaderBlock>
-            <CoursesContainer>
-                {userCourses.map((course) => (
-                    <CourseFeature.UI.UserCourse key={course.id} name={course.name} description={course.description} />
-                ))}
-            </CoursesContainer>
+            {isLoading ? (
+                <LoaderCourses />
+            ) : (
+                <CoursesContainer>
+                    {userCourses.map((course) => (
+                        <CourseFeature.UI.UserCourse
+                            key={course.id}
+                            name={course.name}
+                            description={course.description}
+                        />
+                    ))}
+                </CoursesContainer>
+            )}
         </CoursesPage>
     );
 };
+
+const CoursesPage = styled.div`
+    padding: 10px 30px;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 71px);
+`;
+
+const LoaderCourses = styled(Loader)`
+    flex: 1;
+`;
 
 const CoursesHeaderBlock = styled.div`
     display: flex;
@@ -40,13 +55,9 @@ const CoursesHeaderBlock = styled.div`
 `;
 
 const CoursesHeader = styled.div`
-    font-size: 1.8em;
-`;
-
-const CoursesPage = styled.div`
-    padding: 10px 20px;
-    display: flex;
-    flex-direction: column;
+    font-size: 1.7em;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.85);
 `;
 
 const CoursesContainer = styled.div`

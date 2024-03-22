@@ -1,10 +1,15 @@
 import { sample } from 'effector';
-import { EditableCoursesGate, UserCoursesGate } from './model';
-import { createCourseFx, findCoursesFx, getAllCoursesFx, updateCourseFx } from './effects';
+import { EditableCoursesGate, UserCourseGate, UserCoursesGate } from './model';
+import { createCourseFx, findCoursesFx, getAllUserCoursesFx, getUserCourseFx, updateCourseFx } from './effects';
 
 sample({
     clock: UserCoursesGate.open,
-    target: getAllCoursesFx,
+    target: getAllUserCoursesFx,
+});
+
+sample({
+    clock: UserCourseGate.open,
+    target: getUserCourseFx,
 });
 
 sample({

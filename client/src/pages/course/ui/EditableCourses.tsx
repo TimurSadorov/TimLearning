@@ -1,6 +1,6 @@
 import React from 'react';
 import { CourseFeature } from '@features';
-import { PageLoader } from 'shared/ui';
+import { Loader } from 'shared/ui';
 import styled from 'styled-components';
 import { Button, Checkbox, Input } from 'antd';
 import { CourseWidget } from '@widgets';
@@ -22,10 +22,6 @@ export const EditableCourses = () => {
 
     const navigate = useNavigate();
 
-    if (isLoading) {
-        return <PageLoader />;
-    }
-
     return (
         <CoursesPage>
             <CoursesHeaderBlock>
@@ -34,7 +30,6 @@ export const EditableCourses = () => {
                         placeholder="Поиск"
                         onChange={(e) => onChangeSearchName(e.target.value)}
                         value={searchName}
-                        autoFocus
                     />
                     <FilterCheckbox
                         onChange={(e) => onChangeIsDraft(e.target.checked)}
@@ -52,11 +47,15 @@ export const EditableCourses = () => {
                     <ExitButton onClick={() => navigate(Config.routes.root.path)}>Пользовательский режим</ExitButton>
                 </Buttons>
             </CoursesHeaderBlock>
-            <CoursesContainer>
-                {editableCourses.map((course) => (
-                    <CourseWidget.UI.EditableCours key={course.id} course={course} />
-                ))}
-            </CoursesContainer>
+            {isLoading ? (
+                <LoaderCourses />
+            ) : (
+                <CoursesContainer>
+                    {editableCourses.map((course) => (
+                        <CourseWidget.UI.EditableCours key={course.id} course={course} />
+                    ))}
+                </CoursesContainer>
+            )}
         </CoursesPage>
     );
 };
@@ -65,7 +64,13 @@ const CoursesPage = styled.div`
     padding: 10px 30px;
     display: flex;
     flex-direction: column;
+    min-height: calc(100vh - 71px);
 `;
+
+const LoaderCourses = styled(Loader)`
+    flex: 1;
+`;
+
 const CoursesHeaderBlock = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);

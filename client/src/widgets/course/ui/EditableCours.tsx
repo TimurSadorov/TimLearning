@@ -1,77 +1,54 @@
+import { ArrowRightOutlined } from '@ant-design/icons';
 import { CourseEntity } from '@entities';
 import { CourseFeature } from '@features';
+import { Config } from '@shared';
+import { Button, Card, Descriptions, Tooltip } from 'antd';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 type Props = { course: CourseEntity.Type.EditableCours };
 
 export const EditableCours = ({ course }: Props) => {
+    const navigate = useNavigate();
     return (
-        <CourseBlock>
-            <PropertyWithBittons>
-                <CoursePropertyBlock>
-                    <CoursePropertyName>Название:</CoursePropertyName>
-                    <div>{course.name}</div>
-                </CoursePropertyBlock>
-                <Buttons>
-                    <CourseFeature.UI.UpdateCourseButton course={course} />
-                    {course.isDraft ? (
-                        <CourseFeature.UI.PublishCourseButton courseId={course.id} />
-                    ) : (
-                        <CourseFeature.UI.DraftCourseButton courseId={course.id} />
-                    )}
-                    {course.isDeleted ? (
-                        <CourseFeature.UI.RecoverCourseButton courseId={course.id} />
-                    ) : (
-                        <CourseFeature.UI.DeleteCourseButton courseId={course.id} />
-                    )}
-                </Buttons>
-            </PropertyWithBittons>
-            <CoursePropertyBlock>
-                <CoursePropertyName>Короткое название:</CoursePropertyName>
-                <div>{course.shortName}</div>
-            </CoursePropertyBlock>
-            <CoursePropertyBlock>
-                <CoursePropertyName>Описание:</CoursePropertyName>
-                <div>{course.description}</div>
-            </CoursePropertyBlock>
-            <CoursePropertyBlock>
-                <CoursePropertyName>Черновик:</CoursePropertyName>
-                <div>{course.isDraft ? 'Да' : 'Нет'}</div>
-            </CoursePropertyBlock>
-            <CoursePropertyBlock>
-                <CoursePropertyName>Удален:</CoursePropertyName>
-                <div>{course.isDeleted ? 'Да' : 'Нет'}</div>
-            </CoursePropertyBlock>
-        </CourseBlock>
+        <CourseCard
+            actions={[
+                <CourseFeature.UI.UpdateCourseButton course={course} />,
+                course.isDraft ? (
+                    <CourseFeature.UI.PublishCourseButton courseId={course.id} />
+                ) : (
+                    <CourseFeature.UI.DraftCourseButton courseId={course.id} />
+                ),
+                course.isDeleted ? (
+                    <CourseFeature.UI.RecoverCourseButton courseId={course.id} />
+                ) : (
+                    <CourseFeature.UI.DeleteCourseButton courseId={course.id} />
+                ),
+                <Tooltip placement="top" title={'Перейти к редактировнию модулей'}>
+                    <Button
+                        icon={<ArrowRightOutlined />}
+                        onClick={() => navigate(Config.routes.editableModules.getLink(course.id))}
+                    />
+                </Tooltip>,
+            ]}
+        >
+            <Descriptions
+                items={[
+                    { key: '1', label: 'Название', children: course.name },
+                    { key: '2', label: 'Короткое название', children: course.shortName, span: 2 },
+                    { key: '3', label: 'Описание', children: course.description, span: 3 },
+                    { key: '4', label: 'Черновик', children: course.isDraft ? 'Да' : 'Нет', span: 1 },
+                    { key: '5', label: 'Удален', children: course.isDeleted ? 'Да' : 'Нет', span: 1 },
+                ]}
+                layout="vertical"
+            />
+        </CourseCard>
     );
 };
 
-const CourseBlock = styled.div`
-    border: solid 1px;
-    border-radius: 10px;
-    padding: 10px 15px;
-    display: flex;
-    flex-direction: column;
-    row-gap: 10px;
-`;
-
-const PropertyWithBittons = styled.div`
-    display: flex;
+const CourseCard = styled(Card)`
     justify-content: space-between;
-`;
-
-const Buttons = styled.div`
-    display: flex;
-    column-gap: 10px;
-`;
-
-const CoursePropertyBlock = styled.div`
     display: flex;
     flex-direction: column;
-`;
-
-const CoursePropertyName = styled.div`
-    font-weight: 600;
-    font-size: 1em;
 `;

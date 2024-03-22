@@ -1,7 +1,11 @@
 import { Api } from '@shared';
 import { createEffect } from 'effector';
 
-export const getAllCoursesFx = createEffect(async () => await Api.Services.CourseService.getAllCourses());
+export const getAllUserCoursesFx = createEffect(async () => await Api.Services.CourseService.getAllUserCourses());
+
+export const getUserCourseFx = createEffect(
+    async (courseId: string) => await Api.Services.CourseService.getUserCourse(courseId),
+);
 
 export const findCoursesFx = createEffect(
     async (requestBody: Api.Services.FindCoursesRequest = {}) =>

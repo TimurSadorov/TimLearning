@@ -33,6 +33,11 @@ const editableCourses = {
     getLink: () => '/courses/editing',
 };
 
+const editableModules = {
+    path: '/courses/:courseId/modules/editing',
+    getLink: (courseId: string) => `/courses/${courseId}/modules/editing`,
+};
+
 export const routes = {
     root,
     login,
@@ -41,4 +46,5 @@ export const routes = {
     recoveryPasswordChanging,
     emailConfiramtion,
     editableCourses,
+    editableModules,
 };

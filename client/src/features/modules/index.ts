@@ -1,2 +1,2 @@
-export * from './Loader';
 export * as Model from './model';
+export * as UI from './ui';
