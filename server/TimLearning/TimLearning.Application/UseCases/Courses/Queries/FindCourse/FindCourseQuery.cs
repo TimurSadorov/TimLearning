@@ -7,6 +7,7 @@ namespace TimLearning.Application.UseCases.Courses.Queries.FindCourse;
 
 public record FindCourseQuery(
     Guid CallingUserId,
+    Guid? Id = null,
     string? SearchName = null,
     bool? IsDraft = null, 
     bool? IsDeleted = null

@@ -39,7 +39,13 @@ public class CourseController : SiteApiController
     public async Task<List<FindCoursesResponse>> FindCourses([Required] FindCoursesRequest request)
     {
         var courses = await _mediator.Send(
-            new FindCourseQuery(UserId, request.SearchName, request.IsDraft, request.IsDeleted)
+            new FindCourseQuery(
+                UserId,
+                request.Id,
+                request.SearchName,
+                request.IsDraft,
+                request.IsDeleted
+            )
         );
 
         return courses

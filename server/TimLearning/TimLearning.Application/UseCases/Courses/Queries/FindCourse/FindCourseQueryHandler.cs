@@ -21,6 +21,10 @@ public class FindCourseQueryHandler : IRequestHandler<FindCourseQuery, List<Cour
     )
     {
         var query = _dbContext.Courses.AsQueryable();
+        if (request.Id is not null)
+        {
+            query = query.Where(c => c.Id == request.Id);
+        }
         if (request.SearchName.HasText())
         {
             var searchName = request.SearchName.ToLower();
@@ -41,7 +45,15 @@ public class FindCourseQueryHandler : IRequestHandler<FindCourseQuery, List<Cour
 
         return query
             .Select(
-                c => new CourseFullDataDto(c.Id, c.Name, c.ShortName, c.Description, c.IsDraft, c.IsDeleted)
+                c =>
+                    new CourseFullDataDto(
+                        c.Id,
+                        c.Name,
+                        c.ShortName,
+                        c.Description,
+                        c.IsDraft,
+                        c.IsDeleted
+                    )
             )
             .ToListAsync(cancellationToken);
     }
