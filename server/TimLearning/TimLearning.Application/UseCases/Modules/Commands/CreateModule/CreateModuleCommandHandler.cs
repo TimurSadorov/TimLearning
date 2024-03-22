@@ -32,11 +32,8 @@ public class CreateModuleCommandHandler : IRequestHandler<CreateModuleCommand>
             cancellationToken
         );
 
-        var lastOrder = await _moduleOrderService.GetLastOrderAsync(
-            dto.CourseId,
-            cancellationToken
-        );
-        var newModule = new Module(lastOrder + 1 ?? 1)
+        var order = await _moduleOrderService.GetNextOrderAsync(dto.CourseId, cancellationToken);
+        var newModule = new Module(order)
         {
             Name = dto.Name,
             CourseId = dto.CourseId,

@@ -31,16 +31,13 @@ public class RestoreModuleCommandHandler : IRequestHandler<RestoreModuleCommand>
             throw new NotFoundException();
         }
 
-        if (module.IsDeleted == false)
+        if (module.IsDeleted is false)
         {
             return;
         }
 
-        var lastOrder = await _moduleOrderService.GetLastOrderAsync(
-            module.CourseId,
-            cancellationToken
-        );
-        module.Restore(lastOrder + 1 ?? 1);
+        var order = await _moduleOrderService.GetNextOrderAsync(module.CourseId, cancellationToken);
+        module.Restore(order);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
     }

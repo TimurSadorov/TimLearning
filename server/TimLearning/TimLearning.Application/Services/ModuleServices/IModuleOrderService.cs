@@ -2,5 +2,5 @@
 
 public interface IModuleOrderService
 {
-    Task<int?> GetLastOrderAsync(Guid courseId, CancellationToken ct = default);
+    Task<int> GetNextOrderAsync(Guid courseId, CancellationToken ct = default);
 }
