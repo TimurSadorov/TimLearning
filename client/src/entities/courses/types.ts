@@ -1,18 +1,5 @@
-import { Api } from '@shared';
+import { Api, SharedTypes } from '@shared';
 
-export interface UserCours {
-    id: string;
-    name: string;
-    description: string;
-}
+export type UserCours = SharedTypes.Clone<Api.Services.GetUserCoursesResponse>;
 
-export type UserCoursFullData = Api.Services.GetUserCourseResponse;
-
-export interface EditableCours {
-    id: string;
-    name: string;
-    shortName: string;
-    description: string;
-    isDraft: boolean;
-    isDeleted: boolean;
-}
+export type EditableCours = SharedTypes.Clone<Api.Services.FindCoursesResponse>;

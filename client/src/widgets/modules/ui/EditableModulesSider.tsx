@@ -1,6 +1,6 @@
 import { CourseEntity } from '@entities';
 import { ModuleFeature } from '@features';
-import { Button, Checkbox, Layout, Tooltip } from 'antd';
+import { Button, Checkbox, Layout, Skeleton, Tooltip } from 'antd';
 import React, { useCallback } from 'react';
 import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import { Loader } from 'shared/ui';
@@ -13,7 +13,7 @@ import { Config } from '@shared';
 type Props = { courseId: string };
 
 export const EditableModulesSider = ({ courseId }: Props) => {
-    const { userCourse } = CourseEntity.Model.useUserCourse(courseId);
+    const { editableCourse, isLoading: courseLoading } = CourseEntity.Model.useEditableCourse(courseId);
 
     const { editableOrderedModules, isLoading, isDeleted, onChangeIsDeleted } =
         ModuleFeature.Model.useFilterEditableOrderedModules(courseId);
@@ -37,7 +37,7 @@ export const EditableModulesSider = ({ courseId }: Props) => {
                 <BackButton icon={<ArrowLeftOutlined />} onClick={toEditableCourses} />
             </Tooltip>
             <LayoutSider>
-                <SiderHeader>{userCourse?.shortName}</SiderHeader>
+                <SiderHeader>{courseLoading ? <Skeleton.Input active /> : editableCourse?.shortName}</SiderHeader>
                 <FeaturesBlock>
                     <FiltersBlock>
                         <FilterWord>Фильтры:</FilterWord>
@@ -100,6 +100,8 @@ const SiderHeader = styled.div`
     padding: 30px;
     font-size: 1.7em;
     font-weight: 600;
+    align-items: start;
+    display: flex;
 `;
 
 const FeaturesBlock = styled.div`

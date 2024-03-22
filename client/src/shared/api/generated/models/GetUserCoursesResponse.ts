@@ -3,8 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type GetAllUserCoursesResponse = {
+export type GetUserCoursesResponse = {
     id: string;
     name: string;
+    shortName: string;
     description: string;
 };

@@ -5,3 +5,5 @@ export interface User {
 }
 
 export type UserRole = 'User' | 'Mentor' | 'ContentCreator' | 'Admin';
+
+export type Clone<T> = Omit<T, ''>;

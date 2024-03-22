@@ -1,4 +1,4 @@
-import { Config } from '@shared';
+import { Config, Utils } from '@shared';
 import { ModuleWidget } from '@widgets';
 import { Layout } from 'antd';
 import React from 'react';
@@ -8,7 +8,7 @@ import styled from 'styled-components';
 export const EditableLeasons = () => {
     const { courseId } = useParams<{ courseId: string }>();
 
-    if (courseId === undefined) {
+    if (courseId == undefined || !Utils.isValidGuid(courseId)) {
         return <Navigate to={Config.routes.root.path} />;
     }
 

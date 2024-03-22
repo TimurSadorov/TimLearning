@@ -1,9 +1,9 @@
+import React from 'react';
 import { ArrowRightOutlined } from '@ant-design/icons';
 import { CourseEntity } from '@entities';
 import { CourseFeature } from '@features';
 import { Config } from '@shared';
 import { Button, Card, Descriptions, Tooltip } from 'antd';
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -35,11 +35,11 @@ export const EditableCours = ({ course }: Props) => {
         >
             <Descriptions
                 items={[
-                    { key: '1', label: 'Название', children: course.name },
-                    { key: '2', label: 'Короткое название', children: course.shortName, span: 2 },
+                    { key: '1', label: 'Название', children: course.name, span: 2 },
+                    { key: '2', label: 'Короткое название', children: course.shortName },
                     { key: '3', label: 'Описание', children: course.description, span: 3 },
-                    { key: '4', label: 'Черновик', children: course.isDraft ? 'Да' : 'Нет', span: 1 },
-                    { key: '5', label: 'Удален', children: course.isDeleted ? 'Да' : 'Нет', span: 1 },
+                    { key: '4', label: 'Черновик', children: course.isDraft ? 'Да' : 'Нет', span: 2 },
+                    { key: '5', label: 'Удален', children: course.isDeleted ? 'Да' : 'Нет' },
                 ]}
                 layout="vertical"
             />

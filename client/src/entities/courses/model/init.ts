@@ -1,6 +1,13 @@
 import { sample } from 'effector';
-import { EditableCoursesGate, UserCourseGate, UserCoursesGate } from './model';
-import { createCourseFx, findCoursesFx, getAllUserCoursesFx, getUserCourseFx, updateCourseFx } from './effects';
+import { EditableCourseGate, EditableCoursesGate, UserCourseGate, UserCoursesGate } from './model';
+import {
+    createCourseFx,
+    findCoursesFx,
+    getAllUserCoursesFx,
+    getEditableCourseFx,
+    getUserCourseFx,
+    updateCourseFx,
+} from './effects';
 
 sample({
     clock: UserCoursesGate.open,
@@ -15,6 +22,11 @@ sample({
 sample({
     clock: EditableCoursesGate.state,
     target: findCoursesFx,
+});
+
+sample({
+    clock: EditableCourseGate.open,
+    target: getEditableCourseFx,
 });
 
 sample({

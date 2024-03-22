@@ -5,8 +5,7 @@
 import type { CreateCourseRequest } from '../models/CreateCourseRequest';
 import type { FindCoursesRequest } from '../models/FindCoursesRequest';
 import type { FindCoursesResponse } from '../models/FindCoursesResponse';
-import type { GetAllUserCoursesResponse } from '../models/GetAllUserCoursesResponse';
-import type { GetUserCourseResponse } from '../models/GetUserCourseResponse';
+import type { GetUserCoursesResponse } from '../models/GetUserCoursesResponse';
 import type { UpdateCourseRequest } from '../models/UpdateCourseRequest';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -17,58 +16,18 @@ export class CourseService {
 
     /**
      * @param courseId 
-     * @returns GetUserCourseResponse Success
+     * @returns GetUserCoursesResponse Success
      * @throws ApiError
      */
-    public static getUserCourse(
-courseId: string,
-): CancelablePromise<GetUserCourseResponse> {
+    public static getUserCourses(
+courseId?: string,
+): CancelablePromise<Array<GetUserCoursesResponse>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/courses/{courseId}',
-            path: {
+            url: '/api/courses/for-user',
+            query: {
                 'courseId': courseId,
             },
-            errors: {
-                422: `Request validation error.`,
-            },
-        });
-    }
-
-    /**
-     * @param courseId 
-     * @param requestBody 
-     * @returns any Success
-     * @throws ApiError
-     */
-    public static updateCourse(
-courseId: string,
-requestBody: UpdateCourseRequest,
-): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'PATCH',
-            url: '/api/courses/{courseId}',
-            path: {
-                'courseId': courseId,
-            },
-            body: requestBody,
-            mediaType: 'application/json',
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                422: `Request validation error.`,
-            },
-        });
-    }
-
-    /**
-     * @returns GetAllUserCoursesResponse Success
-     * @throws ApiError
-     */
-    public static getAllUserCourses(): CancelablePromise<Array<GetAllUserCoursesResponse>> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/courses/all',
             errors: {
                 422: `Request validation error.`,
             },
@@ -85,7 +44,7 @@ requestBody: FindCoursesRequest,
 ): CancelablePromise<Array<FindCoursesResponse>> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/courses/find',
+            url: '/api/courses/all-info',
             body: requestBody,
             mediaType: 'application/json',
             errors: {
@@ -107,6 +66,32 @@ requestBody: CreateCourseRequest,
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/courses',
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                422: `Request validation error.`,
+            },
+        });
+    }
+
+    /**
+     * @param courseId 
+     * @param requestBody 
+     * @returns any Success
+     * @throws ApiError
+     */
+    public static updateCourse(
+courseId: string,
+requestBody: UpdateCourseRequest,
+): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'PATCH',
+            url: '/api/courses/{courseId}',
+            path: {
+                'courseId': courseId,
+            },
             body: requestBody,
             mediaType: 'application/json',
             errors: {
