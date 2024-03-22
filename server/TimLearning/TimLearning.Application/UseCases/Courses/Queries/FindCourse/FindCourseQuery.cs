@@ -10,7 +10,7 @@ public record FindCourseQuery(
     string? SearchName = null,
     bool? IsDraft = null, 
     bool? IsDeleted = null
-) : IRequest<List<CourseDto>>, IAccessByRole
+) : IRequest<List<CourseFullDataDto>>, IAccessByRole
 {
     public static IEnumerable<UserRoleType> ForRoles => [UserRoleType.ContentCreator];
 }

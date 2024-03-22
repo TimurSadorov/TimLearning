@@ -6,7 +6,7 @@ using TimLearning.Shared.Extensions;
 
 namespace TimLearning.Application.UseCases.Courses.Queries.FindCourse;
 
-public class FindCourseQueryHandler : IRequestHandler<FindCourseQuery, List<CourseDto>>
+public class FindCourseQueryHandler : IRequestHandler<FindCourseQuery, List<CourseFullDataDto>>
 {
     private readonly IAppDbContext _dbContext;
 
@@ -15,7 +15,7 @@ public class FindCourseQueryHandler : IRequestHandler<FindCourseQuery, List<Cour
         _dbContext = dbContext;
     }
 
-    public Task<List<CourseDto>> Handle(
+    public Task<List<CourseFullDataDto>> Handle(
         FindCourseQuery request,
         CancellationToken cancellationToken
     )
@@ -41,7 +41,7 @@ public class FindCourseQueryHandler : IRequestHandler<FindCourseQuery, List<Cour
 
         return query
             .Select(
-                c => new CourseDto(c.Id, c.Name, c.ShortName, c.Description, c.IsDraft, c.IsDeleted)
+                c => new CourseFullDataDto(c.Id, c.Name, c.ShortName, c.Description, c.IsDraft, c.IsDeleted)
             )
             .ToListAsync(cancellationToken);
     }

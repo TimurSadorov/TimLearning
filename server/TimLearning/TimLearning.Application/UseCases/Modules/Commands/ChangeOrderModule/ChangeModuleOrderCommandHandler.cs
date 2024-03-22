@@ -44,7 +44,13 @@ public class ChangeModuleOrderCommandHandler : IRequestHandler<ChangeModuleOrder
                 var offsetForOtherModules = newOrder < module.Order ? 1 : -1;
 
                 await _dbContext.Modules
-                    .Where(m => minOrder <= m.Order && m.Order <= maxOrder && m.Id != module.Id)
+                    .Where(
+                        m =>
+                            m.CourseId == module.CourseId
+                            && minOrder <= m.Order
+                            && m.Order <= maxOrder
+                            && m.Id != module.Id
+                    )
                     .ExecuteUpdateAsync(
                         setter =>
                             setter.SetProperty(m => m.Order, m => m.Order + offsetForOtherModules),

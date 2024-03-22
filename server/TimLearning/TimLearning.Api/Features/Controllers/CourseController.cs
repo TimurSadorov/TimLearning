@@ -10,7 +10,7 @@ using TimLearning.Application.UseCases.Courses.Commands.CreateCourse;
 using TimLearning.Application.UseCases.Courses.Commands.UpdateCourse;
 using TimLearning.Application.UseCases.Courses.Dto;
 using TimLearning.Application.UseCases.Courses.Queries.FindCourse;
-using TimLearning.Application.UseCases.Courses.Queries.GetAllUserCourses;
+using TimLearning.Application.UseCases.Courses.Queries.GetUserCourses;
 
 namespace TimLearning.Api.Features.Controllers;
 
@@ -24,16 +24,18 @@ public class CourseController : SiteApiController
         _mediator = mediator;
     }
 
-    [HttpGet("all")]
-    public async Task<List<GetAllCoursesResponse>> GetAllCourses()
+    [HttpGet("for-user")]
+    public async Task<List<GetUserCoursesResponse>> GetUserCourses([FromQuery] Guid? courseId)
     {
-        var courses = await _mediator.Send(new GetAllUserCoursesQuery());
+        var courses = await _mediator.Send(new GetUserCoursesQuery(courseId));
 
-        return courses.Select(c => new GetAllCoursesResponse(c.Id, c.Name, c.Description)).ToList();
+        return courses
+            .Select(c => new GetUserCoursesResponse(c.Id, c.Name, c.ShortName, c.Description))
+            .ToList();
     }
 
     [Authorize]
-    [HttpPost("find")]
+    [HttpPost("all-info")]
     public async Task<List<FindCoursesResponse>> FindCourses([Required] FindCoursesRequest request)
     {
         var courses = await _mediator.Send(
