@@ -38,13 +38,14 @@ public class UpdateCourseCommandHandler : IRequestHandler<UpdateCourseCommand>
         {
             course.Description = dto.Description;
         }
-        if (dto.IsDraft is not null)
-        {
-            course.IsDraft = dto.IsDraft.Value;
-        }
         if (dto.IsDeleted is not null)
         {
             course.IsDeleted = dto.IsDeleted.Value;
+            course.IsDraft = true;
+        }
+        if (dto.IsDraft is not null)
+        {
+            course.IsDraft = dto.IsDraft.Value;
         }
 
         await _dbContext.SaveChangesAsync(cancellationToken);
