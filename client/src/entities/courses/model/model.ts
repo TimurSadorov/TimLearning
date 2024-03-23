@@ -10,7 +10,7 @@ export const $userCourses = restore<UserCours[]>(getAllUserCoursesFx, []).reset(
 export const UserCourseGate = createGate<string>();
 export const $userCourse = restore<UserCours | null>(getUserCourseFx, null).reset(UserCourseGate.close);
 
-export const EditableCoursesGate = createGate<Api.Services.FindCoursesRequest>();
+export const EditableCoursesGate = createGate<Api.Services.FindCoursesQueryParams>();
 export const $editableCourses = restore<EditableCours[]>(findCoursesFx, []).reset(EditableCoursesGate.close);
 
 export const EditableCourseGate = createGate<string>();

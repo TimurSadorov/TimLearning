@@ -1,2 +1,2 @@
-src/shared/api/generated
+src/shared/api/services/generated
 craco.config.js

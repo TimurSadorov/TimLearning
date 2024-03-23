@@ -32,7 +32,7 @@ export const useFilterEditableCourses = () => {
 
     const { isLoading, editableCourses } = CourseEntity.Model.useEditableCourses({
         searchName: debouncedSearchName,
-        isDraft: draftFilterIsDisabled ? null : isDraft,
+        isDraft: draftFilterIsDisabled ? undefined : isDraft,
         isDeleted,
     });
 

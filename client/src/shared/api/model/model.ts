@@ -1,5 +1,5 @@
 import { Effect, createStore, sample } from 'effector';
-import { ApiError, ValidationErrorResponse, ValidationErrorTextResponse } from '../generated';
+import { ApiError, ValidationErrorResponse, ValidationErrorTextResponse } from '../services/generated';
 import { hasValidationErrorResponse, isApiError } from '../utils';
 
 export const createValidationErrorResponseStore = (effect: Effect<any, any, Error>) => {

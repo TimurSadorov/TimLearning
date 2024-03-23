@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { ValidationErrorResponse, ModelValidationErrorResponse } from '../generated';
+import { ValidationErrorResponse, ModelValidationErrorResponse } from '../services/generated';
 import {
     hasValidationErrorResponse,
     isApiError,

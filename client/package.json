@@ -37,7 +37,7 @@
         "start": "craco start",
         "build": "craco build",
         "eject": "react-scripts eject",
-        "generate-client": "openapi --input http://localhost:5001/api-docs/v1/swagger.json --output ./src/shared/api/generated"
+        "generate-client": "openapi --input http://localhost:5001/api-docs/v1/swagger.json --output ./src/shared/api/services/generated"
     },
     "engines": {
         "node": ">= 20.11.0",

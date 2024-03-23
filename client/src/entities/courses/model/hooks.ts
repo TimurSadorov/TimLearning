@@ -28,7 +28,7 @@ export const useUserCourse = (courseId: string) => {
     return { userCourse, isLoading };
 };
 
-export const useEditableCourses = (request: Api.Services.FindCoursesRequest) => {
+export const useEditableCourses = (request: Api.Services.FindCoursesQueryParams) => {
     useGate(EditableCoursesGate, request);
     const editableCourses = useUnit($editableCourses);
     const isLoading = useUnit(findCoursesFx.pending);

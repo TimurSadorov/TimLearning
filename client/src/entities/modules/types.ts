@@ -1,3 +1,3 @@
-import { FindOrderedModulesResponse } from 'shared/api/generated';
+import { Api, SharedTypes } from '@shared';
 
-export type EditableModule = Omit<FindOrderedModulesResponse, ''>;
+export type EditableModule = SharedTypes.Clone<Api.Services.FindOrderedModulesResponse>;

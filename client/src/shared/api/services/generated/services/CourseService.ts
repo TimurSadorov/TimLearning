@@ -3,7 +3,6 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateCourseRequest } from '../models/CreateCourseRequest';
-import type { FindCoursesRequest } from '../models/FindCoursesRequest';
 import type { FindCoursesResponse } from '../models/FindCoursesResponse';
 import type { GetUserCoursesResponse } from '../models/GetUserCoursesResponse';
 import type { UpdateCourseRequest } from '../models/UpdateCourseRequest';
@@ -35,18 +34,28 @@ courseId?: string,
     }
 
     /**
-     * @param requestBody 
+     * @param id 
+     * @param searchName 
+     * @param isDraft 
+     * @param isDeleted 
      * @returns FindCoursesResponse Success
      * @throws ApiError
      */
     public static findCourses(
-requestBody: FindCoursesRequest,
+id?: string,
+searchName?: string,
+isDraft?: boolean,
+isDeleted?: boolean,
 ): CancelablePromise<Array<FindCoursesResponse>> {
         return __request(OpenAPI, {
-            method: 'POST',
+            method: 'GET',
             url: '/api/courses/all-info',
-            body: requestBody,
-            mediaType: 'application/json',
+            query: {
+                'Id': id,
+                'SearchName': searchName,
+                'IsDraft': isDraft,
+                'IsDeleted': isDeleted,
+            },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

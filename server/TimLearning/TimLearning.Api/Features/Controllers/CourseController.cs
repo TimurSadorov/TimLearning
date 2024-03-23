@@ -35,8 +35,8 @@ public class CourseController : SiteApiController
     }
 
     [Authorize]
-    [HttpPost("all-info")]
-    public async Task<List<FindCoursesResponse>> FindCourses([Required] FindCoursesRequest request)
+    [HttpGet("all-info")]
+    public async Task<List<FindCoursesResponse>> FindCourses([FromQuery] FindCoursesRequest request)
     {
         var courses = await _mediator.Send(
             new FindCourseQuery(

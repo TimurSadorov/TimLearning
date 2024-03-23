@@ -4,7 +4,7 @@ import {
     ModelValidationErrorResponse,
     ValidationErrorResponse,
     ValidationErrorTextResponse,
-} from './generated';
+} from './services/generated';
 
 export const isApiError = (error: Error): error is ApiError => error instanceof ApiError;
 

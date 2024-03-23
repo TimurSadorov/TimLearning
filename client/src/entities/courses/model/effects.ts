@@ -9,12 +9,17 @@ export const getUserCourseFx = createEffect(async (courseId: string) => {
 });
 
 export const findCoursesFx = createEffect(
-    async (requestBody: Api.Services.FindCoursesRequest = {}) =>
-        await Api.Services.CourseService.findCourses(requestBody),
+    async (request: Api.Services.FindCoursesQueryParams = {}) =>
+        await Api.Services.CourseService.findCourses(
+            request.id,
+            request.searchName,
+            request.isDraft,
+            request.isDeleted,
+        ),
 );
 
 export const getEditableCourseFx = createEffect(async (courseId: string) => {
-    const courses = await Api.Services.CourseService.findCourses({ id: courseId });
+    const courses = await Api.Services.CourseService.findCourses(courseId);
     return courses.at(0) ?? null;
 });
 
