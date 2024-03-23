@@ -27,10 +27,10 @@ public class ModuleController : SiteApiController
         _mediator = mediator;
     }
 
-    [HttpPost("courses/{courseId:guid}/modules/find")]
+    [HttpGet("courses/{courseId:guid}/modules/find")]
     public async Task<List<FindOrderedModulesResponse>> FindOrderedModules(
         [FromRoute] Guid courseId,
-        [Required] FindOrderedModulesRequest request
+        [FromQuery] FindOrderedModulesRequest request
     )
     {
         var modules = await _mediator.Send(

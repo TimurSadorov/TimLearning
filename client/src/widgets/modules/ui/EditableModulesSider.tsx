@@ -48,7 +48,7 @@ export const EditableModulesSider = ({ courseId }: Props) => {
                     <CreateModuleButton courseId={courseId} />
                 </FeaturesBlock>
                 <DragDropContext enableDefaultSensors onDragEnd={onDragEnd}>
-                    {isLoading && changingOrderLoading ? (
+                    {isLoading || changingOrderLoading ? (
                         <Loader />
                     ) : (
                         <Droppable droppableId="modules">

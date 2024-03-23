@@ -4,11 +4,15 @@ import { createEffect } from 'effector';
 export type WithCourseId<TData> = { courseId: string; data: TData };
 
 export const findOrderedModulesFx = createEffect(
-    async (request: WithCourseId<Api.Services.FindOrderedModulesRequest>) => {
+    async (request: WithCourseId<Api.Services.FindOrderedModulesQueryParams>) => {
         if (!request.courseId) {
             return [];
         }
-        return await Api.Services.ModuleService.findOrderedModules(request.courseId, request.data);
+        return await Api.Services.ModuleService.findOrderedModules(
+            request.courseId,
+            request.data.isDeleted,
+            request.data.isDraft,
+        );
     },
 );
 

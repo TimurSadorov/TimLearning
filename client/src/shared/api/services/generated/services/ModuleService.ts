@@ -4,7 +4,6 @@
 /* eslint-disable */
 import type { ChangeModuleOrderRequest } from '../models/ChangeModuleOrderRequest';
 import type { CreateModuleRequest } from '../models/CreateModuleRequest';
-import type { FindOrderedModulesRequest } from '../models/FindOrderedModulesRequest';
 import type { FindOrderedModulesResponse } from '../models/FindOrderedModulesResponse';
 import type { UpdateModuleRequest } from '../models/UpdateModuleRequest';
 
@@ -16,22 +15,26 @@ export class ModuleService {
 
     /**
      * @param courseId 
-     * @param requestBody 
+     * @param isDeleted 
+     * @param isDraft 
      * @returns FindOrderedModulesResponse Success
      * @throws ApiError
      */
     public static findOrderedModules(
 courseId: string,
-requestBody: FindOrderedModulesRequest,
+isDeleted: boolean,
+isDraft?: boolean,
 ): CancelablePromise<Array<FindOrderedModulesResponse>> {
         return __request(OpenAPI, {
-            method: 'POST',
+            method: 'GET',
             url: '/api/courses/{courseId}/modules/find',
             path: {
                 'courseId': courseId,
             },
-            body: requestBody,
-            mediaType: 'application/json',
+            query: {
+                'IsDeleted': isDeleted,
+                'IsDraft': isDraft,
+            },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

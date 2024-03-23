@@ -14,7 +14,6 @@ export type { ContainerSettingsRequest } from './models/ContainerSettingsRequest
 export type { CreateCourseRequest } from './models/CreateCourseRequest';
 export type { CreateModuleRequest } from './models/CreateModuleRequest';
 export type { FindCoursesResponse } from './models/FindCoursesResponse';
-export type { FindOrderedModulesRequest } from './models/FindOrderedModulesRequest';
 export type { FindOrderedModulesResponse } from './models/FindOrderedModulesResponse';
 export type { GetUserCoursesResponse } from './models/GetUserCoursesResponse';
 export type { ImageSettingsRequest } from './models/ImageSettingsRequest';

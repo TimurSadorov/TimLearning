@@ -109,7 +109,8 @@ export const useUpdateModuleModal = (moduleId: string) => {
 };
 
 export const useСhangeModuleOrder = () => {
-    const changingOrderLoading = useUnit(ModuleEntity.Model.findOrderedModulesFx.pending);
+    const changingOrderLoading = useUnit(ModuleEntity.Model.changeModuleOrderFx.pending);
+
     const changeOrder = useCallback(async (data: WithModuleId<Api.Services.ChangeModuleOrderRequest>) => {
         await ModuleEntity.Model.changeModuleOrderFx(data);
     }, []);
