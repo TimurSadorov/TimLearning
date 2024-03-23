@@ -65,22 +65,20 @@ public class CourseController : SiteApiController
 
     [Authorize]
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> CreateCourse([Required] CreateCourseRequest request)
+    public Task CreateCourse([Required] CreateCourseRequest request)
     {
-        await _mediator.Send(
+        return _mediator.Send(
             new CreateCourseCommand(
                 new NewCourseDto(request.Name, request.ShortName, request.Description),
                 UserId
             )
         );
-
-        return Ok();
     }
 
     [Authorize]
     [HttpPatch("{courseId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateCourse(
         [FromRoute] Guid courseId,
         [Required] UpdateCourseRequest request

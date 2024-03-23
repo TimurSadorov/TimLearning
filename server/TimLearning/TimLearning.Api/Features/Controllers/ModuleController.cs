@@ -28,6 +28,8 @@ public class ModuleController : SiteApiController
     }
 
     [HttpGet("courses/{courseId:guid}/modules/find")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<List<FindOrderedModulesResponse>> FindOrderedModules(
         [FromRoute] Guid courseId,
         [FromQuery] FindOrderedModulesRequest request
@@ -47,6 +49,7 @@ public class ModuleController : SiteApiController
 
     [HttpPost("courses/{courseId:guid}/modules")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task CreateModule([FromRoute] Guid courseId, [Required] CreateModuleRequest request)
     {
         return _mediator.Send(
@@ -56,6 +59,7 @@ public class ModuleController : SiteApiController
 
     [HttpPatch("modules/{moduleId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task UpdateModule([FromRoute] Guid moduleId, [Required] UpdateModuleRequest request)
     {
         return _mediator.Send(
@@ -68,6 +72,7 @@ public class ModuleController : SiteApiController
 
     [HttpPatch("modules/{moduleId:guid}/order")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task ChangeModuleOrder(
         [FromRoute] Guid moduleId,
         [Required] ChangeModuleOrderRequest request
@@ -83,6 +88,7 @@ public class ModuleController : SiteApiController
 
     [HttpPatch("modules/{moduleId:guid}/delete")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task DeleteModule([FromRoute] Guid moduleId)
     {
         return _mediator.Send(new DeleteModuleCommand(moduleId, UserId));
@@ -90,6 +96,7 @@ public class ModuleController : SiteApiController
 
     [HttpPatch("modules/{moduleId:guid}/restore")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task RestoreModule([FromRoute] Guid moduleId)
     {
         return _mediator.Send(new RestoreModuleCommand(moduleId, UserId));
