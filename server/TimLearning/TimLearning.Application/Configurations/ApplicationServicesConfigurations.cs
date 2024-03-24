@@ -3,9 +3,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TimLearning.Application.Data.ValueObjects;
 using TimLearning.Application.Mediator.Pipelines.RoleAccess;
+using TimLearning.Application.Mediator.Pipelines.Transactional;
+using TimLearning.Application.Services.LessonServices;
 using TimLearning.Application.Services.ModuleServices;
 using TimLearning.Application.Services.UserServices;
 using TimLearning.Application.ToDoServices;
+using TimLearning.Application.UseCases.Lessons.Dto;
+using TimLearning.Application.UseCases.Lessons.Validators;
 using TimLearning.Application.UseCases.Modules.Dto;
 using TimLearning.Application.UseCases.Modules.Validators;
 using TimLearning.Application.UseCases.Users.Commands.RegisterUser;
@@ -31,6 +35,7 @@ public static class ApplicationServicesConfigurations
         {
             cfg.RegisterServicesFromAssembly(typeof(RegisterUserCommand).Assembly);
             cfg.AddOpenBehavior(typeof(AccessByRolePipelineBehavior<,>));
+            cfg.AddOpenBehavior(typeof(TransactionPipelineBehavior<,>));
         });
 
         services.AddPrivateServices(config);
@@ -46,6 +51,8 @@ public static class ApplicationServicesConfigurations
         services.AddSingleton<IUserEmailProvider, UserEmailProvider>();
 
         services.AddScoped<IModuleOrderService, ModuleOrderService>();
+
+        services.AddScoped<ILessonPositionService, LessonPositionService>();
 
         services.AddToDoServices();
     }
@@ -84,5 +91,7 @@ public static class ApplicationServicesConfigurations
             IAsyncSimpleValidator<ModuleOrderChangingDto>,
             ModuleOrderChangingDtoValidator
         >();
+
+        services.AddScoped<IAsyncSimpleValidator<LessonMovementDto>, LessonMovementDtoValidator>();
     }
 }

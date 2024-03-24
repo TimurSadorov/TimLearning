@@ -11,6 +11,7 @@ public class AppAppDbContext : DbContext, IAppDbContext
     public DbSet<UserRole> UserRoles => Set<UserRole>();
     public DbSet<Course> Courses => Set<Course>();
     public DbSet<Module> Modules => Set<Module>();
+    public DbSet<Lesson> Lessons => Set<Lesson>();
 
     public AppAppDbContext(DbContextOptions options)
         : base(options) { }

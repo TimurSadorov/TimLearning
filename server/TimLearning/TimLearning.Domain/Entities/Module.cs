@@ -32,6 +32,11 @@ public class Module : IIdHolder<Guid>
 
     public void Restore(int order)
     {
+        if (IsDeleted is false)
+        {
+            throw new InvalidOperationException("Module was not deleted.");
+        }
+
         IsDeleted = false;
         Order = order;
         IsDraft = true;

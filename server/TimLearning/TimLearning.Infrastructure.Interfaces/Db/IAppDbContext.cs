@@ -11,6 +11,7 @@ public interface IAppDbContext
     DbSet<UserRole> UserRoles { get; }
     DbSet<Course> Courses { get; }
     DbSet<Module> Modules { get; }
+    DbSet<Lesson> Lessons { get; }
 
     DatabaseFacade Database { get; }
 

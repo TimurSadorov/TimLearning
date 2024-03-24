@@ -15,7 +15,16 @@ var config = builder.Configuration;
 var siteOptions = config.GetRequiredConfig<TimLearningSiteOptions>();
 services.AddAllApiServices(config, siteOptions.Url);
 
-services.AddAllInfrastructureServices(config);
+services.AddAllInfrastructureServices(
+    config,
+    dbOptions =>
+    {
+        if (builder.Environment.IsDevelopment())
+        {
+            dbOptions.EnableSensitiveDataLogging();
+        }
+    }
+);
 
 services.AddAllApplicationServices(config);
 
