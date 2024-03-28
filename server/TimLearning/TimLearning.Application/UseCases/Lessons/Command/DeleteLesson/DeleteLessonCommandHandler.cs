@@ -18,6 +18,7 @@ public class DeleteLessonCommandHandler : IRequestHandler<DeleteLessonCommand>
     {
         var lesson = await _dbContext.Lessons
             .Include(l => l.PreviousLesson)
+            .Include(l => l.NextLesson)
             .FirstOrDefaultAsync(l => l.Id == request.LessonId, cancellationToken);
         if (lesson is null)
         {
@@ -29,13 +30,13 @@ public class DeleteLessonCommandHandler : IRequestHandler<DeleteLessonCommand>
             return;
         }
 
-        var nextLessonId = lesson.NextLessonId;
+        var nextLesson = lesson.NextLesson;
         lesson.Delete();
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         if (lesson.PreviousLesson is not null)
         {
-            lesson.PreviousLesson.SetNextLesson(nextLessonId);
+            lesson.PreviousLesson.SetNextLesson(nextLesson);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }

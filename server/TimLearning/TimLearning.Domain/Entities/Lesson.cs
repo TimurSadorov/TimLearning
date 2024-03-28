@@ -51,12 +51,6 @@ public class Lesson : IIdHolder<Guid>
         NextLessonId = null;
     }
 
-    public void SetNextLesson(Guid? value)
-    {
-        EnsureChangePositionLesson();
-        NextLessonId = value;
-    }
-
     public void SetNextLesson(Lesson? value)
     {
         EnsureChangePositionLesson();

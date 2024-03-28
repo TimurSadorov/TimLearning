@@ -11,6 +11,7 @@ using TimLearning.Application.UseCases.Lessons.Command.CreateLesson;
 using TimLearning.Application.UseCases.Lessons.Command.DeleteLesson;
 using TimLearning.Application.UseCases.Lessons.Command.MoveLesson;
 using TimLearning.Application.UseCases.Lessons.Command.RestoreLesson;
+using TimLearning.Application.UseCases.Lessons.Command.UpdateLesson;
 using TimLearning.Application.UseCases.Lessons.Dto;
 using TimLearning.Application.UseCases.Lessons.Queries.FindOrderedLessons;
 using TimLearning.Application.UseCases.Lessons.Queries.GetDeletedLessons;
@@ -60,6 +61,19 @@ public class LessonController : SiteApiController
     {
         return _mediator.Send(
             new CreateLessonCommand(new NewLessonDto(request.Name, moduleId), UserId)
+        );
+    }
+
+    [HttpPatch("lessons/{lessonId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public Task UpdateLesson([FromRoute] Guid lessonId, [Required] UpdateLessonRequest request)
+    {
+        return _mediator.Send(
+            new UpdateLessonCommand(
+                new UpdatedLessonDto(lessonId, request.Name, request.Text, request.IsDraft),
+                UserId
+            )
         );
     }
 
