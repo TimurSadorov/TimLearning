@@ -1,5 +1,5 @@
-import { Button, Form, Input, Modal, Tooltip } from 'antd';
 import React from 'react';
+import { Button, Form, Input, Modal, Tooltip } from 'antd';
 import styled from 'styled-components';
 import { Config } from '@shared';
 import { FormOutlined } from '@ant-design/icons';

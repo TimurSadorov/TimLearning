@@ -39,8 +39,8 @@ const editableModules = {
 };
 
 const editableLessons = {
-    path: '/modules/:moduleId/lessons/editing',
-    getLink: (moduleId: string) => `/modules/${moduleId}/lessons/editing`,
+    path: '/courses/:courseId/modules/:moduleId/lessons/editing',
+    getLink: (courseId: string, moduleId: string) => `/courses/${courseId}/modules/${moduleId}/lessons/editing`,
 };
 
 export const routes = {
@@ -52,4 +52,5 @@ export const routes = {
     emailConfiramtion,
     editableCourses,
     editableModules,
+    editableLessons,
 };

@@ -10,6 +10,8 @@ export const isApiError = (error: Error): error is ApiError => error instanceof 
 
 export const isNotApiError = (error: Error): boolean => !isApiError(error);
 
+export const isNotFoundApiError = (error: Error): boolean => isApiError(error) && error.status === 404;
+
 export const hasValidationErrorResponse = (error: ApiError) => error.status === 422;
 
 export const isModelValidationError = (response: ValidationErrorResponse): response is ModelValidationErrorResponse =>

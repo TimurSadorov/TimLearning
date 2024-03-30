@@ -6,7 +6,7 @@ export type WithCourseId<TData> = { courseId: string; data: TData };
 export const findOrderedModulesFx = createEffect(
     async (request: WithCourseId<Api.Services.FindOrderedModulesQueryParams>) => {
         if (!request.courseId) {
-            return [];
+            return null;
         }
         return await Api.Services.ModuleService.findOrderedModules(
             request.courseId,

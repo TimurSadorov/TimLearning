@@ -2,39 +2,35 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ChangeModuleOrderRequest } from '../models/ChangeModuleOrderRequest';
-import type { CreateModuleRequest } from '../models/CreateModuleRequest';
-import type { FindOrderedModulesResponse } from '../models/FindOrderedModulesResponse';
-import type { ModuleAllDataResponse } from '../models/ModuleAllDataResponse';
-import type { UpdateModuleRequest } from '../models/UpdateModuleRequest';
+import type { CreateLessonRequest } from '../models/CreateLessonRequest';
+import type { LessonSystemDataResponse } from '../models/LessonSystemDataResponse';
+import type { MoveLessonRequest } from '../models/MoveLessonRequest';
+import type { UpdateLessonRequest } from '../models/UpdateLessonRequest';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class ModuleService {
+export class LessonService {
 
     /**
-     * @param courseId 
-     * @param isDeleted 
+     * @param moduleId 
      * @param isDraft 
-     * @returns FindOrderedModulesResponse Success
+     * @returns LessonSystemDataResponse Success
      * @throws ApiError
      */
-    public static findOrderedModules(
-courseId: string,
-isDeleted: boolean,
+    public static findOrderedLessons(
+moduleId: string,
 isDraft?: boolean,
-): CancelablePromise<Array<FindOrderedModulesResponse>> {
+): CancelablePromise<Array<LessonSystemDataResponse>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/courses/{courseId}/modules/ordered/find',
+            url: '/api/modules/{moduleId}/lessons/ordered/find',
             path: {
-                'courseId': courseId,
+                'moduleId': moduleId,
             },
             query: {
-                'IsDeleted': isDeleted,
-                'IsDraft': isDraft,
+                'isDraft': isDraft,
             },
             errors: {
                 401: `Unauthorized`,
@@ -47,15 +43,15 @@ isDraft?: boolean,
 
     /**
      * @param moduleId 
-     * @returns ModuleAllDataResponse Success
+     * @returns LessonSystemDataResponse Success
      * @throws ApiError
      */
-    public static getModuleAllData(
+    public static getDeletedLessons(
 moduleId: string,
-): CancelablePromise<ModuleAllDataResponse> {
+): CancelablePromise<Array<LessonSystemDataResponse>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/modules/{moduleId}',
+            url: '/api/modules/{moduleId}/lessons/deleted',
             path: {
                 'moduleId': moduleId,
             },
@@ -74,42 +70,15 @@ moduleId: string,
      * @returns any Success
      * @throws ApiError
      */
-    public static updateModule(
+    public static createLesson(
 moduleId: string,
-requestBody: UpdateModuleRequest,
-): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'PATCH',
-            url: '/api/modules/{moduleId}',
-            path: {
-                'moduleId': moduleId,
-            },
-            body: requestBody,
-            mediaType: 'application/json',
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-                422: `Request validation error.`,
-            },
-        });
-    }
-
-    /**
-     * @param courseId 
-     * @param requestBody 
-     * @returns any Success
-     * @throws ApiError
-     */
-    public static createModule(
-courseId: string,
-requestBody: CreateModuleRequest,
+requestBody: CreateLessonRequest,
 ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/courses/{courseId}/modules',
+            url: '/api/modules/{moduleId}/lessons',
             path: {
-                'courseId': courseId,
+                'moduleId': moduleId,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -123,20 +92,20 @@ requestBody: CreateModuleRequest,
     }
 
     /**
-     * @param moduleId 
+     * @param lessonId 
      * @param requestBody 
      * @returns any Success
      * @throws ApiError
      */
-    public static changeModuleOrder(
-moduleId: string,
-requestBody: ChangeModuleOrderRequest,
+    public static updateLesson(
+lessonId: string,
+requestBody: UpdateLessonRequest,
 ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'PATCH',
-            url: '/api/modules/{moduleId}/order',
+            url: '/api/lessons/{lessonId}',
             path: {
-                'moduleId': moduleId,
+                'lessonId': lessonId,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -150,18 +119,45 @@ requestBody: ChangeModuleOrderRequest,
     }
 
     /**
-     * @param moduleId 
+     * @param lessonId 
+     * @param requestBody 
      * @returns any Success
      * @throws ApiError
      */
-    public static deleteModule(
-moduleId: string,
+    public static moveLesson(
+lessonId: string,
+requestBody: MoveLessonRequest,
 ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'PATCH',
-            url: '/api/modules/{moduleId}/delete',
+            url: '/api/lessons/{lessonId}/move',
             path: {
-                'moduleId': moduleId,
+                'lessonId': lessonId,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+                422: `Request validation error.`,
+            },
+        });
+    }
+
+    /**
+     * @param lessonId 
+     * @returns any Success
+     * @throws ApiError
+     */
+    public static deleteLesson(
+lessonId: string,
+): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'PATCH',
+            url: '/api/lessons/{lessonId}/delete',
+            path: {
+                'lessonId': lessonId,
             },
             errors: {
                 401: `Unauthorized`,
@@ -173,18 +169,18 @@ moduleId: string,
     }
 
     /**
-     * @param moduleId 
+     * @param lessonId 
      * @returns any Success
      * @throws ApiError
      */
-    public static restoreModule(
-moduleId: string,
+    public static restoreLesson(
+lessonId: string,
 ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'PATCH',
-            url: '/api/modules/{moduleId}/restore',
+            url: '/api/lessons/{lessonId}/restore',
             path: {
-                'moduleId': moduleId,
+                'lessonId': lessonId,
             },
             errors: {
                 401: `Unauthorized`,

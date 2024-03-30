@@ -1,13 +1,12 @@
 import { CourseEntity } from '@entities';
 import { ModuleFeature } from '@features';
-import { Button, Checkbox, Layout, Skeleton, Tooltip } from 'antd';
+import { Checkbox, Layout, Skeleton } from 'antd';
 import React, { useCallback } from 'react';
 import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import { Loader } from 'shared/ui';
 import styled from 'styled-components';
 import { EditableModuleRecord } from './EditableModuleRecord';
-import { ArrowLeftOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Config } from '@shared';
 
 type Props = { courseId: string };
@@ -21,7 +20,7 @@ export const EditableModulesSider = ({ courseId }: Props) => {
     const { changeOrder, changingOrderLoading } = ModuleFeature.Model.useСhangeModuleOrder();
     const onDragEnd = useCallback<OnDragEndResponder>(
         (result) => {
-            if (!!result.destination) {
+            if (!!result.destination && result.source.index !== result.destination.index) {
                 changeOrder({ moduleId: result.draggableId, data: { order: result.destination.index + 1 } });
             }
         },
@@ -29,15 +28,20 @@ export const EditableModulesSider = ({ courseId }: Props) => {
     );
 
     const navigate = useNavigate();
-    const toEditableCourses = useCallback(() => navigate(Config.routes.editableCourses.path), [navigate]);
+    const toEditableLessons = useCallback(
+        (moduleId: string) => {
+            navigate(Config.routes.editableLessons.getLink(courseId, moduleId));
+        },
+        [navigate],
+    );
 
     return (
         <Layout.Sider theme="light" width="400px">
-            <Tooltip placement="bottom" title={'Вернуться к курсам'}>
-                <BackButton icon={<ArrowLeftOutlined />} onClick={toEditableCourses} />
-            </Tooltip>
             <LayoutSider>
-                <SiderHeader>{courseLoading ? <Skeleton.Input active /> : editableCourse?.shortName}</SiderHeader>
+                <SiderHeader>
+                    <CoursesLink to={Config.routes.editableCourses.path}>Вернуться к курсам</CoursesLink>
+                    {courseLoading ? <Skeleton.Input active /> : <HeaderText>{editableCourse?.shortName}</HeaderText>}
+                </SiderHeader>
                 <FeaturesBlock>
                     <FiltersBlock>
                         <FilterWord>Фильтры:</FilterWord>
@@ -48,7 +52,7 @@ export const EditableModulesSider = ({ courseId }: Props) => {
                     <CreateModuleButton courseId={courseId} />
                 </FeaturesBlock>
                 <DragDropContext enableDefaultSensors onDragEnd={onDragEnd}>
-                    {isLoading || changingOrderLoading ? (
+                    {!editableOrderedModules || isLoading || changingOrderLoading ? (
                         <Loader />
                     ) : (
                         <Droppable droppableId="modules">
@@ -64,6 +68,11 @@ export const EditableModulesSider = ({ courseId }: Props) => {
                                             {(provided) => (
                                                 <EditableModuleRecord
                                                     module={module}
+                                                    isActive={false}
+                                                    isEditable={true}
+                                                    onClick={() => {
+                                                        toEditableLessons(module.id);
+                                                    }}
                                                     ref={provided.innerRef}
                                                     draggableProps={provided.draggableProps}
                                                     dragHandleProps={provided.dragHandleProps}
@@ -82,14 +91,6 @@ export const EditableModulesSider = ({ courseId }: Props) => {
     );
 };
 
-const BackButton = styled(Button)`
-    position: absolute;
-    right: -32px;
-    border-radius: 0px 10px 10px 0;
-    border: 0px;
-    background-color: #ffffff;
-`;
-
 const LayoutSider = styled(Layout)`
     background-color: #ffffff;
     height: 100%;
@@ -97,11 +98,20 @@ const LayoutSider = styled(Layout)`
 
 const SiderHeader = styled.div`
     border-bottom: 2px solid #bfdcfe;
-    padding: 30px;
-    font-size: 1.7em;
-    font-weight: 600;
+    padding: 20px 30px 30px 30px;
+    flex-direction: column;
     align-items: start;
     display: flex;
+    row-gap: 10px;
+`;
+
+const CoursesLink = styled(Link)`
+    font-size: 0.95em;
+`;
+
+const HeaderText = styled.div`
+    font-size: 1.8em;
+    font-weight: 600;
 `;
 
 const FeaturesBlock = styled.div`

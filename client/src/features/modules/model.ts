@@ -1,11 +1,12 @@
 import { ModuleEntity } from '@entities';
-import { Api, SharedUI } from '@shared';
+import { Api, Config, SharedUI } from '@shared';
 import { useForm } from 'antd/lib/form/Form';
 import { createEvent, restore } from 'effector';
 import { createGate, useGate, useUnit } from 'effector-react';
 import { WithModuleId } from 'entities/modules/model';
 import { reset } from 'patronum';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const FilterEditableOrderedModules = createGate();
 
@@ -15,6 +16,7 @@ const $isDeleted = restore(onChangeIsDeleted, false);
 reset({ clock: FilterEditableOrderedModules.close, target: [$isDeleted] });
 
 export const useFilterEditableOrderedModules = (cousreId: string) => {
+    const navigate = useNavigate();
     useGate(FilterEditableOrderedModules);
     const isDeleted = useUnit($isDeleted);
 
@@ -28,7 +30,18 @@ export const useFilterEditableOrderedModules = (cousreId: string) => {
         [cousreId, isDeleted],
     );
 
-    const { isLoading, editableOrderedModules } = ModuleEntity.Model.useEditableOrderedModules(request);
+    const { isLoading, editableOrderedModules, error } = ModuleEntity.Model.useEditableOrderedModules(request);
+
+    useEffect(() => {
+        if (!error) {
+            return;
+        }
+
+        if (Api.Utils.isNotFoundApiError(error)) {
+            SharedUI.Model.Notification.notifyErrorFx('Курс не найден 😕');
+            navigate(Config.routes.editableCourses.path);
+        }
+    }, [error]);
 
     return {
         editableOrderedModules,

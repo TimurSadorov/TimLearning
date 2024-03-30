@@ -106,6 +106,7 @@ requestBody: UpdateCourseRequest,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
+                404: `Not Found`,
                 422: `Request validation error.`,
             },
         });
