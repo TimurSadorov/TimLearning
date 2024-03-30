@@ -38,6 +38,11 @@ const editableModules = {
     getLink: (courseId: string) => `/courses/${courseId}/modules/editing`,
 };
 
+const editableLessons = {
+    path: '/modules/:moduleId/lessons/editing',
+    getLink: (moduleId: string) => `/modules/${moduleId}/lessons/editing`,
+};
+
 export const routes = {
     root,
     login,
