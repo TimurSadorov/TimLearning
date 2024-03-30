@@ -13,6 +13,7 @@ using TimLearning.Application.UseCases.Modules.Commands.RestoreModule;
 using TimLearning.Application.UseCases.Modules.Commands.UpdateModule;
 using TimLearning.Application.UseCases.Modules.Dto;
 using TimLearning.Application.UseCases.Modules.Queries.FindOrderedModules;
+using TimLearning.Application.UseCases.Modules.Queries.GetModuleAllData;
 
 namespace TimLearning.Api.Features.Controllers;
 
@@ -27,7 +28,7 @@ public class ModuleController : SiteApiController
         _mediator = mediator;
     }
 
-    [HttpGet("courses/{courseId:guid}/modules/find")]
+    [HttpGet("courses/{courseId:guid}/modules/ordered/find")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<List<FindOrderedModulesResponse>> FindOrderedModules(
@@ -45,6 +46,23 @@ public class ModuleController : SiteApiController
         return modules
             .Select(m => new FindOrderedModulesResponse(m.Id, m.Name, m.IsDraft, m.IsDeleted))
             .ToList();
+    }
+
+    [HttpGet("modules/{moduleId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ModuleAllDataResponse> GetModuleAllData([FromRoute] Guid moduleId)
+    {
+        var module = await _mediator.Send(new GetModuleAllDataQuery(moduleId, UserId));
+
+        return new ModuleAllDataResponse(
+            module.Id,
+            module.Name,
+            module.Order,
+            module.CourseId,
+            module.IsDraft,
+            module.IsDeleted
+        );
     }
 
     [HttpPost("courses/{courseId:guid}/modules")]
