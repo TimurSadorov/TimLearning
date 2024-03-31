@@ -3,10 +3,8 @@ import { Api, Config, SharedUI } from '@shared';
 import { useForm } from 'antd/lib/form/Form';
 import { createEvent, restore } from 'effector';
 import { createGate, useGate, useUnit } from 'effector-react';
-import { WithModuleId } from 'entities/modules/model';
 import { reset } from 'patronum';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useCallback, useMemo, useState } from 'react';
 
 const FilterEditableOrderedModules = createGate();
 
@@ -16,7 +14,6 @@ const $isDeleted = restore(onChangeIsDeleted, false);
 reset({ clock: FilterEditableOrderedModules.close, target: [$isDeleted] });
 
 export const useFilterEditableOrderedModules = (cousreId: string) => {
-    const navigate = useNavigate();
     useGate(FilterEditableOrderedModules);
     const isDeleted = useUnit($isDeleted);
 
@@ -32,16 +29,7 @@ export const useFilterEditableOrderedModules = (cousreId: string) => {
 
     const { isLoading, editableOrderedModules, error } = ModuleEntity.Model.useEditableOrderedModules(request);
 
-    useEffect(() => {
-        if (!error) {
-            return;
-        }
-
-        if (Api.Utils.isNotFoundApiError(error)) {
-            SharedUI.Model.Notification.notifyErrorFx('Курс не найден 😕');
-            navigate(Config.routes.editableCourses.path);
-        }
-    }, [error]);
+    Api.Model.useNotFoundEntity(error, 'Курс не найден 😕', Config.routes.editableCourses.path);
 
     return {
         editableOrderedModules,
@@ -124,9 +112,12 @@ export const useUpdateModuleModal = (moduleId: string) => {
 export const useСhangeModuleOrder = () => {
     const changingOrderLoading = useUnit(ModuleEntity.Model.changeModuleOrderFx.pending);
 
-    const changeOrder = useCallback(async (data: WithModuleId<Api.Services.ChangeModuleOrderRequest>) => {
-        await ModuleEntity.Model.changeModuleOrderFx(data);
-    }, []);
+    const changeOrder = useCallback(
+        async (data: ModuleEntity.Model.WithModuleId<Api.Services.ChangeModuleOrderRequest>) => {
+            await ModuleEntity.Model.changeModuleOrderFx(data);
+        },
+        [],
+    );
 
     return {
         changingOrderLoading,

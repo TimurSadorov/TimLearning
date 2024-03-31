@@ -10,7 +10,7 @@ import { EditableCourses, UserCoursesPage } from './course/ui';
 import { TemplateWidget } from '@widgets';
 import styled from 'styled-components';
 import { EditableModulesPage } from './module';
-import { EditableLessonsPage } from './lesson';
+import { EditableLessonPage, EditableLessonsPage } from './lesson';
 
 const routes = Config.routes;
 
@@ -49,6 +49,7 @@ export const Routing = () => {
                 <Route path={routes.editableCourses.path} element={<EditableCourses />} />
                 <Route path={routes.editableModules.path} element={<EditableModulesPage />} />
                 <Route path={routes.editableLessons.path} element={<EditableLessonsPage />} />
+                <Route path={routes.editableLesson.path} element={<EditableLessonPage />} />
             </Route>
             <Route element={<TemplateWidget.UI.Header />}>
                 <Route path="*" element={<Navigate to={routes.root.path} />} />

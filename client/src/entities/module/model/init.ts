@@ -1,10 +1,11 @@
 import { sample } from 'effector';
-import { EditableModulesGate } from './model';
+import { EditableModulesGate, ModuleAllDataGate } from './model';
 import {
     changeModuleOrderFx,
     createModuleFx,
     deleteModuleFx,
     findOrderedModulesFx,
+    getModuleAllDataFx,
     restoreModuleFx,
     updateModuleFx,
 } from './effects';
@@ -42,4 +43,9 @@ sample({
     clock: restoreModuleFx.done,
     source: EditableModulesGate.state,
     target: findOrderedModulesFx,
+});
+
+sample({
+    clock: ModuleAllDataGate.open,
+    target: getModuleAllDataFx,
 });

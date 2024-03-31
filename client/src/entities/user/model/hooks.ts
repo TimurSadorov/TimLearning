@@ -18,14 +18,13 @@ import {
     RecoveryPasswordChangingGate,
     RegistrationGate,
 } from './model';
-import { Api } from '@shared';
+import { Api, SharedTypes } from '@shared';
 import { useCallback, useEffect } from 'react';
-import { UserRole } from 'shared/types';
 
 export const useUser = () => {
     const user = useUnit($user);
     const isLoging = useUnit($isLoging);
-    const isInRole = useCallback((role: UserRole) => !!user && user.roles.some((r) => r === role), [user]);
+    const isInRole = useCallback((role: SharedTypes.UserRole) => !!user && user.roles.some((r) => r === role), [user]);
 
     return {
         isAuthorized: !!user,

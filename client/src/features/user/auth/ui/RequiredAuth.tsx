@@ -1,14 +1,13 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { UserEntity } from '@entities';
-import { UserRole } from 'shared/types';
-import { Config } from '@shared';
+import { Config, SharedTypes } from '@shared';
 
 interface Props {
     needAuth: boolean;
     navigateLinkIfUnavailable: string;
     element: JSX.Element;
-    requiredRole?: UserRole;
+    requiredRole?: SharedTypes.UserRole;
 }
 
 export const RequiredAuth = (props: Props) => {

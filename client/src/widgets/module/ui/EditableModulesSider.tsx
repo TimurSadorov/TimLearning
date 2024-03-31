@@ -30,7 +30,7 @@ export const EditableModulesSider = ({ courseId }: Props) => {
     const navigate = useNavigate();
     const toEditableLessons = useCallback(
         (moduleId: string) => {
-            navigate(Config.routes.editableLessons.getLink(courseId, moduleId));
+            navigate(Config.routes.editableLessons.getLink(moduleId));
         },
         [navigate],
     );

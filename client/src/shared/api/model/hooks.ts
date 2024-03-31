@@ -7,9 +7,26 @@ import {
     isValidationErrorText,
     isModelValidationError,
     notifyIfValidationErrorText,
+    isNotFoundApiError,
 } from '../utils';
 import { SharedUI } from '@shared';
 import { FormInstance } from 'antd';
+import { useNavigate } from 'react-router-dom';
+
+export const useNotFoundEntity = (error: Error | null, textOnNotFound: string, navigationPath: string) => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!error) {
+            return;
+        }
+
+        if (isNotFoundApiError(error)) {
+            SharedUI.Model.Notification.notifyErrorFx(textOnNotFound);
+            navigate(navigationPath);
+        }
+    }, [error, textOnNotFound, navigationPath, navigate]);
+};
 
 export const useRequestToServerErrorNotification = (
     error: Error | null,

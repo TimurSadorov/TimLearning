@@ -15,22 +15,17 @@ export class LessonService {
 
     /**
      * @param moduleId 
-     * @param isDraft 
      * @returns LessonSystemDataResponse Success
      * @throws ApiError
      */
-    public static findOrderedLessons(
+    public static getOrderedLessons(
 moduleId: string,
-isDraft?: boolean,
 ): CancelablePromise<Array<LessonSystemDataResponse>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/modules/{moduleId}/lessons/ordered/find',
+            url: '/api/modules/{moduleId}/lessons/ordered',
             path: {
                 'moduleId': moduleId,
-            },
-            query: {
-                'isDraft': isDraft,
             },
             errors: {
                 401: `Unauthorized`,

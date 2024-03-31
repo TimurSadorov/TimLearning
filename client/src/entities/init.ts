@@ -1,3 +1,4 @@
 import './user/model/init';
-import './courses/model/init';
-import './modules/model/init';
+import './course/model/init';
+import './module/model/init';
+import './lesson/model/init';

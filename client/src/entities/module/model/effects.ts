@@ -16,6 +16,10 @@ export const findOrderedModulesFx = createEffect(
     },
 );
 
+export const getModuleAllDataFx = createEffect(async (moduleId: string) => {
+    return await Api.Services.ModuleService.getModuleAllData(moduleId);
+});
+
 export const createModuleFx = createEffect(
     async (request: WithCourseId<Api.Services.CreateModuleRequest>) =>
         await Api.Services.ModuleService.createModule(request.courseId, request.data),

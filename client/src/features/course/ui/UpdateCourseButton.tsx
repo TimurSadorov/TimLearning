@@ -3,12 +3,12 @@ import React from 'react';
 import { CourseUpdating, useUpdateCourseModal } from '../model';
 import styled from 'styled-components';
 import { Config } from '@shared';
-import { EditableCours } from 'entities/courses/types';
 import { FormOutlined } from '@ant-design/icons';
+import { CourseEntity } from '@entities';
 
 interface Props {
     className?: string;
-    course: Pick<EditableCours, 'id' | 'name' | 'shortName' | 'description'>;
+    course: Pick<CourseEntity.Type.EditableCours, 'id' | 'name' | 'shortName' | 'description'>;
 }
 
 export const UpdateCourseButton = ({ course, className }: Props) => {

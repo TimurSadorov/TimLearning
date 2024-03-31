@@ -39,8 +39,13 @@ const editableModules = {
 };
 
 const editableLessons = {
-    path: '/courses/:courseId/modules/:moduleId/lessons/editing',
-    getLink: (courseId: string, moduleId: string) => `/courses/${courseId}/modules/${moduleId}/lessons/editing`,
+    path: '/modules/:moduleId/lessons/editing',
+    getLink: (moduleId: string) => `/modules/${moduleId}/lessons/editing`,
+};
+
+const editableLesson = {
+    path: '/modules/:moduleId/lessons/:lessonId/editing',
+    getLink: (moduleId: string, lessonId: string) => `/modules/${moduleId}/lessons/${lessonId}/editing`,
 };
 
 export const routes = {
@@ -53,4 +58,5 @@ export const routes = {
     editableCourses,
     editableModules,
     editableLessons,
+    editableLesson,
 };
