@@ -43,7 +43,7 @@ public class GetOrderedLessonsQueryHandler
 
     private static IEnumerable<Lesson> GetOrderedLessons(List<Lesson> lessons)
     {
-        var lesson = lessons.FirstOrDefault(l => l.PreviousLesson is null);
+        var lesson = lessons.SingleOrDefault(l => l.PreviousLesson is null);
         while (lesson is not null)
         {
             yield return lesson;

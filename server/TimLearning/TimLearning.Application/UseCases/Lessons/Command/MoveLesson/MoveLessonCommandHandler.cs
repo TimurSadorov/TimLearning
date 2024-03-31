@@ -35,6 +35,12 @@ public class MoveLessonCommandHandler : IRequestHandler<MoveLessonCommand>
             return;
         }
 
+        var newPreviousLesson = await _dbContext.Lessons
+            .Include(l => l.NextLesson)
+            .SingleOrDefaultAsync(
+                LessonSpecifications.BeforeLesson(movableLesson.ModuleId, dto.NextLessonId),
+                cancellationToken
+            );
         if (movableLesson.PreviousLesson is not null)
         {
             var oldNextLesson = movableLesson.NextLesson;
@@ -48,17 +54,18 @@ public class MoveLessonCommandHandler : IRequestHandler<MoveLessonCommand>
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        var newPreviousLesson = await _dbContext.Lessons
-            .Include(l => l.NextLesson)
-            .FirstOrDefaultAsync(
-                LessonSpecifications.BeforeLesson(movableLesson.ModuleId, dto.NextLessonId),
-                cancellationToken
-            );
         var newNextLesson = newPreviousLesson?.NextLesson;
         if (newPreviousLesson is not null)
         {
             newPreviousLesson.SetNextLesson(movableLesson);
             await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+        else
+        {
+            newNextLesson = await _dbContext.Lessons.FirstAsync(
+                l => l.Id == dto.NextLessonId,
+                cancellationToken
+            );
         }
 
         movableLesson.SetNextLesson(newNextLesson);
