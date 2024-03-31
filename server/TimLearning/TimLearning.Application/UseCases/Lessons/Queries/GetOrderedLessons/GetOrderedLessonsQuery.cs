@@ -3,9 +3,9 @@ using TimLearning.Application.Mediator.Pipelines.RoleAccess;
 using TimLearning.Application.UseCases.Lessons.Dto;
 using TimLearning.Domain.Entities.Enums;
 
-namespace TimLearning.Application.UseCases.Lessons.Queries.FindOrderedLessons;
+namespace TimLearning.Application.UseCases.Lessons.Queries.GetOrderedLessons;
 
-public record FindOrderedLessonsQuery(OrderedLessonFindDto Dto, Guid CallingUserId)
+public record GetOrderedLessonsQuery(Guid ModuleId, Guid CallingUserId)
     : IRequest<List<LessonSystemDataDto>>,
         IAccessByRole
 {

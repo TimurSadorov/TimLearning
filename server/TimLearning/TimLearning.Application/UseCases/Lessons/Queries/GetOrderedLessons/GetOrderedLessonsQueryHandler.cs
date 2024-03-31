@@ -5,44 +5,38 @@ using TimLearning.Domain.Entities;
 using TimLearning.Domain.Exceptions;
 using TimLearning.Infrastructure.Interfaces.Db;
 
-namespace TimLearning.Application.UseCases.Lessons.Queries.FindOrderedLessons;
+namespace TimLearning.Application.UseCases.Lessons.Queries.GetOrderedLessons;
 
-public class FindOrderedLessonsQueryHandler
-    : IRequestHandler<FindOrderedLessonsQuery, List<LessonSystemDataDto>>
+public class GetOrderedLessonsQueryHandler
+    : IRequestHandler<GetOrderedLessonsQuery, List<LessonSystemDataDto>>
 {
     private readonly IAppDbContext _dbContext;
 
-    public FindOrderedLessonsQueryHandler(IAppDbContext dbContext)
+    public GetOrderedLessonsQueryHandler(IAppDbContext dbContext)
     {
         _dbContext = dbContext;
     }
 
     public async Task<List<LessonSystemDataDto>> Handle(
-        FindOrderedLessonsQuery request,
+        GetOrderedLessonsQuery request,
         CancellationToken cancellationToken
     )
     {
-        var dto = request.Dto;
         if (
-            await _dbContext.Modules.AnyAsync(m => m.Id == dto.ModuleId, cancellationToken) is false
+            await _dbContext.Modules.AnyAsync(m => m.Id == request.ModuleId, cancellationToken)
+            is false
         )
         {
             throw new NotFoundException();
         }
 
         var lessons = await _dbContext.Lessons
-            .Where(l => l.ModuleId == dto.ModuleId && l.IsDeleted == false)
+            .Where(l => l.ModuleId == request.ModuleId && l.IsDeleted == false)
             .Include(l => l.NextLesson)
             .Include(l => l.PreviousLesson)
             .ToListAsync(cancellationToken);
 
-        var orderedLessons = GetOrderedLessons(lessons);
-        if (dto.IsDraft is not null)
-        {
-            orderedLessons = orderedLessons.Where(l => l.IsDraft == dto.IsDraft);
-        }
-
-        return orderedLessons
+        return GetOrderedLessons(lessons)
             .Select(l => new LessonSystemDataDto(l.Id, l.Name, l.IsDraft))
             .ToList();
     }

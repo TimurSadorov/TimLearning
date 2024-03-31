@@ -13,8 +13,8 @@ using TimLearning.Application.UseCases.Lessons.Command.MoveLesson;
 using TimLearning.Application.UseCases.Lessons.Command.RestoreLesson;
 using TimLearning.Application.UseCases.Lessons.Command.UpdateLesson;
 using TimLearning.Application.UseCases.Lessons.Dto;
-using TimLearning.Application.UseCases.Lessons.Queries.FindOrderedLessons;
 using TimLearning.Application.UseCases.Lessons.Queries.GetDeletedLessons;
+using TimLearning.Application.UseCases.Lessons.Queries.GetOrderedLessons;
 
 namespace TimLearning.Api.Features.Controllers;
 
@@ -29,17 +29,12 @@ public class LessonController : SiteApiController
         _mediator = mediator;
     }
 
-    [HttpGet("modules/{moduleId:guid}/lessons/ordered/find")]
+    [HttpGet("modules/{moduleId:guid}/lessons/ordered")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<List<LessonSystemDataResponse>> FindOrderedLessons(
-        [FromRoute] Guid moduleId,
-        [FromQuery] bool? isDraft
-    )
+    public async Task<List<LessonSystemDataResponse>> GetOrderedLessons([FromRoute] Guid moduleId)
     {
-        var modules = await _mediator.Send(
-            new FindOrderedLessonsQuery(new OrderedLessonFindDto(moduleId, isDraft), UserId)
-        );
+        var modules = await _mediator.Send(new GetOrderedLessonsQuery(moduleId, UserId));
 
         return modules.Select(m => m.ToResponse()).ToList();
     }
