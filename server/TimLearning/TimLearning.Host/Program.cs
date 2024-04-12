@@ -37,8 +37,6 @@ if (app.Environment.IsDevelopment())
     app.UseTimLearningSwaggerAndUI();
 }
 
-app.UseHttpsRedirection();
-
 app.UseRouting();
 
 app.UseCors();

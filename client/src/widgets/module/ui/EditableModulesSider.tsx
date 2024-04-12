@@ -17,7 +17,7 @@ export const EditableModulesSider = ({ courseId }: Props) => {
     const { editableOrderedModules, isLoading, isDeleted, onChangeIsDeleted } =
         ModuleFeature.Model.useFilterEditableOrderedModules(courseId);
 
-    const { changeOrder, changingOrderLoading } = ModuleFeature.Model.useСhangeModuleOrder();
+    const { changeOrder, changingOrderLoading } = ModuleFeature.Model.useChangeModuleOrder();
     const onDragEnd = useCallback<OnDragEndResponder>(
         (result) => {
             if (!!result.destination && result.source.index !== result.destination.index) {

@@ -1,14 +1,22 @@
+version: "3"
+
 services:
   server:
     container_name: "server"
-    build:
-      context: ../server/TimLearning
-      dockerfile: Dockerfile
+    build: ../server/TimLearning
     environment:
-      - Broker__Host=rabbitmq
+      - DataEncryptor__SharedKey=${API_DATA_ENCRYPTOR_SHARED_KEY}
+      - DbConnectionStrings__Postgres=${API_POSTGRES_CONNECTION}
+      - TimLearningSite__Url=${API_TIM_LEARNING_URL}
+      - Mail__Server=${API_MAIL_SERVER}
+      - Mail__Port=${API_MAIL_PORT}
+      - Mail__UserName=${API_MAIL_USER_NAME}
+      - Mail__UserMail=${API_MAIL_USER_MAIL}
+      - Mail__Password=${API_MAIL_PASSWORD}
+      - Mail__UseSsl=${API_MAIL_USE_SSL}
+      - JwtSecret__Key=${API_JWT_SECRET_KEY}
     ports:
-      - ${API_HTTP_PORT}:80
-      - ${API_HTTPS_PORT}:443
+      - ${API_HTTP_PORT}:8080
     depends_on:
       postgres:
         condition: service_healthy
@@ -16,12 +24,12 @@ services:
   frontend:
     container_name: "frontend"
     build:
-      context: ./src/frontend/
-      dockerfile: chat/dockerfile
+      args:
+        - REACT_APP_API_URL=${FRONTEND_API_URL}
+      context: ../client
+      dockerfile: dockerfile
     ports:
-      - ${FRONTEND_LOCAL_PORT}:${FRONTEND_DOCKER_PORT}
-    volumes:
-      - ./src/frontend/chat/src:/app/src
+      - ${FRONTEND_PUBLIC_PORT}:${FRONTEND_INTERNAL_PORT}
 
   postgres:
     container_name: "postgres"
@@ -29,13 +37,17 @@ services:
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_DB=${POSTGRES_DB_NAME}
     ports:
-      - ${POSTGRES_LOCAL_PORT}:${POSTGRES_PORT}
+      - ${POSTGRES_PUBLIC_PORT}:${POSTGRES_INTERNAL_PORT}
     volumes:
-      - data:/var/lib/postgresql
+      - db-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready", "-d", "${POSTGRES_DB}"]
+      test:
+        ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB_NAME}"]
       interval: 5s
       timeout: 3s
       retries: 5
+
+volumes:
+  db-data:

@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log
+README.md
+.eslintignore
+.eslintrc.js
+.prettierignore
+.prettierrc.js
+.vscode

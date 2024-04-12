@@ -109,7 +109,7 @@ export const useUpdateModuleModal = (moduleId: string) => {
     };
 };
 
-export const useСhangeModuleOrder = () => {
+export const useChangeModuleOrder = () => {
     const changingOrderLoading = useUnit(ModuleEntity.Model.changeModuleOrderFx.pending);
 
     const changeOrder = useCallback(
