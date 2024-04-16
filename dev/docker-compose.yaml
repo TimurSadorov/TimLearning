@@ -51,5 +51,12 @@ services:
       timeout: 3s
       retries: 5
 
+  docker-dnd:
+    container_name: "docker-dnd"
+    image: docker:dind
+    privileged: true
+    environment:
+      - DOCKER_TLS_CERTDIR=
+
 volumes:
   db-data:

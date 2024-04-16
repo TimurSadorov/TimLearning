@@ -47,7 +47,9 @@ public class ExerciseService
         );
         var newApp = File.Open(pathToNewApp, FileMode.Open);
 
-        using var client = new DockerClientConfiguration().CreateClient();
+        using var client = new DockerClientConfiguration(
+            new Uri("tcp://docker-dnd:2375")
+        ).CreateClient();
 
         var networkName = Guid.NewGuid().ToString();
         await client.Networks.CreateNetworkAsync(
@@ -159,6 +161,7 @@ public class ExerciseService
             {
                 Dockerfile = dto.NewApp.PathToDockerfile,
                 Tags = new List<string> { appImage },
+                ForceRemove = true
             },
             newApp,
             new AuthConfig[] { },
@@ -186,7 +189,8 @@ public class ExerciseService
                     {
                         { networkName, new EndpointSettings() }
                     }
-                }
+                },
+                HostConfig = new HostConfig { PublishAllPorts = true },
             }
         );
 
