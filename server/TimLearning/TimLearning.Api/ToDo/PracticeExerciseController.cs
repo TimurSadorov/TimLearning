@@ -17,12 +17,9 @@ public class PracticeExerciseController : SiteApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(
-        [FromForm] NewExerciseRequest request,
-        CancellationToken ct
-    )
+    public async Task<string> Create([FromForm] NewExerciseRequest request, CancellationToken ct)
     {
-        var result = await _exerciseService.CreateAsync(
+        return await _exerciseService.CreateAsync(
             new ExerciseCreateDto(
                 new DockerAppDto(
                     request.NewApp.App,
@@ -59,7 +56,5 @@ public class PracticeExerciseController : SiteApiController
                     .ToList()
             }
         );
-
-        return Ok();
     }
 }

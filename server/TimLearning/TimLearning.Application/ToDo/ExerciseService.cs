@@ -1,25 +1,31 @@
-﻿using System.Formats.Tar;
+using System.Formats.Tar;
 using System.IO.Compression;
 using System.Net.Mime;
+using System.Text;
+using System.Text.RegularExpressions;
 using Docker.DotNet;
 using Docker.DotNet.Models;
 using FluentValidation;
+using Microsoft.Extensions.Logging;
 using TimLearning.Application.ToDo.Dto;
 using TimLearning.Application.ToDo.Mappers;
 using TimLearning.Infrastructure.Interfaces.Db;
+using TimLearning.Shared.Extensions;
 
 namespace TimLearning.Application.ToDoServices;
 
 public class ExerciseService
 {
     private readonly IAppDbContext _db;
+    private readonly ILogger<ExerciseService> _logger;
 
-    public ExerciseService(IAppDbContext db)
+    public ExerciseService(IAppDbContext db, ILogger<ExerciseService> logger)
     {
         _db = db;
+        _logger = logger;
     }
 
-    public async Task<Guid> CreateAsync(ExerciseCreateDto dto)
+    public async Task<string> CreateAsync(ExerciseCreateDto dto)
     {
         if (
             dto.NewApp.Source.ContentType
@@ -48,7 +54,7 @@ public class ExerciseService
         var newApp = File.Open(pathToNewApp, FileMode.Open);
 
         using var client = new DockerClientConfiguration(
-            new Uri("tcp://docker-dnd:2375")
+        // new Uri("tcp://docker-dnd:2375")
         ).CreateClient();
 
         var networkName = Guid.NewGuid().ToString();
@@ -69,10 +75,10 @@ public class ExerciseService
                     new AuthConfig(),
                     new Progress<JSONMessage>(message =>
                     {
-                        // TODO: надо что то делать на ошибку
+                        // TODO: ???? ??? ?? ?????? ?? ??????
                         if (string.IsNullOrEmpty(message.ErrorMessage) == false)
                         {
-                            throw new InvalidOperationException("Ошибка при создании имеджа");
+                            throw new InvalidOperationException("?????? ??? ???????? ??????");
                         }
                     })
                 );
@@ -117,7 +123,7 @@ public class ExerciseService
                 if (result == false)
                 {
                     throw new InvalidOperationException(
-                        "Ошибка при старте контейнера вспомогательного приложения"
+                        "?????? ??? ?????? ?????????? ???????????????? ??????????"
                     );
                 }
 
@@ -132,7 +138,7 @@ public class ExerciseService
                         var insp = await client.Containers.InspectContainerAsync(container.ID);
                         if (insp.State.Health is null)
                         {
-                            throw new Exception("Нет хелс чека");
+                            throw new Exception("??? ???? ????");
                         }
                         if (insp.State.Health?.Status is "none" or "healthy")
                         {
@@ -146,7 +152,7 @@ public class ExerciseService
                         }
                         if (insp.State.Health?.Status == "unhealthy")
                         {
-                            throw new InvalidOperationException("Не работает имедж");
+                            throw new InvalidOperationException("?? ???????? ?????");
                         }
 
                         throw new Exception("Not supported status.");
@@ -156,6 +162,8 @@ public class ExerciseService
         }
 
         var appImage = $"app-{Guid.NewGuid()}";
+        var stringBuilder = new StringBuilder();
+        var hasError = false;
         await client.Images.BuildImageFromDockerfileAsync(
             new ImageBuildParameters
             {
@@ -169,12 +177,18 @@ public class ExerciseService
             new Progress<JSONMessage>(message =>
             {
                 // TODO: надо что то делать на ошибку
+                stringBuilder.AppendLine(message.Stream);
                 if (string.IsNullOrEmpty(message.ErrorMessage) == false)
                 {
-                    throw new InvalidOperationException("Ошибка при создании имеджа приложения");
+                    stringBuilder.AppendLine(message.ErrorMessage);
+                    hasError = true;
                 }
             })
         );
+        if (hasError)
+        {
+            return stringBuilder.ToString();
+        }
 
         var appContainer = await client.Containers.CreateContainerAsync(
             new CreateContainerParameters
@@ -198,12 +212,22 @@ public class ExerciseService
             appContainer.ID,
             new ContainerStartParameters()
         );
+        var resultTest = await client.Containers.WaitContainerAsync(appContainer.ID);
 
-        if (appStartResult == false)
+        if (resultTest.StatusCode != 0 || resultTest.Error?.Message?.HasText() is true)
         {
-            throw new InvalidOperationException("Ошибка при старте контейнера приложения");
+            var response = await client.Containers.GetContainerLogsAsync(
+                appContainer.ID,
+                true,
+                new ContainerLogsParameters() { ShowStderr = true, ShowStdout = true }
+            );
+            var std = await response.ReadOutputToEndAsync(default);
+            var logs = Regex.Replace(std.stdout, @"[^\u0000-\u007F]+", "");
+            _logger.LogInformation(logs);
+            // _logger.LogInformation($"Error: {std.stderr}");
+            return logs;
         }
 
-        return Guid.NewGuid();
+        return "Ok";
     }
 }
