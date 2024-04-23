@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
+        <PackageReference Include="AWSSDK.S3" Version="3.7.307.20" />
     </ItemGroup>
 
     <ItemGroup>

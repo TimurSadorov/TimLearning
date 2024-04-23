@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using TimLearning.Infrastructure.Implementation.Configurations.Options;
 using TimLearning.Infrastructure.Implementation.Db;
 using TimLearning.Infrastructure.Implementation.Factories.Link;
 using TimLearning.Infrastructure.Implementation.Providers.Clock;
 using TimLearning.Infrastructure.Implementation.Services.Email;
+using TimLearning.Infrastructure.Implementation.Storages;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Infrastructure.Interfaces.Factories.Link;
 using TimLearning.Infrastructure.Interfaces.Providers.Clock;
@@ -28,6 +28,7 @@ public static class InfrastructureServicesConfigurations
         services.AddAppDbContext(config, dbOptionsBuilder);
 
         services.AddServices();
+        services.AddAllStorages(config);
     }
 
     private static void AddAllOptions(this IServiceCollection services)
