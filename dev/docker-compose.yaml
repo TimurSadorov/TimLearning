@@ -5,22 +5,22 @@ services:
     container_name: "server"
     build: ../server/TimLearning
     environment:
-      - DataEncryptor__SharedKey=${API_DATA_ENCRYPTOR_SHARED_KEY}
+      - DataEncryptor__SharedKey=RekNJutYABVCcezlI8gJSaXITQeUQq6kAmaZgRyY
       - DbConnectionStrings__Postgres=${API_POSTGRES_CONNECTION}
-      - TimLearningSite__Url=${API_TIM_LEARNING_URL}
-      - Mail__Server=${API_MAIL_SERVER}
-      - Mail__Port=${API_MAIL_PORT}
-      - Mail__UserName=${API_MAIL_USER_NAME}
-      - Mail__UserMail=${API_MAIL_USER_MAIL}
-      - Mail__Password=${API_MAIL_PASSWORD}
-      - Mail__UseSsl=${API_MAIL_USE_SSL}
-      - JwtSecret__Key=${API_JWT_SECRET_KEY}
-      - S3__ServiceUrl=${S3_BASE_URL}
+      - TimLearningSite__Url=${FRONTEND_PUBLIC_BASE_URL}
+      - Mail__Server=smtp.yandex.ru
+      - Mail__Port=465
+      - Mail__UserName=Поддержка TimLearning
+      - Mail__UserMail=timlearning1@ya.ru
+      - Mail__Password=zjhkokzkbyxsrdmh
+      - Mail__UseSsl=true
+      - JwtSecret__Key=vIQ1VNG92op9V28eAbgvrofWlkGbZx0xCpZhSZst4Fb9vAYAnfj5v410q67MZsKSwX31g8M8zQb97JSR
+      - S3__ServiceUrl=${S3_INTERNAL_BASE_URL}
       - S3__AccessKey=${S3_ACCESS_KEY}
       - S3__SecretKey=${S3_SECRET_KEY}
       - S3__BucketName=${S3_TIM_LEARNING_BUCKET}
     ports:
-      - ${API_HTTP_PORT}:8080
+      - ${API_PUBLIC_HTTP_PORT}:8080
     depends_on:
       postgres:
         condition: service_healthy
@@ -31,11 +31,11 @@ services:
     container_name: "frontend"
     build:
       args:
-        - REACT_APP_API_URL=${FRONTEND_API_URL}
+        - REACT_APP_API_URL=${API_PUBLIC_BASE_URL}
       context: ../client
       dockerfile: dockerfile
     ports:
-      - ${FRONTEND_PUBLIC_PORT}:${FRONTEND_INTERNAL_PORT}
+      - ${FRONTEND_PUBLIC_PORT}:80
     volumes:
       - ./nginx/app.conf:/etc/nginx/conf.d/default.conf
 
@@ -70,7 +70,7 @@ services:
     volumes:
       - minio-storage:/data
     healthcheck:
-      test: ["CMD", "curl", "-f", "${S3_BASE_URL}/minio/health/live"]
+      test: ["CMD", "curl", "-f", "${S3_INTERNAL_BASE_URL}/minio/health/live"]
       interval: 5s
       timeout: 3s
       retries: 5
@@ -83,7 +83,7 @@ services:
         condition: service_healthy
     entrypoint: >
       /bin/sh -c "
-      /usr/bin/mc alias set myminio ${S3_BASE_URL} ${S3_ACCESS_KEY} ${S3_SECRET_KEY};
+      /usr/bin/mc alias set myminio ${S3_INTERNAL_BASE_URL} ${S3_ACCESS_KEY} ${S3_SECRET_KEY};
       /usr/bin/mc mb myminio/${S3_TIM_LEARNING_BUCKET};
       /usr/bin/mc anonymous set private myminio/${S3_TIM_LEARNING_BUCKET};
       exit 0;
