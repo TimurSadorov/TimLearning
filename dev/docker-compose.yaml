@@ -15,11 +15,17 @@ services:
       - Mail__Password=${API_MAIL_PASSWORD}
       - Mail__UseSsl=${API_MAIL_USE_SSL}
       - JwtSecret__Key=${API_JWT_SECRET_KEY}
+      - S3__ServiceUrl=${S3_BASE_URL}
+      - S3__AccessKey=${S3_ACCESS_KEY}
+      - S3__SecretKey=${S3_SECRET_KEY}
+      - S3__BucketName=${S3_TIM_LEARNING_BUCKET}
     ports:
       - ${API_HTTP_PORT}:8080
     depends_on:
       postgres:
         condition: service_healthy
+      s3-buckets-creator:
+        condition: service_completed_successfully
 
   frontend:
     container_name: "frontend"
@@ -41,7 +47,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_DB=${POSTGRES_DB_NAME}
     ports:
-      - ${POSTGRES_PUBLIC_PORT}:${POSTGRES_INTERNAL_PORT}
+      - 54320:${POSTGRES_INTERNAL_PORT}
     volumes:
       - db-data:/var/lib/postgresql/data
     healthcheck:
@@ -50,6 +56,38 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+
+  s3:
+    container_name: "s3"
+    image: minio/minio
+    command: server --console-address ":9001" /data/
+    ports:
+      - 9000:${S3_INTERNAL_PORT}
+      - 9001:9001
+    environment:
+      - MINIO_ROOT_USER=${S3_ACCESS_KEY}
+      - MINIO_ROOT_PASSWORD=${S3_SECRET_KEY}
+    volumes:
+      - minio-storage:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "${S3_BASE_URL}/minio/health/live"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  s3-buckets-creator:
+    container_name: "s3-buckets-creator"
+    image: minio/mc
+    depends_on:
+      s3:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set myminio ${S3_BASE_URL} ${S3_ACCESS_KEY} ${S3_SECRET_KEY};
+      /usr/bin/mc mb myminio/${S3_TIM_LEARNING_BUCKET};
+      /usr/bin/mc anonymous set private myminio/${S3_TIM_LEARNING_BUCKET};
+      exit 0;
+      "
 
   docker-dnd:
     container_name: "docker-dnd"
@@ -60,3 +98,4 @@ services:
 
 volumes:
   db-data:
+  minio-storage:
