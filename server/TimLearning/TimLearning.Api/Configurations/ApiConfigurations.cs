@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +29,11 @@ public static class ApiConfigurations
                 options.Filters.Add<LocalizedValidationExceptionFilter>();
                 options.Filters.Add<AccessExceptionFilter>();
                 options.Filters.Add<NotFoundExceptionFilter>();
+            })
+            .AddJsonOptions(options =>
+            {
+                var enumConverter = new JsonStringEnumConverter();
+                options.JsonSerializerOptions.Converters.Add(enumConverter);
             })
             .AddApplicationPart(typeof(UserAccountController).Assembly);
 
