@@ -5,6 +5,7 @@ using TimLearning.Domain.Configurations;
 using TimLearning.Infrastructure.Implementation.Configurations;
 using TimLearning.Infrastructure.Implementation.Configurations.Options;
 using TimLearning.Infrastructure.Interfaces.Db;
+using TimLearning.Shared.AspNet.Swagger;
 using TimLearning.Shared.Configuration.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +14,8 @@ var services = builder.Services;
 var config = builder.Configuration;
 
 var siteOptions = config.GetRequiredConfig<TimLearningSiteOptions>();
-services.AddAllApiServices(config, siteOptions.Url);
+var useSwagger = builder.Environment.IsDevelopment() || builder.Environment.IsStaging();
+services.AddAllApiServices(config, useSwagger, siteOptions.Url);
 
 services.AddAllInfrastructureServices(
     config,
@@ -32,7 +34,7 @@ services.AddAllDomainServices();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+if (useSwagger)
 {
     app.UseTimLearningSwaggerAndUI();
 }

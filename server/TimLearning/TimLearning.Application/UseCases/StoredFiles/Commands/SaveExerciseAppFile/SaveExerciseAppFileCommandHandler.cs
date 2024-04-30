@@ -47,7 +47,8 @@ public class SaveExerciseAppFileCommandHandler : IRequestHandler<SaveExerciseApp
         await _fileStorage.UploadAsync(
             new StoredFileDto(storedFile.Id, storedFile.Added),
             fileDto.File,
-            fileDto.MimeType
+            fileDto.MimeType,
+            cancellationToken
         );
 
         await _dbContext.SaveChangesAsync(cancellationToken);

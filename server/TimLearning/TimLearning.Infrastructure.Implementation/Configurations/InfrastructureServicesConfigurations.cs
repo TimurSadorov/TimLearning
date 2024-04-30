@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TimLearning.Infrastructure.Implementation.Clients;
 using TimLearning.Infrastructure.Implementation.Configurations.Options;
 using TimLearning.Infrastructure.Implementation.Db;
 using TimLearning.Infrastructure.Implementation.Factories.Link;
@@ -29,6 +30,7 @@ public static class InfrastructureServicesConfigurations
 
         services.AddServices();
         services.AddAllStorages(config);
+        services.AddAllClients();
     }
 
     private static void AddAllOptions(this IServiceCollection services)

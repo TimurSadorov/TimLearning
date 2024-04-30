@@ -26,6 +26,8 @@ public class Lesson : IIdHolder<Guid>
     public required bool IsDraft { get; set; }
     public bool IsDeleted { get; private set; }
 
+    public Exercise? Exercise { get; set; }
+
     public void Delete()
     {
         IsDeleted = true;

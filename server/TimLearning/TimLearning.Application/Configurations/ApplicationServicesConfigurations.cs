@@ -4,10 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 using TimLearning.Application.Data.ValueObjects;
 using TimLearning.Application.Mediator.Pipelines.RoleAccess;
 using TimLearning.Application.Mediator.Pipelines.Transactional;
+using TimLearning.Application.Services.ExerciseServices;
 using TimLearning.Application.Services.LessonServices;
 using TimLearning.Application.Services.ModuleServices;
 using TimLearning.Application.Services.UserServices;
-using TimLearning.Application.ToDoServices;
 using TimLearning.Application.UseCases.Lessons.Dto;
 using TimLearning.Application.UseCases.Lessons.Validators;
 using TimLearning.Application.UseCases.Modules.Dto;
@@ -18,6 +18,7 @@ using TimLearning.Application.UseCases.Users.Validators;
 using TimLearning.Application.Validators.Course;
 using TimLearning.Application.Validators.Users;
 using TimLearning.Shared.Configuration.Extensions;
+using TimLearning.Shared.Services.Archiving;
 using TimLearning.Shared.Services.Encryptors.DataEncryptor;
 using TimLearning.Shared.Validation.FluentValidator.Validators;
 using TimLearning.Shared.Validation.Validators;
@@ -45,6 +46,7 @@ public static class ApplicationServicesConfigurations
     private static void AddPrivateServices(this IServiceCollection services, IConfiguration config)
     {
         services.AddDataHasher(config.GetRequiredStringValue("DataEncryptor:SharedKey"));
+        services.AddArchivingService();
 
         services.AddSingleton<IUserDataEncryptor, UserDataEncryptor>();
         services.AddScoped<IUserTokenUpdater, UserTokenUpdater>();
@@ -54,13 +56,7 @@ public static class ApplicationServicesConfigurations
 
         services.AddScoped<ILessonPositionService, LessonPositionService>();
 
-        services.AddToDoServices();
-    }
-
-    // TODO: services for future use
-    private static void AddToDoServices(this IServiceCollection services)
-    {
-        services.AddScoped<ExerciseService>();
+        services.AddScoped<IExerciseTester, ExerciseTester>();
     }
 
     private static void AddValidators(this IServiceCollection services)
@@ -93,5 +89,6 @@ public static class ApplicationServicesConfigurations
         >();
 
         services.AddScoped<IAsyncSimpleValidator<LessonMovementDto>, LessonMovementDtoValidator>();
+        services.AddScoped<IAsyncSimpleValidator<UpdatedLessonDto>, UpdatedLessonDtoValidator>();
     }
 }

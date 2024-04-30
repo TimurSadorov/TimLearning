@@ -12,11 +12,16 @@ public interface IAppDbContext
     DbSet<Course> Courses { get; }
     DbSet<Module> Modules { get; }
     DbSet<Lesson> Lessons { get; }
+    DbSet<Exercise> Exercises { get; }
+    DbSet<StoredFile> StoredFiles { get; }
 
     DatabaseFacade Database { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
     EntityEntry<TEntity> Add<TEntity>(TEntity entity)
+        where TEntity : class;
+
+    EntityEntry<TEntity> Remove<TEntity>(TEntity entity)
         where TEntity : class;
 }

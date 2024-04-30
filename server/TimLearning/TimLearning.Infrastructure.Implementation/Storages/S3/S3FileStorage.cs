@@ -2,21 +2,27 @@
 using Amazon.S3.Model;
 using Microsoft.Extensions.Options;
 using TimLearning.Infrastructure.Interfaces.Storages;
+using TimLearning.Shared.FileSystem;
 
 namespace TimLearning.Infrastructure.Implementation.Storages.S3;
 
 public class S3FileStorage : IFileStorage
 {
-    private readonly IAmazonS3 _amazonS3;
+    private readonly IAmazonS3 _s3Client;
     private readonly string _bucketName;
 
-    public S3FileStorage(IAmazonS3 amazonS3, IOptions<AmazonS3Options> amazonS3SettingsOption)
+    public S3FileStorage(IAmazonS3 s3Client, IOptions<AmazonS3Options> amazonS3SettingsOption)
     {
-        _amazonS3 = amazonS3;
+        _s3Client = s3Client;
         _bucketName = amazonS3SettingsOption.Value.BucketName;
     }
 
-    public async Task UploadAsync(StoredFileDto dto, Stream file, string? contentType)
+    public async Task UploadAsync(
+        StoredFileDto dto,
+        Stream file,
+        string? contentType,
+        CancellationToken ct = default
+    )
     {
         var key = GetKey(dto);
         var request = new PutObjectRequest
@@ -27,7 +33,23 @@ public class S3FileStorage : IFileStorage
             InputStream = file
         };
 
-        await _amazonS3.PutObjectAsync(request);
+        await _s3Client.PutObjectAsync(request, ct);
+    }
+
+    public async Task<TemporaryFile> DownloadToTemporaryFile(
+        StoredFileDto dto,
+        CancellationToken ct = default
+    )
+    {
+        var key = GetKey(dto);
+
+        var objectResponse = await _s3Client.GetObjectAsync(_bucketName, key, ct);
+
+        var tmpFile = TemporaryFile.Create();
+        await using var fs = tmpFile.Data.OpenWrite();
+        await objectResponse.ResponseStream.CopyToAsync(fs, ct);
+
+        return tmpFile;
     }
 
     private static string GetKey(StoredFileDto dto)

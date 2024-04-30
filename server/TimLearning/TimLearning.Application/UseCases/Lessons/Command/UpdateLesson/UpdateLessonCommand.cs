@@ -5,7 +5,9 @@ using TimLearning.Domain.Entities.Enums;
 
 namespace TimLearning.Application.UseCases.Lessons.Command.UpdateLesson;
 
-public record UpdateLessonCommand(UpdatedLessonDto Dto, Guid CallingUserId) : IRequest, IAccessByRole
+public record UpdateLessonCommand(UpdatedLessonDto Dto, Guid CallingUserId)
+    : IRequest<LessonUpdatingResultDto>,
+        IAccessByRole
 {
     public static IEnumerable<UserRoleType> ForRoles { get; } = [UserRoleType.ContentCreator];
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using TimLearning.Api.Consts;
 using TimLearning.Api.Mappers.Lessons;
 using TimLearning.Api.Requests.Lesson;
+using TimLearning.Api.Responses.Exercise;
 using TimLearning.Api.Responses.Lesson;
 using TimLearning.Application.UseCases.Lessons.Command.CreateLesson;
 using TimLearning.Application.UseCases.Lessons.Command.DeleteLesson;
@@ -62,13 +63,21 @@ public class LessonController : SiteApiController
     [HttpPatch("lessons/{lessonId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public Task UpdateLesson([FromRoute] Guid lessonId, [Required] UpdateLessonRequest request)
+    public async Task<UpdateLessonResponse> UpdateLesson(
+        [FromRoute] Guid lessonId,
+        [Required] UpdateLessonRequest request
+    )
     {
-        return _mediator.Send(
-            new UpdateLessonCommand(
-                new UpdatedLessonDto(lessonId, request.Name, request.Text, request.IsDraft),
-                UserId
-            )
+        var result = await _mediator.Send(new UpdateLessonCommand(request.ToDto(lessonId), UserId));
+
+        return new UpdateLessonResponse(
+            result.IsSuccess,
+            result.TestingResult is null
+                ? null
+                : new ExerciseTestingResultResponse(
+                    result.TestingResult.Status,
+                    result.TestingResult.ErrorMessage
+                )
         );
     }
 
