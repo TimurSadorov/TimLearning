@@ -24,11 +24,6 @@ public class UpdatedLessonDtoValidator : IAsyncSimpleValidator<UpdatedLessonDto>
             throw new NotFoundException();
         }
 
-        if (entity.Name is null)
-        {
-            LocalizedValidationException.ThrowSimpleTextError("Имя урока не может быть пустым.");
-        }
-
         if (entity.ExerciseDto?.Value is not null)
         {
             var exercise = entity.ExerciseDto.Value;
