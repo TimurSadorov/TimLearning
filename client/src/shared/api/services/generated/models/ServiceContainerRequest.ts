@@ -5,8 +5,8 @@
 
 import type { ContainerEnvRequest } from './ContainerEnvRequest';
 
-export type ContainerSettingsRequest = {
+export type ServiceContainerRequest = {
     hostname?: string | null;
-    healthcheckTest?: Array<string> | null;
     envs?: Array<ContainerEnvRequest> | null;
+    healthcheckTest?: Array<string> | null;
 };

@@ -2,38 +2,30 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ContainerEnvRequest } from '../models/ContainerEnvRequest';
-import type { ImageSettingsRequest } from '../models/ImageSettingsRequest';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class PracticeExerciseService {
+export class StoredFileService {
 
     /**
      * @param formData 
-     * @returns any Success
+     * @returns string Success
      * @throws ApiError
      */
-    public static create(
+    public static saveExerciseAppFile(
 formData?: {
-'NewApp.App': Blob;
-'NewApp.PathToDockerfile': string;
-'NewApp.ContainerSettings.Hostname'?: string;
-'NewApp.ContainerSettings.HealthcheckTest'?: Array<string>;
-'NewApp.ContainerSettings.Envs'?: Array<ContainerEnvRequest>;
-Code: string;
-PathToRewriteFile: string;
-Images?: Array<ImageSettingsRequest>;
+File: Blob;
 },
-): CancelablePromise<any> {
+): CancelablePromise<string> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/exercise',
+            url: '/api/stored-files/exercise-app',
             formData: formData,
             mediaType: 'multipart/form-data',
             errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
                 422: `Request validation error.`,
             },
         });

@@ -6,6 +6,7 @@ import type { CreateLessonRequest } from '../models/CreateLessonRequest';
 import type { LessonSystemDataResponse } from '../models/LessonSystemDataResponse';
 import type { MoveLessonRequest } from '../models/MoveLessonRequest';
 import type { UpdateLessonRequest } from '../models/UpdateLessonRequest';
+import type { UpdateLessonResponse } from '../models/UpdateLessonResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -89,13 +90,13 @@ requestBody: CreateLessonRequest,
     /**
      * @param lessonId 
      * @param requestBody 
-     * @returns any Success
+     * @returns UpdateLessonResponse Success
      * @throws ApiError
      */
     public static updateLesson(
 lessonId: string,
 requestBody: UpdateLessonRequest,
-): CancelablePromise<any> {
+): CancelablePromise<UpdateLessonResponse> {
         return __request(OpenAPI, {
             method: 'PATCH',
             url: '/api/lessons/{lessonId}',
