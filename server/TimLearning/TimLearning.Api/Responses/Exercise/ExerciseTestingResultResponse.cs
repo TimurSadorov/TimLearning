@@ -5,5 +5,5 @@ namespace TimLearning.Api.Responses.Exercise;
 
 public record ExerciseTestingResultResponse(
     [property: Required] ExerciseTestingStatus Status,
-    [property: Required] string? ErrorMessage
+    string? ErrorMessage
 );
