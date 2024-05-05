@@ -1,5 +1,5 @@
 import { sample } from 'effector';
-import { $systemLessons, LessonSystemDataGate, updateSystemLessons } from './model';
+import { $systemLessons, LessonSystemDataGate, LessonWithExerciseGate, updateSystemLessons } from './model';
 import {
     getOrderedLessonsFx,
     getDeletedLessonsFx,
@@ -8,6 +8,7 @@ import {
     moveLessonFx,
     deleteLessonFx,
     restoreLessonFx,
+    getLessonWithExerciseFx,
 } from './effects';
 
 sample({
@@ -61,4 +62,10 @@ sample({
 sample({
     clock: restoreLessonFx.done,
     target: updateSystemLessons,
+});
+
+sample({
+    source: LessonWithExerciseGate.state,
+    filter: (lessonId) => !!lessonId,
+    target: getLessonWithExerciseFx,
 });

@@ -1,8 +1,8 @@
-import { createEvent, createStore } from 'effector';
+import { createEvent, createStore, restore } from 'effector';
 import { createGate } from 'effector-react';
 import { LessonSystemData } from '../types';
-import { getDeletedLessonsFx, getOrderedLessonsFx } from './effects';
-import { restoreFail } from '@shared';
+import { getDeletedLessonsFx, getLessonWithExerciseFx, getOrderedLessonsFx } from './effects';
+import { Api, restoreFail } from '@shared';
 import { or } from 'patronum';
 
 export type SystemLessonsFilters = { moduleId: string; isDeleted: boolean };
@@ -15,3 +15,6 @@ export const $systemLessonsLoading = or(getOrderedLessonsFx.pending, getDeletedL
 export const $errorOnGetSystemLessons = restoreFail<Error | null>(null, getOrderedLessonsFx, getDeletedLessonsFx).reset(
     LessonSystemDataGate.close,
 );
+
+export const LessonWithExerciseGate = createGate<string>();
+export const $lessonWithExercise = restore(getLessonWithExerciseFx, null).reset(LessonSystemDataGate.close);

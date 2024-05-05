@@ -4,7 +4,7 @@ import { useForm } from 'antd/lib/form/Form';
 import { createEvent, restore } from 'effector';
 import { createGate, useGate, useUnit } from 'effector-react';
 import { reset } from 'patronum';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 const FilterLessonsSystemDataGate = createGate();
 
@@ -162,5 +162,103 @@ export const useDraftLesson = (lessonId: string) => {
     return {
         loading,
         draftLesson,
+    };
+};
+
+export type LessonEditingForm = Pick<Api.Services.UpdateLessonRequest, 'text'> & {
+    exercise?: Omit<Api.Services.ExerciseRequest, 'relativePathToInsertCode'> & {
+        relativePathToInsertCode: string;
+    };
+};
+
+export type UpdatingStatus = {
+    isSuccess: boolean;
+    failData?: {
+        status: string;
+        errorMessage?: string | null;
+    };
+};
+
+const getErrorStatusText = (status: Api.Services.ExerciseTestingStatus) => {
+    switch (status) {
+        case Api.Services.ExerciseTestingStatus.OK:
+            throw new Error('Testing status not is error status.');
+        case Api.Services.ExerciseTestingStatus.UNZIPPING_ERROR:
+            return 'Ошибка распаковки архива с приложением';
+        case Api.Services.ExerciseTestingStatus.FILE_BY_PATH_TO_INSERT_CODE_NOT_FOUND:
+            return 'Файл для вставки кода не найден';
+        case Api.Services.ExerciseTestingStatus.ERROR_STARTING_SERVICE_APP:
+            return 'Ошибка запуска дополнительных сервисов';
+        case Api.Services.ExerciseTestingStatus.ERROR_EXECUTING_MAIN_APP:
+            return 'Ошибка запуска приложения или выполнения тестов';
+    }
+};
+
+export const useLessonEditingForm = (lessonId: string) => {
+    const { isLoading: lessonWithExerciseIsLoading, lessonWithExercise } =
+        LessonEntity.Model.useLessonWithExercise(lessonId);
+    const [form] = useForm<LessonEditingForm>();
+    const [updatingResult, setUpdatingResult] = useState<UpdatingStatus>();
+
+    const updating = useUnit(LessonEntity.Model.updateLessonFx.pending);
+    const update = useCallback(
+        async (formData: LessonEditingForm) => {
+            const request: Api.Services.UpdateLessonRequest = {
+                ...formData,
+                exercise: {
+                    value: !!formData.exercise
+                        ? {
+                              ...formData.exercise,
+                              relativePathToInsertCode: formData.exercise.relativePathToInsertCode.split('/'),
+                          }
+                        : undefined,
+                },
+            };
+            const response = await LessonEntity.Model.updateLessonFx({ lessonId, data: request });
+            if (response.isSuccess) {
+                SharedUI.Model.Notification.notifySuccessFx('Урок успешно обнавлен 😉');
+            } else {
+                SharedUI.Model.Notification.notifyErrorFx('Урок не обнавлен 🚫');
+            }
+
+            const updatingResult: UpdatingStatus = {
+                isSuccess: response.isSuccess,
+                failData: !!response.testingResult
+                    ? {
+                          errorMessage: response.testingResult.errorMessage,
+                          status: getErrorStatusText(response.testingResult.status),
+                      }
+                    : undefined,
+            };
+
+            setUpdatingResult(updatingResult);
+        },
+        [lessonId],
+    );
+
+    const initValue = useMemo<LessonEditingForm>(
+        () => ({
+            text: lessonWithExercise?.text,
+            exercise: !!lessonWithExercise?.exercise
+                ? {
+                      ...lessonWithExercise.exercise,
+                      relativePathToInsertCode: lessonWithExercise.exercise.relativePathToInsertCode.join('/'),
+                  }
+                : undefined,
+        }),
+        [lessonWithExercise],
+    );
+    useEffect(() => {
+        form.resetFields();
+    }, [initValue]);
+
+    return {
+        form,
+        initValue: initValue,
+        lessonName: lessonWithExercise?.name,
+        updating,
+        formLoading: lessonWithExerciseIsLoading,
+        update,
+        updatingResult,
     };
 };

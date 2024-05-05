@@ -19,12 +19,27 @@ export const EditableLessonPage = () => {
     return (
         <Page>
             <LessonWidget.UI.SystemLessonSider moduleId={moduleId} isEditable={false} selectedLessonId={lessonId} />
+            <LessonForm>
+                <LessonFormContent>
+                    <LessonWidget.UI.LessonEditing lessonId={lessonId} />
+                </LessonFormContent>
+            </LessonForm>
         </Page>
     );
 };
 
 const Page = styled(Layout)`
     min-height: calc(100vh - 51px);
+`;
+
+const LessonForm = styled.div`
+    flex: 1;
+    justify-content: center;
     display: flex;
-    flex-direction: row;
+`;
+
+const LessonFormContent = styled.div`
+    background-color: white;
+    width: 50vw;
+    padding: 0 20px;
 `;

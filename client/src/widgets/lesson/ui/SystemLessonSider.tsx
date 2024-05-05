@@ -42,8 +42,8 @@ export const SystemLessonSider = ({ moduleId, isEditable, selectedLessonId }: Pr
     );
 
     return (
-        <Layout.Sider theme="light" width="400px">
-            <LayoutSider>
+        <SiderContainer theme="light" width="400px">
+            <InnerLayout>
                 <SiderHeader>
                     {!moduleAllData || moduleLoading ? (
                         <Skeleton.Input active />
@@ -108,12 +108,20 @@ export const SystemLessonSider = ({ moduleId, isEditable, selectedLessonId }: Pr
                         </Droppable>
                     )}
                 </DragDropContext>
-            </LayoutSider>
-        </Layout.Sider>
+            </InnerLayout>
+        </SiderContainer>
     );
 };
 
-const LayoutSider = styled(Layout)`
+const SiderContainer = styled(Layout.Sider)`
+    position: sticky !important;
+    overflow: auto;
+    height: calc(100vh - 51px);
+    left: 0;
+    top: 51px;
+`;
+
+const InnerLayout = styled(Layout)`
     background-color: #ffffff;
     height: 100%;
 `;

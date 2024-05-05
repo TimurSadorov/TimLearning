@@ -19,6 +19,10 @@ export const getDeletedLessonsFx = createEffect(async (moduleId: string) => {
     return await Api.Services.LessonService.getDeletedLessons(moduleId);
 });
 
+export const getLessonWithExerciseFx = createEffect(async (lessonId: string) => {
+    return await Api.Services.LessonService.getLessonWithExercise(lessonId);
+});
+
 export const createLessonFx = createEffect(
     async (request: Api.Services.CreateLessonRequest & { moduleId: string }) =>
         await Api.Services.LessonService.createLesson(request.moduleId, { name: request.name }),

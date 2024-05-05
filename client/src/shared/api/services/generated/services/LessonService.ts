@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { CreateLessonRequest } from '../models/CreateLessonRequest';
 import type { LessonSystemDataResponse } from '../models/LessonSystemDataResponse';
+import type { LessonWithExerciseResponse } from '../models/LessonWithExerciseResponse';
 import type { MoveLessonRequest } from '../models/MoveLessonRequest';
 import type { UpdateLessonRequest } from '../models/UpdateLessonRequest';
 import type { UpdateLessonResponse } from '../models/UpdateLessonResponse';
@@ -78,6 +79,29 @@ requestBody: CreateLessonRequest,
             },
             body: requestBody,
             mediaType: 'application/json',
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+                422: `Request validation error.`,
+            },
+        });
+    }
+
+    /**
+     * @param lessonId 
+     * @returns LessonWithExerciseResponse Success
+     * @throws ApiError
+     */
+    public static getLessonWithExercise(
+lessonId: string,
+): CancelablePromise<LessonWithExerciseResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/lessons/{lessonId}/with-exercise',
+            path: {
+                'lessonId': lessonId,
+            },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
