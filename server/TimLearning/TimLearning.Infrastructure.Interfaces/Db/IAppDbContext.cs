@@ -14,6 +14,7 @@ public interface IAppDbContext
     DbSet<Lesson> Lessons { get; }
     DbSet<Exercise> Exercises { get; }
     DbSet<StoredFile> StoredFiles { get; }
+    DbSet<UserProgress> UserProgresses { get; }
 
     DatabaseFacade Database { get; }
 

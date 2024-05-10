@@ -15,4 +15,7 @@ public static class LessonSpecifications
 
     public static Specification<Lesson> HasOrder { get; } =
         new AdHocSpecification<Lesson>(l => l.IsDeleted == false);
+
+    public static Specification<Lesson> IsPractical { get; } =
+        new AdHocSpecification<Lesson>(l => l.ExerciseId != null);
 }

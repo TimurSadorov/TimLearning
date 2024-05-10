@@ -26,6 +26,8 @@ public class Lesson : IIdHolder<Guid>
     public required bool IsDraft { get; set; }
     public bool IsDeleted { get; private set; }
 
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public Guid? ExerciseId { get; set; }
     public Exercise? Exercise { get; set; }
 
     // ReSharper disable once CollectionNeverUpdated.Global

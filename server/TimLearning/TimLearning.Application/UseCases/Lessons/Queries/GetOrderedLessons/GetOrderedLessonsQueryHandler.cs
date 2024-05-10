@@ -37,7 +37,6 @@ public class GetOrderedLessonsQueryHandler
         }
 
         var lessons = await _dbContext.Lessons
-            .AsNoTracking()
             .Where(l => l.ModuleId == request.ModuleId)
             .Where(LessonSpecifications.HasOrder)
             .Include(l => l.NextLesson)

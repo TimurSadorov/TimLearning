@@ -33,7 +33,6 @@ public class GetUserCourseAllDataQueryHandler
     )
     {
         var course = await _dbContext.Courses
-            .AsNoTracking()
             .Where(c => c.Id == request.CourseId)
             .Where(CourseSpecifications.UserAvailable)
             .Select(
