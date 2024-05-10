@@ -66,6 +66,6 @@ sample({
 
 sample({
     source: LessonWithExerciseGate.state,
-    filter: (lessonId) => !!lessonId,
+    filter: (lessonId) => !!lessonId && typeof lessonId === 'string',
     target: getLessonWithExerciseFx,
 });

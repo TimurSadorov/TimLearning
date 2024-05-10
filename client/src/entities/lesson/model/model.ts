@@ -2,7 +2,7 @@ import { createEvent, createStore, restore } from 'effector';
 import { createGate } from 'effector-react';
 import { LessonSystemData } from '../types';
 import { getDeletedLessonsFx, getLessonWithExerciseFx, getOrderedLessonsFx } from './effects';
-import { Api, restoreFail } from '@shared';
+import { restoreFail } from '@shared';
 import { or } from 'patronum';
 
 export type SystemLessonsFilters = { moduleId: string; isDeleted: boolean };
