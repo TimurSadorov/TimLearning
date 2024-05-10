@@ -10,6 +10,7 @@ using TimLearning.Application.UseCases.Courses.Commands.CreateCourse;
 using TimLearning.Application.UseCases.Courses.Commands.UpdateCourse;
 using TimLearning.Application.UseCases.Courses.Dto;
 using TimLearning.Application.UseCases.Courses.Queries.FindCourse;
+using TimLearning.Application.UseCases.Courses.Queries.GetUserCourseAllData;
 using TimLearning.Application.UseCases.Courses.Queries.GetUserCourses;
 
 namespace TimLearning.Api.Features.Controllers;
@@ -32,6 +33,39 @@ public class CourseController : SiteApiController
         return courses
             .Select(c => new GetUserCoursesResponse(c.Id, c.Name, c.ShortName, c.Description))
             .ToList();
+    }
+
+    [Authorize]
+    [HttpGet("{courseId:guid}/user-all-data")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<UserCourseAllDataResponse> GetUserCourseAllData([FromRoute] Guid courseId)
+    {
+        var course = await _mediator.Send(new GetUserCourseAllDataQuery(courseId, UserId));
+
+        return new UserCourseAllDataResponse(
+            course.ShortName,
+            course.CompletionPercentage,
+            course.Modules
+                .Select(
+                    m =>
+                        new UserProgressInModuleResponse(
+                            m.Id,
+                            m.Name,
+                            m.CompletionPercentage,
+                            m.Lessons
+                                .Select(
+                                    l =>
+                                        new UserProgressInLessonResponse(
+                                            l.Id,
+                                            l.Name,
+                                            l.UserProgress
+                                        )
+                                )
+                                .ToList()
+                        )
+                )
+                .ToList()
+        );
     }
 
     [Authorize]

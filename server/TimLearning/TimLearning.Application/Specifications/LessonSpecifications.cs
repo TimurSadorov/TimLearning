@@ -9,4 +9,10 @@ public static class LessonSpecifications
         new AdHocSpecification<Lesson>(
             l => l.ModuleId == moduleId && l.NextLessonId == id && l.IsDeleted == false
         );
+
+    public static Specification<Lesson> UserAvailable { get; } =
+        new AdHocSpecification<Lesson>(l => l.IsDraft == false && l.IsDeleted == false);
+
+    public static Specification<Lesson> HasOrder { get; } =
+        new AdHocSpecification<Lesson>(l => l.IsDeleted == false);
 }

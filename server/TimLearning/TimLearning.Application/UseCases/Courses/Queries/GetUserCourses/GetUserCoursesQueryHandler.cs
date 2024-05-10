@@ -6,8 +6,7 @@ using TimLearning.Infrastructure.Interfaces.Db;
 
 namespace TimLearning.Application.UseCases.Courses.Queries.GetUserCourses;
 
-public class GetUserCoursesQueryHandler
-    : IRequestHandler<GetUserCoursesQuery, List<UserCourseDto>>
+public class GetUserCoursesQueryHandler : IRequestHandler<GetUserCoursesQuery, List<UserCourseDto>>
 {
     private readonly IAppDbContext _dbContext;
 
@@ -21,7 +20,7 @@ public class GetUserCoursesQueryHandler
         CancellationToken cancellationToken
     )
     {
-        var query = _dbContext.Courses.Where(CourseSpecifications.UserAvailableCourses);
+        var query = _dbContext.Courses.Where(CourseSpecifications.UserAvailable);
         if (request.CourseId is not null)
         {
             query = query.Where(c => c.Id == request.CourseId);

@@ -3,6 +3,7 @@ using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using TimLearning.Domain.Configurations.Options;
 using TimLearning.Domain.Data.ValueObjects;
+using TimLearning.Domain.Services.LessonService;
 using TimLearning.Domain.Services.UserServices;
 using TimLearning.Domain.Validators;
 using TimLearning.Shared.Configuration.Extensions;
@@ -31,6 +32,8 @@ public static class ApplicationServicesConfigurations
         services.AddSingleton<IUserPasswordService>(
             new UserPasswordService(new PasswordEncryptor(SHA512.Create()))
         );
+
+        services.AddSingleton<ILessonOrderService, LessonOrderService>();
     }
 
     private static void AddValidators(this IServiceCollection services)
