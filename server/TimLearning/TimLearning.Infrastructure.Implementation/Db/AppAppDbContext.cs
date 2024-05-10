@@ -15,6 +15,7 @@ public class AppAppDbContext : DbContext, IAppDbContext
     public DbSet<Exercise> Exercises => Set<Exercise>();
     public DbSet<StoredFile> StoredFiles => Set<StoredFile>();
     public DbSet<UserProgress> UserProgresses => Set<UserProgress>();
+    public DbSet<UserSolution> UserSolutions => Set<UserSolution>();
 
     public AppAppDbContext(DbContextOptions options)
         : base(options) { }

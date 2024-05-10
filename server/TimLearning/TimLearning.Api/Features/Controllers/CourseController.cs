@@ -58,6 +58,7 @@ public class CourseController : SiteApiController
                                         new UserProgressInLessonResponse(
                                             l.Id,
                                             l.Name,
+                                            l.IsPractical,
                                             l.UserProgress
                                         )
                                 )

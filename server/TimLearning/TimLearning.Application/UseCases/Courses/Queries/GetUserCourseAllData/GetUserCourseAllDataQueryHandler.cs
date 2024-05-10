@@ -84,6 +84,7 @@ public class GetUserCourseAllDataQueryHandler
                             new UserProgressInLessonDto(
                                 l.Id,
                                 l.Name,
+                                LessonSpecifications.IsPractical.IsSatisfiedBy(l),
                                 l.UserProgresses.FirstOrDefault()?.Type
                             )
                     )

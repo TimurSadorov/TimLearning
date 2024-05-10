@@ -17,6 +17,7 @@ using TimLearning.Application.UseCases.Lessons.Dto;
 using TimLearning.Application.UseCases.Lessons.Queries.GetDeletedLessons;
 using TimLearning.Application.UseCases.Lessons.Queries.GetLessonWithExercise;
 using TimLearning.Application.UseCases.Lessons.Queries.GetOrderedLessons;
+using TimLearning.Application.UseCases.Lessons.Queries.GetUserLesson;
 
 namespace TimLearning.Api.Features.Controllers;
 
@@ -69,6 +70,26 @@ public class LessonController : SiteApiController
         var lesson = await _mediator.Send(new GetLessonWithExerciseQuery(lessonId, UserId));
 
         return lesson.ToResponse();
+    }
+
+    [HttpGet("lessons/{lessonId:guid}/user-data")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<UserLessonResponse> GetUserLesson([FromRoute] Guid lessonId)
+    {
+        var lesson = await _mediator.Send(new GetUserLessonQuery(lessonId, UserId));
+
+        return new UserLessonResponse(
+            lesson.Id,
+            lesson.Name,
+            lesson.Text,
+            lesson.Exercise is null
+                ? null
+                : new UserExerciseResponse(
+                    lesson.Exercise.AppArchiveId,
+                    lesson.Exercise.LastUserSolutionCode
+                )
+        );
     }
 
     [HttpPatch("lessons/{lessonId:guid}")]

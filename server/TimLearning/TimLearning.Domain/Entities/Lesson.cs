@@ -31,7 +31,7 @@ public class Lesson : IIdHolder<Guid>
     public Exercise? Exercise { get; set; }
 
     // ReSharper disable once CollectionNeverUpdated.Global
-    public List<UserProgress> UserProgresses { get; init; } = new();
+    public List<UserProgress> UserProgresses { get; init; } = null!;
 
     public void Delete()
     {
