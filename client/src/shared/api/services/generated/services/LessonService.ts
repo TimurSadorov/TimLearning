@@ -8,6 +8,7 @@ import type { LessonWithExerciseResponse } from '../models/LessonWithExerciseRes
 import type { MoveLessonRequest } from '../models/MoveLessonRequest';
 import type { UpdateLessonRequest } from '../models/UpdateLessonRequest';
 import type { UpdateLessonResponse } from '../models/UpdateLessonResponse';
+import type { UserLessonResponse } from '../models/UserLessonResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -99,6 +100,29 @@ lessonId: string,
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/lessons/{lessonId}/with-exercise',
+            path: {
+                'lessonId': lessonId,
+            },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+                422: `Request validation error.`,
+            },
+        });
+    }
+
+    /**
+     * @param lessonId 
+     * @returns UserLessonResponse Success
+     * @throws ApiError
+     */
+    public static getUserLesson(
+lessonId: string,
+): CancelablePromise<UserLessonResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/lessons/{lessonId}/user-data',
             path: {
                 'lessonId': lessonId,
             },

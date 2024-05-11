@@ -34,6 +34,29 @@ courseId?: string,
     }
 
     /**
+     * @param courseId 
+     * @returns void 
+     * @throws ApiError
+     */
+    public static getUserCourseAllData(
+courseId: string,
+): CancelablePromise<void> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/courses/{courseId}/user-all-data',
+            path: {
+                'courseId': courseId,
+            },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+                422: `Request validation error.`,
+            },
+        });
+    }
+
+    /**
      * @param id 
      * @param searchName 
      * @param isDraft 

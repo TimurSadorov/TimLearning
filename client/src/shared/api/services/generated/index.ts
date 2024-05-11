@@ -45,11 +45,15 @@ export type { UpdateLessonRequest } from './models/UpdateLessonRequest';
 export type { UpdateLessonResponse } from './models/UpdateLessonResponse';
 export type { UpdateModuleRequest } from './models/UpdateModuleRequest';
 export type { UserEmailConfirmationRequest } from './models/UserEmailConfirmationRequest';
+export type { UserExerciseResponse } from './models/UserExerciseResponse';
+export type { UserLessonResponse } from './models/UserLessonResponse';
 export type { ValidationErrorResponse } from './models/ValidationErrorResponse';
 export type { ValidationErrorTextResponse } from './models/ValidationErrorTextResponse';
+export type { VisitLessonRequest } from './models/VisitLessonRequest';
 
 export { CourseService } from './services/CourseService';
 export { LessonService } from './services/LessonService';
 export { ModuleService } from './services/ModuleService';
 export { StoredFileService } from './services/StoredFileService';
 export { UserAccountService } from './services/UserAccountService';
+export { UserProgressService } from './services/UserProgressService';
