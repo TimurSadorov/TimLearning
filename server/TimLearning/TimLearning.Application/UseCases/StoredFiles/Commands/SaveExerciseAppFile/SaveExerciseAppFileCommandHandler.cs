@@ -3,6 +3,7 @@ using TimLearning.Domain.Entities;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Infrastructure.Interfaces.Providers.Clock;
 using TimLearning.Infrastructure.Interfaces.Storages;
+using TimLearning.Infrastructure.Interfaces.Storages.Mappers;
 using TimLearning.Shared.Validation.Exceptions.Localized;
 
 namespace TimLearning.Application.UseCases.StoredFiles.Commands.SaveExerciseAppFile;
@@ -45,7 +46,7 @@ public class SaveExerciseAppFileCommandHandler : IRequestHandler<SaveExerciseApp
         _dbContext.Add(storedFile);
 
         await _fileStorage.UploadAsync(
-            new StoredFileDto(storedFile.Id, storedFile.Added),
+            storedFile.ToStorageFileDto(),
             fileDto.File,
             fileDto.MimeType,
             cancellationToken

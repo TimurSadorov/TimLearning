@@ -37,6 +37,7 @@ public class CourseController : SiteApiController
 
     [Authorize]
     [HttpGet("{courseId:guid}/user-all-data")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<UserCourseAllDataResponse> GetUserCourseAllData([FromRoute] Guid courseId)
     {

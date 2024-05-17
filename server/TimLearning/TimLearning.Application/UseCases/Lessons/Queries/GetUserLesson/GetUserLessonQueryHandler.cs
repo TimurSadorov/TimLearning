@@ -21,26 +21,22 @@ public class GetUserLessonQueryHandler : IRequestHandler<GetUserLessonQuery, Use
         CancellationToken cancellationToken
     )
     {
-        var lesson = await _dbContext.Lessons
-            .Where(l => l.Id == request.LessonId)
+        var lesson = await _dbContext
+            .Lessons.Where(l => l.Id == request.LessonId)
             .Where(LessonSpecifications.UserAvailable)
-            .Select(
-                l =>
-                    new UserLessonDto(
-                        l.Id,
-                        l.Name,
-                        l.Text,
-                        l.Exercise != null
-                            ? new UserExerciseDto(
-                                l.Exercise.AppArchiveId,
-                                l.Exercise.UserSolutions
-                                    .OrderByDescending(s => s.Added)
-                                    .FirstOrDefault()!
-                                    .Code
-                            )
-                            : null
+            .Select(l => new UserLessonDto(
+                l.Id,
+                l.Name,
+                l.Text,
+                l.Module.CourseId,
+                l.Exercise != null
+                    ? new UserExerciseDto(
+                        l.Exercise.UserSolutions.OrderByDescending(s => s.Added)
+                            .FirstOrDefault()!
+                            .Code
                     )
-            )
+                    : null
+            ))
             .FirstOrDefaultAsync(cancellationToken);
         if (lesson is null)
         {

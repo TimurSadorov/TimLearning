@@ -6,6 +6,7 @@ using TimLearning.Application.Services.ExerciseServices.Mappers;
 using TimLearning.Infrastructure.Interfaces.Clients.DockerManager;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Infrastructure.Interfaces.Storages;
+using TimLearning.Infrastructure.Interfaces.Storages.Mappers;
 using TimLearning.Shared.FileSystem;
 using TimLearning.Shared.Services.Archiving;
 
@@ -38,7 +39,7 @@ public class ExerciseTester : IExerciseTester
     {
         var archiveFileDto = await _dbContext.StoredFiles
             .Where(f => f.Id == dto.AppArchiveId)
-            .Select(f => new StoredFileDto(f.Id, f.Added))
+            .Select(f => f.ToStorageFileDto())
             .FirstAsync(ct);
         using var templateAppArchive = await _fileStorage.DownloadToTemporaryFile(
             archiveFileDto,

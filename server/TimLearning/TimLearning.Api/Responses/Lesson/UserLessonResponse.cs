@@ -6,5 +6,6 @@ public record UserLessonResponse(
     [property: Required] Guid Id,
     [property: Required] string Name,
     [property: Required] string Text,
+    [property: Required] Guid CourseId,
     UserExerciseResponse? Exercise
 );

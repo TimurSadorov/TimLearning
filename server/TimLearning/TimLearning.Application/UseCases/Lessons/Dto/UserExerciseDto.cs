@@ -1,3 +1,3 @@
 ﻿namespace TimLearning.Application.UseCases.Lessons.Dto;
 
-public record UserExerciseDto(Guid AppArchiveId, string? LastUserSolutionCode);
+public record UserExerciseDto(string? LastUserSolutionCode);
