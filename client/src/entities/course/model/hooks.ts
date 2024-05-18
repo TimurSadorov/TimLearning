@@ -2,14 +2,12 @@ import { useGate, useUnit } from 'effector-react';
 import {
     $editableCourse,
     $editableCourses,
-    $userCourse,
     $userCourses,
     EditableCourseGate,
     EditableCoursesGate,
-    UserCourseGate,
     UserCoursesGate,
 } from './model';
-import { findCoursesFx, getAllUserCoursesFx, getEditableCourseFx, getUserCourseFx } from './effects';
+import { findCoursesFx, getAllUserCoursesFx, getEditableCourseFx } from './effects';
 import { Api } from '@shared';
 
 export const useUserCourses = () => {
@@ -18,14 +16,6 @@ export const useUserCourses = () => {
     const isLoading = useUnit(getAllUserCoursesFx.pending);
 
     return { userCourses, isLoading };
-};
-
-export const useUserCourse = (courseId: string) => {
-    useGate(UserCourseGate, courseId);
-    const userCourse = useUnit($userCourse);
-    const isLoading = useUnit(getUserCourseFx.pending);
-
-    return { userCourse, isLoading };
 };
 
 export const useEditableCourses = (request: Api.Services.FindCoursesQueryParams) => {

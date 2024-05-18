@@ -9,5 +9,6 @@ export type UserLessonResponse = {
     id: string;
     name: string;
     text: string;
+    courseId: string;
     exercise?: UserExerciseResponse;
 };

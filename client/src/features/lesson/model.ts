@@ -191,6 +191,9 @@ const getErrorStatusText = (status: Api.Services.ExerciseTestingStatus) => {
             return 'Ошибка запуска дополнительных сервисов';
         case Api.Services.ExerciseTestingStatus.ERROR_EXECUTING_MAIN_APP:
             return 'Ошибка запуска приложения или выполнения тестов';
+        default:
+            const exhaustiveCheck: never = status;
+            throw new Error(exhaustiveCheck);
     }
 };
 

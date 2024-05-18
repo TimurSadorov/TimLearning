@@ -3,6 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type UserExerciseResponse = {
-    lastUserSolutionCode?: string | null;
-};
+export enum UserExerciseTestingStatus {
+    OK = 'Ok',
+    USER_ERROR = 'UserError',
+    SERVER_ERROR = 'ServerError',
+}

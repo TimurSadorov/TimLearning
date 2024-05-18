@@ -3,6 +3,6 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type UserExerciseResponse = {
-    lastUserSolutionCode?: string | null;
+export type ExerciseAppFileResponse = {
+    downloadingUrl: string;
 };

@@ -5,12 +5,6 @@ import MDEditor from '@uiw/react-md-editor';
 import { Button, Card, Checkbox, Form, Input } from 'antd';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import AceEditor from 'react-ace';
-import './lesson-editing.css';
-
-import 'ace-builds/src-noconflict/mode-csharp';
-import 'ace-builds/src-noconflict/theme-monokai';
-import 'ace-builds/src-noconflict/ext-language_tools';
 
 type Props = {
     lessonId: string;
@@ -280,15 +274,7 @@ export const LessonEditing = ({ lessonId }: Props) => {
                                         label="Эталонный код"
                                         tooltip="При сохранении данный код будет проверться, что он действительно является решением. Также эталонный код будет доступен для менторов."
                                     >
-                                        <AceEditor
-                                            mode="csharp"
-                                            theme="monokai"
-                                            enableBasicAutocompletion={true}
-                                            enableLiveAutocompletion={true}
-                                            className="code-editor"
-                                            height="300px"
-                                            width="100%"
-                                        />
+                                        <SharedUI.CodeEditor />
                                     </FormItem>
                                     {!!updatingResult && !updatingResult.isSuccess ? (
                                         <ErrorBlock>

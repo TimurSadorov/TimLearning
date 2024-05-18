@@ -1,5 +1,12 @@
 import { sample } from 'effector';
-import { $systemLessons, LessonSystemDataGate, LessonWithExerciseGate, updateSystemLessons } from './model';
+import {
+    $systemLessons,
+    LessonSystemDataGate,
+    LessonWithExerciseGate,
+    UserLessonGate,
+    updateSystemLessons,
+    updateUserLesson,
+} from './model';
 import {
     getOrderedLessonsFx,
     getDeletedLessonsFx,
@@ -9,7 +16,15 @@ import {
     deleteLessonFx,
     restoreLessonFx,
     getLessonWithExerciseFx,
+    getUserLessonFx,
 } from './effects';
+
+sample({
+    clock: [updateUserLesson, UserLessonGate.state],
+    source: UserLessonGate.state,
+    filter: (v) => typeof v === 'string',
+    target: getUserLessonFx,
+});
 
 sample({
     clock: [LessonSystemDataGate.state, updateSystemLessons],

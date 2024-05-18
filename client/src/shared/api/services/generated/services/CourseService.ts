@@ -6,6 +6,7 @@ import type { CreateCourseRequest } from '../models/CreateCourseRequest';
 import type { FindCoursesResponse } from '../models/FindCoursesResponse';
 import type { GetUserCoursesResponse } from '../models/GetUserCoursesResponse';
 import type { UpdateCourseRequest } from '../models/UpdateCourseRequest';
+import type { UserCourseAllDataResponse } from '../models/UserCourseAllDataResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -35,12 +36,12 @@ courseId?: string,
 
     /**
      * @param courseId 
-     * @returns void 
+     * @returns UserCourseAllDataResponse Success
      * @throws ApiError
      */
     public static getUserCourseAllData(
 courseId: string,
-): CancelablePromise<void> {
+): CancelablePromise<UserCourseAllDataResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/courses/{courseId}/user-all-data',

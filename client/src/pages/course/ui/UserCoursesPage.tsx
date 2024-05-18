@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { CourseEntity, UserEntity } from '@entities';
 import { CourseFeature } from '@features';
-import { Loader } from 'shared/ui';
+import { SharedUI } from '@shared';
 import styled from 'styled-components';
 import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -29,6 +29,7 @@ export const UserCoursesPage = () => {
                             key={course.id}
                             name={course.name}
                             description={course.description}
+                            onClick={() => navigate(Config.routes.userCourse.getLink(course.id))}
                         />
                     ))}
                 </CoursesContainer>
@@ -44,7 +45,7 @@ const CoursesPage = styled.div`
     min-height: calc(100vh - 71px);
 `;
 
-const LoaderCourses = styled(Loader)`
+const LoaderCourses = styled(SharedUI.Loader)`
     flex: 1;
 `;
 

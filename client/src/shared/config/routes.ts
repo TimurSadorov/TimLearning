@@ -48,6 +48,16 @@ const editableLesson = {
     getLink: (moduleId: string, lessonId: string) => `/modules/${moduleId}/lessons/${lessonId}/editing`,
 };
 
+const userCourse = {
+    path: '/courses/:courseId',
+    getLink: (courseId: string) => `/courses/${courseId}`,
+};
+
+const userLesson = {
+    path: '/lessons/:lessonId',
+    getLink: (lessonId: string) => `/lessons/${lessonId}`,
+};
+
 export const routes = {
     root,
     login,
@@ -59,4 +69,6 @@ export const routes = {
     editableModules,
     editableLessons,
     editableLesson,
+    userCourse,
+    userLesson,
 };

@@ -6,11 +6,11 @@ import { LoginPage } from './login';
 import { RegistrationPage } from './registration';
 import { PasswordChngingPage, PasswordRecoveryPage } from './passwordRecovery';
 import { EmailConfirmationPage } from './emailConfirmation';
-import { EditableCourses, UserCoursesPage } from './course/ui';
+import { EditableCourses, UserCoursePage, UserCoursesPage } from './course/ui';
 import { TemplateWidget } from '@widgets';
 import styled from 'styled-components';
 import { EditableModulesPage } from './module';
-import { EditableLessonPage, EditableLessonsPage } from './lesson';
+import { EditableLessonPage, EditableLessonsPage, UserLessonPage } from './lesson';
 
 const routes = Config.routes;
 
@@ -50,6 +50,18 @@ export const Routing = () => {
                 <Route path={routes.editableModules.path} element={<EditableModulesPage />} />
                 <Route path={routes.editableLessons.path} element={<EditableLessonsPage />} />
                 <Route path={routes.editableLesson.path} element={<EditableLessonPage />} />
+            </Route>
+            <Route
+                element={
+                    <UserFeature.Auth.UI.RequiredAuth
+                        needAuth
+                        navigateLinkIfUnavailable={routes.login.path}
+                        element={<TemplateWidget.UI.Header />}
+                    />
+                }
+            >
+                <Route path={routes.userCourse.path} element={<UserCoursePage />} />
+                <Route path={routes.userLesson.path} element={<UserLessonPage />} />
             </Route>
             <Route element={<TemplateWidget.UI.Header />}>
                 <Route path="*" element={<Navigate to={routes.root.path} />} />

@@ -106,7 +106,7 @@ const SiderHeader = styled.div`
 `;
 
 const CoursesLink = styled(Link)`
-    font-size: 0.95em;
+    font-size: 1em;
 `;
 
 const HeaderText = styled.div`

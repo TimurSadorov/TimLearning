@@ -1,7 +1,12 @@
 import { Api } from '@shared';
 import { createEffect } from 'effector';
+import { UserLessonExerciseTesting } from '../types';
 
 export type WithModuleId<TData> = { moduleId: string; data: TData };
+
+export const getUserLessonFx = createEffect(async (lessonId: string) => {
+    return await Api.Services.LessonService.getUserLesson(lessonId);
+});
 
 export const getOrderedLessonsFx = createEffect(async (moduleId: string) => {
     if (!moduleId) {
@@ -9,6 +14,10 @@ export const getOrderedLessonsFx = createEffect(async (moduleId: string) => {
     }
 
     return await Api.Services.LessonService.getOrderedLessons(moduleId);
+});
+
+export const getUserLessonExerciseAppFile = createEffect(async (lessonId: string) => {
+    return await Api.Services.LessonService.getUserLessonExerciseAppFile(lessonId);
 });
 
 export const getDeletedLessonsFx = createEffect(async (moduleId: string) => {
@@ -45,4 +54,9 @@ export const deleteLessonFx = createEffect(
 
 export const restoreLessonFx = createEffect(
     async (lessonId: string) => await Api.Services.LessonService.restoreLesson(lessonId),
+);
+
+export const testUserLessonExerciseFx = createEffect(
+    async (tesingData: UserLessonExerciseTesting) =>
+        await Api.Services.LessonService.testUserLessonExercise(tesingData.lessonId, { code: tesingData.code }),
 );

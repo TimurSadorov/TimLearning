@@ -3,11 +3,6 @@ import { createEffect } from 'effector';
 
 export const getAllUserCoursesFx = createEffect(async () => await Api.Services.CourseService.getUserCourses());
 
-export const getUserCourseFx = createEffect(async (courseId: string) => {
-    const courses = await Api.Services.CourseService.getUserCourses(courseId);
-    return courses.at(0) ?? null;
-});
-
 export const findCoursesFx = createEffect(
     async (request: Api.Services.FindCoursesQueryParams = {}) =>
         await Api.Services.CourseService.findCourses(
@@ -17,6 +12,10 @@ export const findCoursesFx = createEffect(
             request.isDeleted,
         ),
 );
+
+export const getUserCourseFx = createEffect(async (courseId: string) => {
+    return await Api.Services.CourseService.getUserCourseAllData(courseId);
+});
 
 export const getEditableCourseFx = createEffect(async (courseId: string) => {
     const courses = await Api.Services.CourseService.findCourses(courseId);

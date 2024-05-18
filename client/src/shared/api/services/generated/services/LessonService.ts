@@ -3,11 +3,14 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateLessonRequest } from '../models/CreateLessonRequest';
+import type { ExerciseAppFileResponse } from '../models/ExerciseAppFileResponse';
+import type { ExerciseTestingRequest } from '../models/ExerciseTestingRequest';
 import type { LessonSystemDataResponse } from '../models/LessonSystemDataResponse';
 import type { LessonWithExerciseResponse } from '../models/LessonWithExerciseResponse';
 import type { MoveLessonRequest } from '../models/MoveLessonRequest';
 import type { UpdateLessonRequest } from '../models/UpdateLessonRequest';
 import type { UpdateLessonResponse } from '../models/UpdateLessonResponse';
+import type { UserExerciseTestingResponse } from '../models/UserExerciseTestingResponse';
 import type { UserLessonResponse } from '../models/UserLessonResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -126,6 +129,56 @@ lessonId: string,
             path: {
                 'lessonId': lessonId,
             },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+                422: `Request validation error.`,
+            },
+        });
+    }
+
+    /**
+     * @param lessonId 
+     * @returns ExerciseAppFileResponse Success
+     * @throws ApiError
+     */
+    public static getUserLessonExerciseAppFile(
+lessonId: string,
+): CancelablePromise<ExerciseAppFileResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/lessons/{lessonId}/user-exercise-app',
+            path: {
+                'lessonId': lessonId,
+            },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+                422: `Request validation error.`,
+            },
+        });
+    }
+
+    /**
+     * @param lessonId 
+     * @param requestBody 
+     * @returns UserExerciseTestingResponse Success
+     * @throws ApiError
+     */
+    public static testUserLessonExercise(
+lessonId: string,
+requestBody: ExerciseTestingRequest,
+): CancelablePromise<UserExerciseTestingResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/lessons/{lessonId}/user-exercise/test',
+            path: {
+                'lessonId': lessonId,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

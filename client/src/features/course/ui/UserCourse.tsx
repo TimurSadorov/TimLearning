@@ -5,11 +5,12 @@ import styled from 'styled-components';
 interface UserCourseProps {
     name: string;
     description: string;
+    onClick?: () => void;
 }
 
-export const UserCourse = ({ name, description }: UserCourseProps) => {
+export const UserCourse = ({ name, description, onClick }: UserCourseProps) => {
     return (
-        <Card title={name} hoverable>
+        <Card title={name} hoverable onClick={onClick}>
             <CourseDescription>{description}</CourseDescription>
         </Card>
     );

@@ -1,14 +1,15 @@
-import { restore } from 'effector';
+import { createEvent, restore } from 'effector';
 import { createGate } from 'effector-react';
-import { EditableCours, UserCours } from '../types';
+import { EditableCours, UserCours, UserCoursAllData } from '../types';
 import { findCoursesFx, getAllUserCoursesFx, getEditableCourseFx, getUserCourseFx } from './effects';
 import { Api } from '@shared';
 
 export const UserCoursesGate = createGate();
 export const $userCourses = restore<UserCours[]>(getAllUserCoursesFx, []).reset(UserCoursesGate.close);
 
-export const UserCourseGate = createGate<string>();
-export const $userCourse = restore<UserCours | null>(getUserCourseFx, null).reset(UserCourseGate.close);
+export const resetUserCourse = createEvent();
+export const updateUserCourse = createEvent<string>();
+export const $userCourse = restore<UserCoursAllData>(getUserCourseFx, null).reset(resetUserCourse);
 
 export const EditableCoursesGate = createGate<Api.Services.FindCoursesQueryParams>();
 export const $editableCourses = restore<EditableCours[]>(findCoursesFx, []).reset(EditableCoursesGate.close);

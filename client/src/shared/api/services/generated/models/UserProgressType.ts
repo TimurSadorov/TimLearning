@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type UserExerciseResponse = {
-    lastUserSolutionCode?: string | null;
-};
+export enum UserProgressType {
+    VIEWED = 'Viewed',
+    COMPLETED = 'Completed',
+}
