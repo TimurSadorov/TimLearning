@@ -110,11 +110,13 @@ public class LessonController : SiteApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<UserExerciseTestingResponse> TestUserLessonExercise(
         [FromRoute] Guid lessonId,
-        ExerciseTestingRequest request
+        [Required] ExerciseTestingRequest request,
+        CancellationToken ct
     )
     {
         var lesson = await _mediator.Send(
-            new TestUserLessonExerciseCommand(lessonId, request.Code, UserId)
+            new TestUserLessonExerciseCommand(lessonId, request.Code, UserId),
+            ct
         );
 
         return new UserExerciseTestingResponse(lesson.Status, lesson.ErrorMessage);
@@ -125,10 +127,14 @@ public class LessonController : SiteApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<UpdateLessonResponse> UpdateLesson(
         [FromRoute] Guid lessonId,
-        [Required] UpdateLessonRequest request
+        [Required] UpdateLessonRequest request,
+        CancellationToken ct
     )
     {
-        var result = await _mediator.Send(new UpdateLessonCommand(request.ToDto(lessonId), UserId));
+        var result = await _mediator.Send(
+            new UpdateLessonCommand(request.ToDto(lessonId), UserId),
+            ct
+        );
 
         return new UpdateLessonResponse(
             result.IsSuccess,
