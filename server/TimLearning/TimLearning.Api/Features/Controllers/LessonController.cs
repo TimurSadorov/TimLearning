@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TimLearning.Api.Consts;
 using TimLearning.Api.Mappers.Lessons;
+using TimLearning.Api.Requests.Exercise;
 using TimLearning.Api.Requests.Lesson;
 using TimLearning.Api.Responses.Exercise;
 using TimLearning.Api.Responses.Lesson;
@@ -12,6 +13,7 @@ using TimLearning.Application.UseCases.Lessons.Command.CreateLesson;
 using TimLearning.Application.UseCases.Lessons.Command.DeleteLesson;
 using TimLearning.Application.UseCases.Lessons.Command.MoveLesson;
 using TimLearning.Application.UseCases.Lessons.Command.RestoreLesson;
+using TimLearning.Application.UseCases.Lessons.Command.TestUserLessonExercise;
 using TimLearning.Application.UseCases.Lessons.Command.UpdateLesson;
 using TimLearning.Application.UseCases.Lessons.Dto;
 using TimLearning.Application.UseCases.Lessons.Queries.GetDeletedLessons;
@@ -101,6 +103,21 @@ public class LessonController : SiteApiController
         var lesson = await _mediator.Send(new GetUserLessonExerciseAppFileQuery(lessonId, UserId));
 
         return new ExerciseAppFileResponse(lesson.DownloadingUrl);
+    }
+
+    [HttpPost("lessons/{lessonId:guid}/user-exercise/test")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<UserExerciseTestingResponse> TestUserLessonExercise(
+        [FromRoute] Guid lessonId,
+        ExerciseTestingRequest request
+    )
+    {
+        var lesson = await _mediator.Send(
+            new TestUserLessonExerciseCommand(lessonId, request.Code, UserId)
+        );
+
+        return new UserExerciseTestingResponse(lesson.Status, lesson.ErrorMessage);
     }
 
     [HttpPatch("lessons/{lessonId:guid}")]

@@ -4,7 +4,7 @@ namespace TimLearning.Domain.Entities;
 
 public class UserSolution : IIdHolder<Guid>
 {
-    public required Guid Id { get; init; }
+    public Guid Id { get; init; }
 
     public required Guid UserId { get; init; }
     public User User { get; init; } = null!;

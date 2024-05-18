@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using TimLearning.Shared.AspNet.Validations.Mapper;
+using TimLearning.Shared.AspNet.Validations.Mappers;
 using TimLearning.Shared.Validation.Exceptions.Localized;
 
 namespace TimLearning.Shared.AspNet.Validations.Filters;

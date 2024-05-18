@@ -22,16 +22,13 @@ public class GetLessonWithExerciseQueryHandler
         CancellationToken cancellationToken
     )
     {
-        var lesson = await _dbContext.Lessons
-            .Where(l => l.Id == request.LessonId)
-            .Select(
-                l =>
-                    new LessonWithExerciseDto(
-                        l.Name,
-                        l.Text,
-                        l.Exercise == null ? null : l.Exercise.ToDto()
-                    )
-            )
+        var lesson = await _dbContext
+            .Lessons.Where(l => l.Id == request.LessonId)
+            .Select(l => new LessonWithExerciseDto(
+                l.Name,
+                l.Text,
+                l.Exercise == null ? null : l.Exercise.ToDto(null)
+            ))
             .FirstOrDefaultAsync(cancellationToken);
         if (lesson is null)
         {

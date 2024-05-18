@@ -7,7 +7,9 @@ using TimLearning.Application.Mediator.Pipelines.Transactional;
 using TimLearning.Application.Services.ExerciseServices;
 using TimLearning.Application.Services.LessonServices;
 using TimLearning.Application.Services.ModuleServices;
+using TimLearning.Application.Services.UserProgressServices;
 using TimLearning.Application.Services.UserServices;
+using TimLearning.Application.Services.UserSolutionServices;
 using TimLearning.Application.UseCases.Lessons.Dto;
 using TimLearning.Application.UseCases.Lessons.Validators;
 using TimLearning.Application.UseCases.Modules.Dto;
@@ -57,6 +59,10 @@ public static class ApplicationServicesConfigurations
         services.AddScoped<ILessonPositionService, LessonPositionService>();
 
         services.AddScoped<IExerciseTester, ExerciseTester>();
+
+        services.AddScoped<IUserProgressService, UserProgressService>();
+
+        services.AddScoped<IUserSolutionService, UserSolutionService>();
     }
 
     private static void AddValidators(this IServiceCollection services)

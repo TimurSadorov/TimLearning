@@ -1,7 +1,7 @@
 ﻿using TimLearning.Shared.AspNet.Validations.Dto;
 using TimLearning.Shared.Validation.Exceptions.Localized.Errors;
 
-namespace TimLearning.Shared.AspNet.Validations.Mapper;
+namespace TimLearning.Shared.AspNet.Validations.Mappers;
 
 public static class LocalizedErrorMappers
 {

@@ -2,7 +2,7 @@
 
 namespace TimLearning.Infrastructure.Interfaces.Storages.Mappers;
 
-public static class StoredFileMapper
+public static class StoredFileMappers
 {
     public static StoredFileDto ToStorageFileDto(this StoredFile file)
     {
