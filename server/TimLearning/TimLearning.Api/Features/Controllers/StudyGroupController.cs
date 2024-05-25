@@ -16,7 +16,7 @@ using TimLearning.Application.UseCases.StudyGroups.Queries.GetLinkToJoin;
 namespace TimLearning.Api.Features.Controllers;
 
 [Authorize]
-[Route($"{ApiRoute.Prefix}/study-group")]
+[Route($"{ApiRoute.Prefix}/study-groups")]
 public class StudyGroupController : SiteApiController
 {
     private readonly IMediator _mediator;

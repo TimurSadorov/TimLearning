@@ -10,7 +10,7 @@ using TimLearning.Application.UseCases.UserProgresses.Commands.VisitLesson;
 namespace TimLearning.Api.Features.Controllers;
 
 [Authorize]
-[Route($"{ApiRoute.Prefix}/user-progress")]
+[Route($"{ApiRoute.Prefix}/user-progresses")]
 public class UserProgressController : SiteApiController
 {
     private readonly IMediator _mediator;
