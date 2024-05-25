@@ -46,6 +46,20 @@ public class TimLearningLinkFactory : ITimLearningLinkFactory
         return linkToConfirm.ToString();
     }
 
+    public string GetLinkToJoinStudyGroup(Guid studyGroupId, string signature)
+    {
+        var linkToConfirm = new UriBuilder(new Uri(GetLinkToTimLearningSite(), "/study-group/join"))
+        {
+            Query = new QueryBuilder
+            {
+                { "id", studyGroupId.ToString() },
+                { "signature", signature }
+            }.ToString()
+        };
+
+        return linkToConfirm.ToString();
+    }
+
     private Uri GetLinkToTimLearningSite()
     {
         return new Uri(_timLearningSiteOptions.Url, UriKind.Absolute);

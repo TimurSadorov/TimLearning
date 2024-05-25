@@ -4,9 +4,11 @@ using Microsoft.Extensions.DependencyInjection;
 using TimLearning.Application.Data.ValueObjects;
 using TimLearning.Application.Mediator.Pipelines.RoleAccess;
 using TimLearning.Application.Mediator.Pipelines.Transactional;
+using TimLearning.Application.Services.CodeReviewServices;
 using TimLearning.Application.Services.ExerciseServices;
 using TimLearning.Application.Services.LessonServices;
 using TimLearning.Application.Services.ModuleServices;
+using TimLearning.Application.Services.StudyGroupServices;
 using TimLearning.Application.Services.UserProgressServices;
 using TimLearning.Application.Services.UserServices;
 using TimLearning.Application.Services.UserSolutionServices;
@@ -14,6 +16,9 @@ using TimLearning.Application.UseCases.Lessons.Dto;
 using TimLearning.Application.UseCases.Lessons.Validators;
 using TimLearning.Application.UseCases.Modules.Dto;
 using TimLearning.Application.UseCases.Modules.Validators;
+using TimLearning.Application.UseCases.StudyGroups.Commands.JoinToStudyGroup;
+using TimLearning.Application.UseCases.StudyGroups.Dto;
+using TimLearning.Application.UseCases.StudyGroups.Validators;
 using TimLearning.Application.UseCases.Users.Commands.RegisterUser;
 using TimLearning.Application.UseCases.Users.Dto;
 using TimLearning.Application.UseCases.Users.Validators;
@@ -63,6 +68,10 @@ public static class ApplicationServicesConfigurations
         services.AddScoped<IUserProgressService, UserProgressService>();
 
         services.AddScoped<IUserSolutionService, UserSolutionService>();
+
+        services.AddSingleton<IStudyGroupDataEncryptor, StudyGroupDataEncryptor>();
+
+        services.AddScoped<ICodeReviewService, CodeReviewService>();
     }
 
     private static void AddValidators(this IServiceCollection services)
@@ -96,5 +105,11 @@ public static class ApplicationServicesConfigurations
 
         services.AddScoped<IAsyncSimpleValidator<LessonMovementDto>, LessonMovementDtoValidator>();
         services.AddScoped<IAsyncSimpleValidator<UpdatedLessonDto>, UpdatedLessonDtoValidator>();
+
+        services.AddScoped<IAsyncSimpleValidator<NewStudyGroupDto>, NewStudyGroupDtoValidator>();
+        services.AddScoped<
+            IAsyncSimpleValidator<JoinToStudyGroupCommand>,
+            JoinToStudyGroupCommandValidator
+        >();
     }
 }

@@ -35,8 +35,8 @@ public class UpdateLessonCommandHandler
         var dto = request.Dto;
         await _validator.ValidateAndThrowAsync(dto, cancellationToken);
 
-        var lesson = await _dbContext.Lessons
-            .Include(l => l.Exercise)
+        var lesson = await _dbContext
+            .Lessons.Include(l => l.Exercise)
             .FirstAsync(l => l.Id == dto.Id, cancellationToken);
 
         if (dto.ExerciseDto is not null)
@@ -76,6 +76,7 @@ public class UpdateLessonCommandHandler
         var exercise = lesson.Exercise;
         if (exerciseDto is null)
         {
+            // TODO: dont remove exercise, otherwise, everything connected with it will be deleted
             if (exercise is not null)
             {
                 _dbContext.Remove(exercise);
@@ -87,6 +88,7 @@ public class UpdateLessonCommandHandler
             {
                 lesson.Exercise = new Exercise
                 {
+                    LessonId = lesson.Id,
                     AppArchiveId = exerciseDto.AppArchiveId,
                     AppContainerData = exerciseDto.AppContainerData,
                     RelativePathToDockerfile = exerciseDto.RelativePathToDockerfile,

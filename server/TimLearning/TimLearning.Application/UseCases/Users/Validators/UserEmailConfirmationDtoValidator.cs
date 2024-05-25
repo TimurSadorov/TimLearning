@@ -23,8 +23,8 @@ public class UserEmailConfirmationDtoValidator : IAsyncSimpleValidator<UserEmail
         CancellationToken ct = default
     )
     {
-        var user = await _db.Users
-            .Where(u => u.Email == entity.Email)
+        var user = await _db
+            .Users.Where(u => u.Email == entity.Email)
             .Select(u => new { u.IsEmailConfirmed })
             .FirstOrDefaultAsync(ct);
         if (user is null)
@@ -39,7 +39,7 @@ public class UserEmailConfirmationDtoValidator : IAsyncSimpleValidator<UserEmail
             LocalizedValidationException.ThrowSimpleTextError("Почта уже подтверждена.");
         }
 
-        if (_userUserDataEncryptor.VerifyEmail(entity.Signature, entity.Email) == false)
+        if (_userUserDataEncryptor.VerifyEmail(entity.Signature, entity.Email) is false)
         {
             LocalizedValidationException.ThrowSimpleTextError(
                 "Подтверждение не предназначено для этой почты."

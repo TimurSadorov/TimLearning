@@ -7,6 +7,9 @@ public class Exercise : IIdHolder<Guid>
 {
     public Guid Id { get; init; }
 
+    public required Guid LessonId { get; init; }
+    public Lesson Lesson { get; init; } = null!;
+
     public required Guid AppArchiveId { get; set; }
     public StoredFile AppArchive { get; set; } = null!;
 

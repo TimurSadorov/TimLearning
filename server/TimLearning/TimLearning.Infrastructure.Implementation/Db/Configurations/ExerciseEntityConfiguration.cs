@@ -10,6 +10,8 @@ public class ExerciseEntityConfiguration : IEntityTypeConfiguration<Exercise>
 {
     public void Configure(EntityTypeBuilder<Exercise> builder)
     {
+        builder.HasOne(e => e.Lesson).WithMany().HasForeignKey(e => e.LessonId);
+
         builder
             .Property(c => c.AppContainerData)
             .HasColumnType(PostgresTypes.Json)

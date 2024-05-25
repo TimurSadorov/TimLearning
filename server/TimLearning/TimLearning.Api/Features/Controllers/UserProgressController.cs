@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TimLearning.Api.Consts;
 using TimLearning.Api.Requests.UserProgress;
-using TimLearning.Application.UseCases.UserProgresses.VisitLesson;
+using TimLearning.Application.UseCases.UserProgresses.Commands.VisitLesson;
 
 namespace TimLearning.Api.Features.Controllers;
 

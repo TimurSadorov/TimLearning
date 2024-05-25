@@ -17,5 +17,7 @@ public class LessonEntityConfiguration : IEntityTypeConfiguration<Lesson>
             );
         });
         builder.HasOne(l => l.NextLesson).WithOne(l => l.PreviousLesson);
+
+        builder.HasOne(l => l.Exercise).WithOne().HasForeignKey<Lesson>(l => l.ExerciseId);
     }
 }

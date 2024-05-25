@@ -2,5 +2,5 @@
 
 public interface IUserSolutionService
 {
-    Task Create(Guid userId, Guid exerciseId, string code, CancellationToken ct = default);
+    Task<Guid> Create(Guid userId, Guid exerciseId, string code, CancellationToken ct = default);
 }

@@ -5,7 +5,7 @@ using TimLearning.Domain.Entities;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Shared.Validation.Exceptions.Localized;
 
-namespace TimLearning.Application.UseCases.UserProgresses.VisitLesson;
+namespace TimLearning.Application.UseCases.UserProgresses.Commands.VisitLesson;
 
 public class VisitLessonCommandHandler : IRequestHandler<VisitLessonCommand>
 {
@@ -19,8 +19,8 @@ public class VisitLessonCommandHandler : IRequestHandler<VisitLessonCommand>
     public async Task Handle(VisitLessonCommand request, CancellationToken cancellationToken)
     {
         if (
-            await _dbContext.Lessons
-                .Where(LessonSpecifications.UserAvailable)
+            await _dbContext
+                .Lessons.Where(LessonSpecifications.UserAvailable)
                 .AnyAsync(l => l.Id == request.LessonId, cancellationToken)
             is false
         )
@@ -46,8 +46,8 @@ public class VisitLessonCommandHandler : IRequestHandler<VisitLessonCommand>
             LessonId = request.LessonId
         };
         if (
-            await _dbContext.Lessons
-                .Where(l => l.Id == request.LessonId)
+            await _dbContext
+                .Lessons.Where(l => l.Id == request.LessonId)
                 .Where(LessonSpecifications.IsPractical)
                 .AnyAsync(cancellationToken)
             is false

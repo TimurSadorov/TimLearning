@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TimLearning.Application.Extensions;
+using TimLearning.Application.Services.CodeReviewServices;
 using TimLearning.Application.Services.ExerciseServices;
 using TimLearning.Application.Services.ExerciseServices.Dto;
 using TimLearning.Application.Services.ExerciseServices.Mappers;
@@ -21,18 +22,21 @@ public class TestUserLessonExerciseCommandHandler
     private readonly IExerciseTester _exerciseTester;
     private readonly IUserProgressService _userProgressService;
     private readonly IUserSolutionService _userSolutionService;
+    private readonly ICodeReviewService _codeReviewService;
 
     public TestUserLessonExerciseCommandHandler(
         IAppDbContext dbContext,
         IExerciseTester exerciseTester,
         IUserProgressService userProgressService,
-        IUserSolutionService userSolutionService
+        IUserSolutionService userSolutionService,
+        ICodeReviewService codeReviewService
     )
     {
         _dbContext = dbContext;
         _exerciseTester = exerciseTester;
         _userProgressService = userProgressService;
         _userSolutionService = userSolutionService;
+        _codeReviewService = codeReviewService;
     }
 
     public async Task<UserExerciseTestingResultDto> Handle(
@@ -72,12 +76,14 @@ public class TestUserLessonExerciseCommandHandler
                     cancellationToken
                 );
 
-                await _userSolutionService.Create(
+                var solutionId = await _userSolutionService.Create(
                     request.CallingUserId,
                     exercise.Id,
                     request.Code,
                     cancellationToken
                 );
+
+                await _codeReviewService.AddReviewsForUserSolution(solutionId, cancellationToken);
             },
             cancellationToken
         );

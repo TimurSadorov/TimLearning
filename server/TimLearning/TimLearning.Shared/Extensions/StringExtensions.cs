@@ -11,4 +11,9 @@ public static class StringExtensions
     {
         return (string.IsNullOrEmpty(s) || string.IsNullOrWhiteSpace(s)) is false;
     }
+
+    public static bool IsNotNullOrEmpty([NotNullWhen(true)] this string? s)
+    {
+        return string.IsNullOrEmpty(s) == false;
+    }
 }

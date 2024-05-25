@@ -15,6 +15,10 @@ public interface IAppDbContext
     DbSet<Exercise> Exercises { get; }
     DbSet<StoredFile> StoredFiles { get; }
     DbSet<UserProgress> UserProgresses { get; }
+    DbSet<UserSolution> UserSolutions { get; }
+    DbSet<StudyGroup> StudyGroups { get; }
+    DbSet<GroupStudent> GroupStudents { get; }
+    DbSet<CodeReview> CodeReviews { get; }
 
     DatabaseFacade Database { get; }
 
@@ -22,6 +26,8 @@ public interface IAppDbContext
 
     EntityEntry<TEntity> Add<TEntity>(TEntity entity)
         where TEntity : class;
+
+    void AddRange(IEnumerable<object> entity);
 
     EntityEntry<TEntity> Remove<TEntity>(TEntity entity)
         where TEntity : class;

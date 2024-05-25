@@ -15,7 +15,7 @@ public class UserSolutionService : IUserSolutionService
         _dateTimeProvider = dateTimeProvider;
     }
 
-    public async Task Create(
+    public async Task<Guid> Create(
         Guid userId,
         Guid exerciseId,
         string code,
@@ -33,5 +33,7 @@ public class UserSolutionService : IUserSolutionService
 
         _dbContext.Add(userSolution);
         await _dbContext.SaveChangesAsync(ct);
+
+        return userSolution.Id;
     }
 }
