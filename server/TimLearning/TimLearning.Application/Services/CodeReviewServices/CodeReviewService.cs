@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TimLearning.Domain.Entities;
 using TimLearning.Domain.Entities.Enums;
+using TimLearning.Domain.Exceptions;
 using TimLearning.Infrastructure.Interfaces.Db;
 
 namespace TimLearning.Application.Services.CodeReviewServices;
@@ -55,6 +56,24 @@ public class CodeReviewService : ICodeReviewService
         AddReviewsCreatedForFirstTime(solutionId, studentIdsForUser, existedLastReviewsForUser);
 
         await _dbContext.SaveChangesAsync(ct);
+    }
+
+    public async Task<CodeReviewStatus> GetStatusAvailableToGroupMentor(
+        Guid id,
+        Guid mentorId,
+        CancellationToken ct = default
+    )
+    {
+        var review = await _dbContext
+            .CodeReviews.Where(r => r.Id == id && r.GroupStudent.StudyGroup.MentorId == mentorId)
+            .Select(r => new { r.Status })
+            .FirstOrDefaultAsync(ct);
+        if (review is null)
+        {
+            throw new NotFoundException();
+        }
+
+        return review.Status;
     }
 
     private void AddNewForRejectedReviews(

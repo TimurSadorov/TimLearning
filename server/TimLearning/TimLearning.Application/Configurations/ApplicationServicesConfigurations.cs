@@ -17,6 +17,9 @@ using TimLearning.Application.UseCases.CodeReviewNoteComments.Validators;
 using TimLearning.Application.UseCases.CodeReviewNotes.Commands.CreateCodeReviewNote;
 using TimLearning.Application.UseCases.CodeReviewNotes.Commands.DeleteCodeReviewNote;
 using TimLearning.Application.UseCases.CodeReviewNotes.Validators;
+using TimLearning.Application.UseCases.CodeReviews.Commands.CompleteCodeReview;
+using TimLearning.Application.UseCases.CodeReviews.Commands.StartCodeReview;
+using TimLearning.Application.UseCases.CodeReviews.Validators;
 using TimLearning.Application.UseCases.Lessons.Dto;
 using TimLearning.Application.UseCases.Lessons.Validators;
 using TimLearning.Application.UseCases.Modules.Dto;
@@ -115,6 +118,15 @@ public static class ApplicationServicesConfigurations
         services.AddScoped<
             IAsyncSimpleValidator<JoinToStudyGroupCommand>,
             JoinToStudyGroupCommandValidator
+        >();
+
+        services.AddScoped<
+            IAsyncSimpleValidator<StartCodeReviewCommand>,
+            StartCodeReviewCommandValidator
+        >();
+        services.AddScoped<
+            IAsyncSimpleValidator<CompleteCodeReviewCommand>,
+            CompleteCodeReviewCommandValidator
         >();
 
         services.AddScoped<

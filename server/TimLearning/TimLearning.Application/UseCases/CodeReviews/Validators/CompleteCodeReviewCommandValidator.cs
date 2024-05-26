@@ -1,28 +1,27 @@
 ﻿using TimLearning.Application.Services.CodeReviewServices;
-using TimLearning.Application.UseCases.CodeReviewNotes.Commands.CreateCodeReviewNote;
+using TimLearning.Application.UseCases.CodeReviews.Commands.CompleteCodeReview;
 using TimLearning.Domain.Entities.Enums;
 using TimLearning.Shared.Validation.Exceptions.Localized;
 using TimLearning.Shared.Validation.Validators;
 
-namespace TimLearning.Application.UseCases.CodeReviewNotes.Validators;
+namespace TimLearning.Application.UseCases.CodeReviews.Validators;
 
-public class CreateCodeReviewNoteCommandValidator
-    : IAsyncSimpleValidator<CreateCodeReviewNoteCommand>
+public class CompleteCodeReviewCommandValidator : IAsyncSimpleValidator<CompleteCodeReviewCommand>
 {
     private readonly ICodeReviewService _codeReviewService;
 
-    public CreateCodeReviewNoteCommandValidator(ICodeReviewService codeReviewService)
+    public CompleteCodeReviewCommandValidator(ICodeReviewService codeReviewService)
     {
         _codeReviewService = codeReviewService;
     }
 
     public async Task ValidateAndThrowAsync(
-        CreateCodeReviewNoteCommand entity,
+        CompleteCodeReviewCommand entity,
         CancellationToken ct = default
     )
     {
         var status = await _codeReviewService.GetStatusAvailableToGroupMentor(
-            entity.Dto.CodeReviewId,
+            entity.CodeReviewId,
             entity.CallingUserId,
             ct
         );

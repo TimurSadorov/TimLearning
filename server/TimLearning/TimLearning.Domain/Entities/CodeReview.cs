@@ -63,12 +63,12 @@ public class CodeReview : IIdHolder<Guid>
         Completed = now;
     }
 
-    public void Rejected(DateTimeOffset now)
+    public void Reject(DateTimeOffset now)
     {
         if (Status is not CodeReviewStatus.Started)
         {
             throw new InvalidOperationException(
-                $"Cant repeat review. Review is not in {CodeReviewStatus.Started.ToString()} status."
+                $"Cant reject review. Review is not in {CodeReviewStatus.Started.ToString()} status."
             );
         }
 

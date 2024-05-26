@@ -1,10 +1,13 @@
-﻿using MediatR;
+﻿using System.ComponentModel.DataAnnotations;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TimLearning.Api.Consts;
 using TimLearning.Api.Requests.CodeReview;
 using TimLearning.Api.Responses.CodeReview;
+using TimLearning.Application.UseCases.CodeReviews.Commands.CompleteCodeReview;
+using TimLearning.Application.UseCases.CodeReviews.Commands.StartCodeReview;
 using TimLearning.Application.UseCases.CodeReviews.Dto;
 using TimLearning.Application.UseCases.CodeReviews.Queries.GetStudyGroupCodeReviews;
 using TimLearning.Application.UseCases.CodeReviews.Queries.GetUserSolutionCodeReview;
@@ -64,6 +67,27 @@ public class CodeReviewController : SiteApiController
             new CodeReviewLessonResponse(review.Lesson.Id, review.Lesson.Name, review.Lesson.Text),
             new UserSolutionResponse(review.Solution.Code, review.Solution.Added),
             review.StandardCode
+        );
+    }
+
+    [HttpPost("code-reviews/{codeReviewId:guid}/start")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public Task StartCodeReview([FromRoute] Guid codeReviewId)
+    {
+        return _mediator.Send(new StartCodeReviewCommand(codeReviewId, UserId));
+    }
+
+    [HttpPost("code-reviews/{codeReviewId:guid}/complete")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public Task CompleteCodeReview(
+        [FromRoute] Guid codeReviewId,
+        [Required] CompleteCodeReviewRequest request
+    )
+    {
+        return _mediator.Send(
+            new CompleteCodeReviewCommand(codeReviewId, request.IsSuccess, UserId)
         );
     }
 }
