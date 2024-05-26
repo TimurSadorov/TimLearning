@@ -48,6 +48,7 @@ export const CodeEditor = ({ value, onChange, readonly, theme }: Props) => {
             onChange={onChangeCode}
             enableLiveAutocompletion={true}
             enableBasicAutocompletion={true}
+            // markers={[{ startCol: 2, startRow: -5, endRow: 5, endCol: 2, type: 'text', className: 'test' }]}
             setOptions={{
                 foldStyle: 'manual',
                 readOnly: readonly,
