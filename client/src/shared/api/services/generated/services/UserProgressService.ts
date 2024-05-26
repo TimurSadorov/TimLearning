@@ -20,7 +20,7 @@ requestBody: VisitLessonRequest,
 ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/user-progress/lesson-visiting',
+            url: '/api/user-progresses/lesson-visiting',
             body: requestBody,
             mediaType: 'application/json',
             errors: {
