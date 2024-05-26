@@ -19,6 +19,8 @@ public class AppAppDbContext : DbContext, IAppDbContext
     public DbSet<StudyGroup> StudyGroups => Set<StudyGroup>();
     public DbSet<GroupStudent> GroupStudents => Set<GroupStudent>();
     public DbSet<CodeReview> CodeReviews => Set<CodeReview>();
+    public DbSet<CodeReviewNote> CodeReviewNotes => Set<CodeReviewNote>();
+    public DbSet<CodeReviewNoteComment> CodeReviewNoteComments => Set<CodeReviewNoteComment>();
 
     public AppAppDbContext(DbContextOptions options)
         : base(options) { }

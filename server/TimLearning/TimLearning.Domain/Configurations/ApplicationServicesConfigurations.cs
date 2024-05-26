@@ -8,6 +8,7 @@ using TimLearning.Domain.Services.UserServices;
 using TimLearning.Domain.Validators;
 using TimLearning.Shared.Configuration.Extensions;
 using TimLearning.Shared.Services.Encryptors.PasswordEncryptor;
+using TimLearning.Shared.Validation.Validators;
 
 namespace TimLearning.Domain.Configurations;
 
@@ -39,5 +40,10 @@ public static class ApplicationServicesConfigurations
     private static void AddValidators(this IServiceCollection services)
     {
         services.AddSingleton<IValidator<UserPasswordValueObject>, UserPasswordValidator>();
+
+        services.AddSingleton<
+            ISimpleValidator<CodeReviewNoteCommentTextValueObject>,
+            CodeReviewNoteCommentTextValidator
+        >();
     }
 }

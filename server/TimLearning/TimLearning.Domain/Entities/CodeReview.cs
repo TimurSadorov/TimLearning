@@ -24,6 +24,8 @@ public class CodeReview : IIdHolder<Guid>
 
     public DateTimeOffset? Completed { get; private set; }
 
+    public List<CodeReviewNote> Notes { get; init; } = null!;
+
     public void SetUserSolutionId(Guid id)
     {
         if (Status is not CodeReviewStatus.Pending)

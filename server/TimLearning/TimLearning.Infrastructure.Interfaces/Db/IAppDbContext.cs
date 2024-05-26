@@ -19,6 +19,8 @@ public interface IAppDbContext
     DbSet<StudyGroup> StudyGroups { get; }
     DbSet<GroupStudent> GroupStudents { get; }
     DbSet<CodeReview> CodeReviews { get; }
+    DbSet<CodeReviewNote> CodeReviewNotes { get; }
+    DbSet<CodeReviewNoteComment> CodeReviewNoteComments { get; }
 
     DatabaseFacade Database { get; }
 

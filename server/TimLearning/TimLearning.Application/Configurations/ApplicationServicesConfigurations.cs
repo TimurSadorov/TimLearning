@@ -12,6 +12,11 @@ using TimLearning.Application.Services.StudyGroupServices;
 using TimLearning.Application.Services.UserProgressServices;
 using TimLearning.Application.Services.UserServices;
 using TimLearning.Application.Services.UserSolutionServices;
+using TimLearning.Application.UseCases.CodeReviewNoteComments.Commands.CreateCodeReviewNoteComment;
+using TimLearning.Application.UseCases.CodeReviewNoteComments.Validators;
+using TimLearning.Application.UseCases.CodeReviewNotes.Commands.CreateCodeReviewNote;
+using TimLearning.Application.UseCases.CodeReviewNotes.Commands.DeleteCodeReviewNote;
+using TimLearning.Application.UseCases.CodeReviewNotes.Validators;
 using TimLearning.Application.UseCases.Lessons.Dto;
 using TimLearning.Application.UseCases.Lessons.Validators;
 using TimLearning.Application.UseCases.Modules.Dto;
@@ -110,6 +115,20 @@ public static class ApplicationServicesConfigurations
         services.AddScoped<
             IAsyncSimpleValidator<JoinToStudyGroupCommand>,
             JoinToStudyGroupCommandValidator
+        >();
+
+        services.AddScoped<
+            IAsyncSimpleValidator<CreateCodeReviewNoteCommand>,
+            CreateCodeReviewNoteCommandValidator
+        >();
+        services.AddScoped<
+            IAsyncSimpleValidator<DeleteCodeReviewNoteCommand>,
+            DeleteCodeReviewNoteCommandValidator
+        >();
+
+        services.AddScoped<
+            IAsyncSimpleValidator<CreateCodeReviewNoteCommentCommand>,
+            CreateCodeReviewNoteCommentCommandValidator
         >();
     }
 }
