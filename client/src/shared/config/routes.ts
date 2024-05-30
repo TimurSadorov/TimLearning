@@ -58,6 +58,11 @@ const userLesson = {
     getLink: (lessonId: string) => `/lessons/${lessonId}`,
 };
 
+const studyGroups = {
+    path: '/study-groups',
+    getLink: () => `/study-groups`,
+};
+
 export const routes = {
     root,
     login,
@@ -71,4 +76,5 @@ export const routes = {
     editableLesson,
     userCourse,
     userLesson,
+    studyGroups,
 };

@@ -11,6 +11,7 @@ import { TemplateWidget } from '@widgets';
 import styled from 'styled-components';
 import { EditableModulesPage } from './module';
 import { EditableLessonPage, EditableLessonsPage, UserLessonPage } from './lesson';
+import { StudyGroupsPage } from './studyGroup/ui/StudyGroupsPage';
 
 const routes = Config.routes;
 
@@ -62,6 +63,18 @@ export const Routing = () => {
             >
                 <Route path={routes.userCourse.path} element={<UserCoursePage />} />
                 <Route path={routes.userLesson.path} element={<UserLessonPage />} />
+            </Route>
+            <Route
+                element={
+                    <UserFeature.Auth.UI.RequiredAuth
+                        needAuth
+                        navigateLinkIfUnavailable={routes.login.path}
+                        requiredRole="Mentor"
+                        element={<TemplateWidget.UI.Header />}
+                    />
+                }
+            >
+                <Route path={routes.studyGroups.path} element={<StudyGroupsPage />} />
             </Route>
             <Route element={<TemplateWidget.UI.Header />}>
                 <Route path="*" element={<Navigate to={routes.root.path} />} />

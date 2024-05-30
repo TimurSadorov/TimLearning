@@ -1,18 +1,43 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Config } from '@shared';
 import { Button } from 'antd';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import { UserOutlined } from '@ant-design/icons';
 import { useHeader } from './model';
 
+type StyledNavLink = {
+    isActive: boolean;
+    isPending: boolean;
+    isTransitioning: boolean;
+};
+
 export const Header = () => {
     const { userIsAuthorized, logout, toAccount, toLogin } = useHeader();
+
+    const styleNav = useCallback<(d: StyledNavLink) => React.CSSProperties>(
+        ({ isActive }: StyledNavLink) => ({
+            color: isActive ? '#1d1d1d' : '',
+            cursor: isActive ? 'auto' : 'pointer',
+        }),
+        [],
+    );
 
     return (
         <>
             <HeaderContainer>
-                <MainPageLink to={Config.routes.root.path}>TimLearning</MainPageLink>
+                <NavBarContainer>
+                    <MainPageLink to={Config.routes.root.path}>TimLearning</MainPageLink>
+                    <NavLinksContainer>
+                        <NavBarLink style={styleNav} to={Config.routes.root.path}>
+                            Курсы
+                        </NavBarLink>
+                        <NavBarLink style={styleNav} to={Config.routes.studyGroups.path}>
+                            Учебные группы
+                        </NavBarLink>
+                    </NavLinksContainer>
+                </NavBarContainer>
+
                 {userIsAuthorized ? (
                     <AccountBlock>
                         <Button onClick={logout}>Выйти</Button>
@@ -38,6 +63,27 @@ const HeaderContainer = styled.header`
     align-items: center;
     padding: 0 30px;
     height: 50px;
+`;
+
+const NavBarContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+`;
+
+const NavLinksContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    margin-left: 50px;
+    gap: 0 20px;
+`;
+
+const NavBarLink = styled(NavLink)`
+    text-decoration: none;
+    color: #737373;
+
+    &:hover {
+        color: #1d1d1d;
+    }
 `;
 
 const MainPageLink = styled(Link)`

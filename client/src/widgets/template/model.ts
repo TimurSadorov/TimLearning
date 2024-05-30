@@ -10,12 +10,13 @@ export const useHeader = () => {
     const toAccount = useCallback(() => navigate(Config.routes.login.path), [navigate]);
     const logout = useCallback(() => UserEntity.Model.logoutFx(), []);
 
-    const { isAuthorized } = UserEntity.Model.useUser();
+    const { isAuthorized, isInRole } = UserEntity.Model.useUser();
 
     return {
         userIsAuthorized: isAuthorized,
         toLogin,
         toAccount,
         logout,
+        isInRole,
     };
 };

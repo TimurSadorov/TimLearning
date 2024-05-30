@@ -13,14 +13,14 @@ const $searchName = restore(onChangeSearchName, '');
 const $debouncedSearchName = restore(debounce(onChangeSearchName, 300), '');
 
 const onChangeIsDraft = createEvent<boolean>();
-const $isDraft = restore(onChangeIsDraft, true);
+const $isDraft = restore(onChangeIsDraft, false);
 
 const onChangeIsDeleted = createEvent<boolean>();
 const $isDeleted = restore(onChangeIsDeleted, false);
 
 const $draftFilterIsDisabled = $isDeleted;
 
-reset({ clock: FilterEditableCourses.close, target: [$searchName, $isDraft, $isDeleted] });
+reset({ clock: FilterEditableCourses.close, target: [$searchName, $debouncedSearchName, $isDraft, $isDeleted] });
 
 export const useFilterEditableCourses = () => {
     useGate(FilterEditableCourses);
@@ -62,9 +62,10 @@ export const useCreateCourseModal = () => {
     const onCancelModal = useCallback(() => setShowModal(false), [setShowModal]);
 
     const loading = useUnit(CourseEntity.Model.createCourseFx.pending);
-    const create = useCallback(async (form: NewCourse) => {
-        await CourseEntity.Model.createCourseFx(form);
+    const create = useCallback(async (f: NewCourse) => {
+        await CourseEntity.Model.createCourseFx(f);
         setShowModal(false);
+        form.resetFields();
     }, []);
 
     return {
