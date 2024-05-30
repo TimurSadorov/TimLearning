@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import { EditableModulesPage } from './module';
 import { EditableLessonPage, EditableLessonsPage, UserLessonPage } from './lesson';
 import { StudyGroupsPage } from './studyGroup/ui/StudyGroupsPage';
+import { StudyGroupPage } from './studyGroup/ui/StudyGroupPage';
 
 const routes = Config.routes;
 
@@ -75,6 +76,7 @@ export const Routing = () => {
                 }
             >
                 <Route path={routes.studyGroups.path} element={<StudyGroupsPage />} />
+                <Route path={routes.studyGroup.path} element={<StudyGroupPage />} />
             </Route>
             <Route element={<TemplateWidget.UI.Header />}>
                 <Route path="*" element={<Navigate to={routes.root.path} />} />

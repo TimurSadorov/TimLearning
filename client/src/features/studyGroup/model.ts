@@ -67,3 +67,51 @@ export const useCreateStudyGroup = () => {
         onCancelModal,
     };
 };
+
+export type UpdatedNameStudyGroup = { name: string };
+
+export const useUpdateStudyGroup = (id: string) => {
+    const [form] = useForm<UpdatedNameStudyGroup>();
+    const [showModal, setShowModal] = useState(false);
+    const onShowModal = useCallback(() => setShowModal(true), [setShowModal]);
+
+    const onOkModal = useCallback(() => {
+        form.submit();
+    }, [form]);
+    const onCancelModal = useCallback(() => setShowModal(false), [setShowModal]);
+
+    const loading = useUnit(StudyGroupEntity.Model.updateStudyGroupFx.pending);
+    const update = useCallback(
+        async (f: UpdatedNameStudyGroup) => {
+            await StudyGroupEntity.Model.updateStudyGroupFx({ id, ...f });
+            setShowModal(false);
+            form.resetFields();
+        },
+        [id],
+    );
+
+    return {
+        form,
+        loading,
+        update,
+        showModal,
+        onShowModal,
+        onOkModal,
+        onCancelModal,
+    };
+};
+
+export const useActiveStudyGroup = (id: string) => {
+    const loading = useUnit(StudyGroupEntity.Model.updateStudyGroupFx.pending);
+    const updateIsActive = useCallback(
+        async (isActive: boolean) => {
+            await StudyGroupEntity.Model.updateStudyGroupFx({ id, isActive });
+        },
+        [id],
+    );
+
+    return {
+        updateIsActive,
+        loading,
+    };
+};

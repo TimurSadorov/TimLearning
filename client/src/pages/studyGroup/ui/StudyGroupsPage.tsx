@@ -1,7 +1,7 @@
 import React from 'react';
-import { CourseFeature, StudyGroupFeature } from '@features';
+import { StudyGroupFeature } from '@features';
 import styled from 'styled-components';
-import { Button, Checkbox, Input } from 'antd';
+import { Checkbox, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { Config, SharedUI } from '@shared';
 import { CourseEntity } from '@entities';
@@ -43,6 +43,7 @@ export const StudyGroupsPage = () => {
                             }
                             isActive={studyGroup.isActive}
                             name={studyGroup.name}
+                            onClick={() => navigate(Config.routes.studyGroup.getLink(studyGroup.id))}
                         />
                     ))}
                 </StudyGroupsContainer>

@@ -32,7 +32,7 @@ export const Header = () => {
                         <NavBarLink style={styleNav} to={Config.routes.root.path}>
                             Курсы
                         </NavBarLink>
-                        <NavBarLink style={styleNav} to={Config.routes.studyGroups.path}>
+                        <NavBarLink style={styleNav} to={Config.routes.studyGroups.path} end>
                             Учебные группы
                         </NavBarLink>
                     </NavLinksContainer>

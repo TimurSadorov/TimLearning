@@ -4,3 +4,4 @@ export * as ModuleEntity from './module';
 export * as LessonEntity from './lesson';
 export * as UserProgressEntity from './userProgress';
 export * as StudyGroupEntity from './studyGroup';
+export * as CodeReviewEntity from './codeReview';
