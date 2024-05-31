@@ -31,7 +31,8 @@ public class GetUserLessonQueryHandler : IRequestHandler<GetUserLessonQuery, Use
                 l.Module.CourseId,
                 l.Exercise != null
                     ? new UserExerciseDto(
-                        l.Exercise.UserSolutions.OrderByDescending(s => s.Added)
+                        l.Exercise.UserSolutions.Where(s => s.UserId == request.CallingUserId)
+                            .OrderByDescending(s => s.Added)
                             .FirstOrDefault()!
                             .Code
                     )
