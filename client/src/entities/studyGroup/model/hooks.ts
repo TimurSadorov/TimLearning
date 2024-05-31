@@ -1,15 +1,25 @@
 import { Api } from '@shared';
 import {
+    $errorOnJoiningGroup,
     $findStudyGroupError,
+    $isSuccessJoiningGroup,
     $linkToJoin,
     $studyGroup,
     $studyGroups,
+    JoiningGroupGate,
     LinkToJoinGate,
     StudyGroupGate,
     StudyGroupsGate,
 } from './model';
-import { findStudyGroupFx, findStudyGroupsFx, getLinkToJoinToStudyGroupFx } from './effects';
+import {
+    WithStudyGroupId,
+    findStudyGroupFx,
+    findStudyGroupsFx,
+    getLinkToJoinToStudyGroupFx,
+    joinToStudyGroupFx,
+} from './effects';
 import { useGate, useUnit } from 'effector-react';
+import { useEffect } from 'react';
 
 export const useStudyGroups = (request: Api.Services.FindStudyGroupsQueryParams) => {
     useGate(StudyGroupsGate, request);
@@ -34,4 +44,23 @@ export const useLinkToJoin = (groupId: string) => {
     const isLoading = useUnit(getLinkToJoinToStudyGroupFx.pending);
 
     return { linkToJoin, isLoading };
+};
+
+export const useJoinToStudyGroup = (onSuccess = () => {}, onFail: (error: Error) => void = () => {}) => {
+    useGate(JoiningGroupGate);
+
+    const join = (request: WithStudyGroupId<Api.Services.JoinToStudyGroupRequest>) => joinToStudyGroupFx(request);
+    const isSuccessJoiningGroup = useUnit($isSuccessJoiningGroup);
+    const errorOnJoiningGroup = useUnit($errorOnJoiningGroup);
+
+    useEffect(() => {
+        if (isSuccessJoiningGroup) {
+            onSuccess();
+        }
+        if (!!errorOnJoiningGroup) {
+            onFail(errorOnJoiningGroup);
+        }
+    }, [isSuccessJoiningGroup, errorOnJoiningGroup, onSuccess, onFail]);
+
+    return { join, errorOnJoiningGroup };
 };

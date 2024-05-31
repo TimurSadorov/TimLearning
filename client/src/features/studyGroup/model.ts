@@ -1,10 +1,11 @@
 import { StudyGroupEntity } from '@entities';
-import { Api } from '@shared';
+import { Api, Config, SharedUI } from '@shared';
 import { useForm } from 'antd/es/form/Form';
 import { createEvent, restore } from 'effector';
 import { createGate, useGate, useUnit } from 'effector-react';
 import { debounce, reset } from 'patronum';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const FilterStudyGroups = createGate();
 
@@ -114,4 +115,32 @@ export const useActiveStudyGroup = (id: string) => {
         updateIsActive,
         loading,
     };
+};
+
+export const useJoinToStudyGroup = () => {
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+
+    const navigateOnRoot = () => navigate(Config.routes.root.getLink(), { replace: true });
+
+    const onSuccess = useCallback(() => {
+        SharedUI.Model.Notification.notifySuccessFx('Вы успешно присоединились к группе ❤️');
+        navigateOnRoot();
+    }, []);
+
+    const onFail = useCallback((error: Error) => {
+        Api.Utils.notifyIfValidationErrorText(error);
+
+        if (!Api.Utils.isApiError(error)) {
+            SharedUI.Model.Notification.notifyErrorFx('Что то пошло не так, попробуйте позже снова 😔');
+        }
+
+        navigateOnRoot();
+    }, []);
+
+    const { join } = StudyGroupEntity.Model.useJoinToStudyGroup(onSuccess, onFail);
+
+    useEffect(() => {
+        join({ id: searchParams.get('id') ?? 's', signature: searchParams.get('signature') ?? 's' });
+    }, [searchParams]);
 };

@@ -3,3 +3,4 @@ export * from './StudyGroupRecord';
 export * from './UpdateNameButton';
 export * from './ActiveButton';
 export * from './CopyLinkToJoinButton';
+export * from './JoiningGroup';

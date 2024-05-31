@@ -29,3 +29,9 @@ export const updateStudyGroupFx = createEffect(
 export const getLinkToJoinToStudyGroupFx = createEffect(async (id: string) => {
     return await Api.Services.StudyGroupService.getLinkToJoinToStudyGroup(id);
 });
+
+export const joinToStudyGroupFx = createEffect(
+    async (request: WithStudyGroupId<Api.Services.JoinToStudyGroupRequest>) => {
+        return await Api.Services.StudyGroupService.joinToStudyGroup(request.id, { signature: request.signature });
+    },
+);

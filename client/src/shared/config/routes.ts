@@ -68,6 +68,11 @@ const studyGroup = {
     getLink: (studyGroupId: string) => `/study-groups/${studyGroupId}`,
 };
 
+const joiningGroup = {
+    path: '/study-group/join',
+    getLink: () => `/study-group/join`,
+};
+
 export const routes = {
     root,
     login,
@@ -83,4 +88,5 @@ export const routes = {
     userLesson,
     studyGroups,
     studyGroup,
+    joiningGroup,
 };

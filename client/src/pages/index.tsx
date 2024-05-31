@@ -13,6 +13,7 @@ import { EditableModulesPage } from './module';
 import { EditableLessonPage, EditableLessonsPage, UserLessonPage } from './lesson';
 import { StudyGroupsPage } from './studyGroup/ui/StudyGroupsPage';
 import { StudyGroupPage } from './studyGroup/ui/StudyGroupPage';
+import { JoiningGroupPage } from './studyGroup/ui/JoiningGroupPage';
 
 const routes = Config.routes;
 
@@ -64,6 +65,7 @@ export const Routing = () => {
             >
                 <Route path={routes.userCourse.path} element={<UserCoursePage />} />
                 <Route path={routes.userLesson.path} element={<UserLessonPage />} />
+                <Route path={routes.joiningGroup.path} element={<JoiningGroupPage />} />
             </Route>
             <Route
                 element={

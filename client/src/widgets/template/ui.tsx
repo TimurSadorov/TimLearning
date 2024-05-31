@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Config } from '@shared';
 import { Button } from 'antd';
 import { Link, NavLink, Outlet } from 'react-router-dom';
@@ -13,7 +13,9 @@ type StyledNavLink = {
 };
 
 export const Header = () => {
-    const { userIsAuthorized, logout, toAccount, toLogin } = useHeader();
+    const { userIsAuthorized, logout, toAccount, toLogin, isInRole } = useHeader();
+
+    const isMentor = useMemo(() => isInRole('Mentor'), [isInRole]);
 
     const styleNav = useCallback<(d: StyledNavLink) => React.CSSProperties>(
         ({ isActive }: StyledNavLink) => ({
@@ -32,9 +34,13 @@ export const Header = () => {
                         <NavBarLink style={styleNav} to={Config.routes.root.path}>
                             Курсы
                         </NavBarLink>
-                        <NavBarLink style={styleNav} to={Config.routes.studyGroups.path} end>
-                            Учебные группы
-                        </NavBarLink>
+                        {isMentor ? (
+                            <NavBarLink style={styleNav} to={Config.routes.studyGroups.path} end>
+                                Учебные группы
+                            </NavBarLink>
+                        ) : (
+                            <></>
+                        )}
                     </NavLinksContainer>
                 </NavBarContainer>
 
