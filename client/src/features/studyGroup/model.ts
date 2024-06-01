@@ -1,4 +1,5 @@
-import { StudyGroupEntity } from '@entities';
+import { StudyGroupEntity, UserEntity } from '@entities';
+import { UserFeature } from '@features';
 import { Api, Config, SharedUI } from '@shared';
 import { useForm } from 'antd/es/form/Form';
 import { createEvent, restore } from 'effector';
@@ -120,6 +121,7 @@ export const useActiveStudyGroup = (id: string) => {
 export const useJoinToStudyGroup = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
+    const { isAuthorized } = UserEntity.Model.useUser();
 
     const navigateOnRoot = () => navigate(Config.routes.root.getLink(), { replace: true });
 
@@ -141,6 +143,14 @@ export const useJoinToStudyGroup = () => {
     const { join } = StudyGroupEntity.Model.useJoinToStudyGroup(onSuccess, onFail);
 
     useEffect(() => {
+        if (!isAuthorized) {
+            SharedUI.Model.Notification.notifyErrorFx(
+                'Войдите в аккаунт, после чего снова перейдите по ссылке, чтобы присоединиться к группе 🙂',
+            );
+
+            return;
+        }
+
         join({ id: searchParams.get('id') ?? 's', signature: searchParams.get('signature') ?? 's' });
-    }, [searchParams]);
+    }, [isAuthorized, searchParams]);
 };

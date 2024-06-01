@@ -65,7 +65,6 @@ export const Routing = () => {
             >
                 <Route path={routes.userCourse.path} element={<UserCoursePage />} />
                 <Route path={routes.userLesson.path} element={<UserLessonPage />} />
-                <Route path={routes.joiningGroup.path} element={<JoiningGroupPage />} />
             </Route>
             <Route
                 element={
@@ -85,6 +84,7 @@ export const Routing = () => {
                 <Route path={routes.root.path} element={<UserCoursesPage />} />
             </Route>
             <Route path={routes.emailConfiramtion.path} element={<EmailConfirmationPage />} />
+            <Route path={routes.joiningGroup.path} element={<JoiningGroupPage />} />
         </Routes>
     );
 };
