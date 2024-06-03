@@ -5,5 +5,6 @@ namespace TimLearning.Application.UseCases.CodeReviewNotes.Dto;
 public record NewCodeReviewNote(
     Guid CodeReviewId,
     CodeReviewNotePositionData StartPosition,
-    CodeReviewNotePositionData EndPosition
+    CodeReviewNotePositionData EndPosition,
+    string InitCommentText
 );

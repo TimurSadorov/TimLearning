@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TimLearning.Application.Data.ValueObjects;
 using TimLearning.Application.Mediator.Pipelines.RoleAccess;
 using TimLearning.Application.Mediator.Pipelines.Transactional;
+using TimLearning.Application.Services.CodeReviewNoteServices;
 using TimLearning.Application.Services.CodeReviewServices;
 using TimLearning.Application.Services.ExerciseServices;
 using TimLearning.Application.Services.LessonServices;
@@ -80,6 +81,8 @@ public static class ApplicationServicesConfigurations
         services.AddSingleton<IStudyGroupDataEncryptor, StudyGroupDataEncryptor>();
 
         services.AddScoped<ICodeReviewService, CodeReviewService>();
+
+        services.AddScoped<ICodeReviewNoteService, CodeReviewNoteService>();
     }
 
     private static void AddValidators(this IServiceCollection services)

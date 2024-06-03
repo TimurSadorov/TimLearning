@@ -9,4 +9,7 @@ public class CreateCodeReviewNoteRequest
 
     [Required]
     public required CodeReviewNotePositionRequest EndPosition { get; init; }
+
+    [Required]
+    public required string InitCommentText { get; init; }
 }

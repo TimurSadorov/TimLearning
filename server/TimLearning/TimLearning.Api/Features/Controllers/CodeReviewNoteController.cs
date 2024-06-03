@@ -65,7 +65,8 @@ public class CodeReviewNoteController : SiteApiController
                 new NewCodeReviewNote(
                     codeReviewId,
                     request.StartPosition.ToData(),
-                    request.EndPosition.ToData()
+                    request.EndPosition.ToData(),
+                    request.InitCommentText
                 ),
                 UserId
             )

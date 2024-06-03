@@ -33,7 +33,7 @@ public class GetCodeReviewNotesWithCommentsQueryHandler
             {
                 Notes = r
                     .Notes.Where(n => n.Deleted == false)
-                    .OrderBy(n => n.Added)
+                    .OrderBy(n => n.StartPosition.Row)
                     .Select(n => new CodeReviewNoteWithCommentDto(
                         n.Id,
                         n.StartPosition,

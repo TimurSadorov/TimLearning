@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using TimLearning.Application.UseCases.CodeReviewNoteComments.Commands.CreateCodeReviewNoteComment;
+using TimLearning.Application.UseCases.CodeReviewNoteComments.Dto;
 using TimLearning.Domain.Entities;
 using TimLearning.Infrastructure.Interfaces.Db;
 using TimLearning.Infrastructure.Interfaces.Providers.Clock;
@@ -11,16 +13,19 @@ public class CreateCodeReviewNoteCommandHandler : IRequestHandler<CreateCodeRevi
     private readonly IAppDbContext _dbContext;
     private readonly IAsyncSimpleValidator<CreateCodeReviewNoteCommand> _commandValidator;
     private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly IMediator _mediator;
 
     public CreateCodeReviewNoteCommandHandler(
         IAppDbContext dbContext,
         IAsyncSimpleValidator<CreateCodeReviewNoteCommand> commandValidator,
-        IDateTimeProvider dateTimeProvider
+        IDateTimeProvider dateTimeProvider,
+        IMediator mediator
     )
     {
         _dbContext = dbContext;
         _commandValidator = commandValidator;
         _dateTimeProvider = dateTimeProvider;
+        _mediator = mediator;
     }
 
     public async Task<Guid> Handle(
@@ -42,6 +47,14 @@ public class CreateCodeReviewNoteCommandHandler : IRequestHandler<CreateCodeRevi
         _dbContext.Add(note);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        await _mediator.Send(
+            new CreateCodeReviewNoteCommentCommand(
+                new NewCodeReviewNoteCommentDto(note.Id, dto.InitCommentText),
+                request.CallingUserId
+            ),
+            cancellationToken
+        );
 
         return note.Id;
     }

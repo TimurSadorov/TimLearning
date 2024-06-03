@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TimLearning.Application.Services.CodeReviewNoteServices;
 using TimLearning.Application.Specifications;
 using TimLearning.Domain.Exceptions;
 using TimLearning.Infrastructure.Interfaces.Db;
@@ -10,10 +11,15 @@ public class DeleteCodeReviewNoteCommentCommandHandler
     : IRequestHandler<DeleteCodeReviewNoteCommentCommand>
 {
     private readonly IAppDbContext _dbContext;
+    private readonly ICodeReviewNoteService _codeReviewNoteService;
 
-    public DeleteCodeReviewNoteCommentCommandHandler(IAppDbContext dbContext)
+    public DeleteCodeReviewNoteCommentCommandHandler(
+        IAppDbContext dbContext,
+        ICodeReviewNoteService codeReviewNoteService
+    )
     {
         _dbContext = dbContext;
+        _codeReviewNoteService = codeReviewNoteService;
     }
 
     public async Task Handle(
@@ -34,5 +40,10 @@ public class DeleteCodeReviewNoteCommentCommandHandler
         comment.Delete();
 
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        await _codeReviewNoteService.DeleteIfAllCommentsIsDeleted(
+            comment.CodeReviewNoteId,
+            cancellationToken
+        );
     }
 }
