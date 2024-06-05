@@ -1,11 +1,12 @@
 import { LessonEntity } from '@entities';
-import { Config, SharedUI } from '@shared';
+import { Api, Config, SharedUI } from '@shared';
 import MDEditor from '@uiw/react-md-editor';
 import { Alert, Button } from 'antd';
 import React, { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useCodeForm } from '../model';
+import { CodeReviewNoteCommentWidget } from '@widgets';
 
 type LessonItem = {
     lessonId: string;
@@ -19,6 +20,22 @@ export type UserLessonContentProps = {
     onVisit: (lesson: LessonEntity.Type.UserLesson) => void;
     onToLesson: (lessonId: string) => void;
     onLessonComplete?: (lesson: LessonEntity.Type.UserLesson) => void;
+};
+
+const getStatusReview = (status: Api.Services.CodeReviewStatus) => {
+    switch (status) {
+        case Api.Services.CodeReviewStatus.PENDING:
+            return 'Код отправлен на проверку!';
+        case Api.Services.CodeReviewStatus.STARTED:
+            return 'Началась проверка кода!';
+        case Api.Services.CodeReviewStatus.COMPLETED:
+            return 'Код прошел код ревью!';
+        case Api.Services.CodeReviewStatus.REJECTED:
+            return 'Код не прошел код ревью!';
+        default:
+            const exhaustiveCheck: never = status;
+            throw new Error(exhaustiveCheck);
+    }
 };
 
 export const UserLessonContent = ({
@@ -54,7 +71,7 @@ export const UserLessonContent = ({
             <Header>{lesson.name}</Header>
             <ContentContainer data-color-mode="light">
                 <MDEditor.Markdown skipHtml={true} source={lesson.text} />
-                {!lesson.exercise ? (
+                {!lesson.userSolution ? (
                     <></>
                 ) : (
                     <ExerciseContainer>
@@ -62,19 +79,35 @@ export const UserLessonContent = ({
                             <FileDownloadingRecord onClick={downloadApp}>Скачать архив проекта</FileDownloadingRecord>
                         </FileDownloadingContainer>
                         <CodeEditorContainer>
-                            <SharedUI.CodeEditor
-                                value={code}
-                                onChange={setCode}
-                                readonly={isExerciseCompleted}
-                                fontSize="1.12em"
-                            />
+                            {isExerciseCompleted && !!lesson.userSolution.codeReview ? (
+                                <CodeReviewNoteCommentWidget.UI.CodeViewerWithComments
+                                    code={code!}
+                                    reviewId={lesson.userSolution.codeReview.id}
+                                    canStartNewComments={false}
+                                />
+                            ) : (
+                                <SharedUI.CodeEditor value={code} onChange={setCode} readonly={isExerciseCompleted} />
+                            )}
                         </CodeEditorContainer>
                         {isExerciseCompleted ? (
                             <CompletedAlert
-                                message="Все тесты пройдены, задача выполнена!"
-                                type="success"
+                                message={
+                                    'Все тесты пройдены. ' +
+                                    (!!lesson.userSolution.codeReview
+                                        ? getStatusReview(lesson.userSolution.codeReview.status)
+                                        : 'Задача выполнена!')
+                                }
+                                type={
+                                    lesson.userSolution.codeReview?.status !== Api.Services.CodeReviewStatus.REJECTED
+                                        ? 'success'
+                                        : 'warning'
+                                }
                                 showIcon
-                                description="Вы можете повторно отправить свое новое решение."
+                                description={
+                                    lesson.userSolution.codeReview?.status !== Api.Services.CodeReviewStatus.REJECTED
+                                        ? 'Вы можете повторно отправить свое новое решение.'
+                                        : 'Вам необходимо отправить новое решение!'
+                                }
                             />
                         ) : (
                             <></>
@@ -177,6 +210,7 @@ const FileDownloadingRecord = styled.span`
 
 const CodeEditorContainer = styled.div`
     margin-top: 10px;
+    font-size: 1.12em;
 `;
 
 const CompletedAlert = styled(Alert)`

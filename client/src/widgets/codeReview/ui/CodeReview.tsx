@@ -71,7 +71,7 @@ export const CodeReview = ({ className, reviewId }: Props) => {
                         <UserSolutionContainer>
                             <UserSolutionName>Решение пользователя:</UserSolutionName>
                             <CodeReviewNoteCommentWidget.UI.CodeViewerWithComments
-                                canStartNewComments={reviewCompleted}
+                                canStartNewComments={!reviewCompleted}
                                 code={codeReviewsWithUserSolution.solution.code}
                                 reviewId={reviewId}
                             />

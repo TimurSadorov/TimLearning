@@ -87,9 +87,17 @@ public class LessonController : SiteApiController
             lesson.Name,
             lesson.Text,
             lesson.CourseId,
-            lesson.Exercise is null
-                ? null
-                : new UserExerciseResponse(lesson.Exercise.LastUserSolutionCode)
+            lesson.UserSolution is not null
+                ? new LessonUserSolutionResponse(
+                    lesson.UserSolution.Code,
+                    lesson.UserSolution.CodeReview is not null
+                        ? new LessonCodeReviewResponse(
+                            lesson.UserSolution.CodeReview.Id,
+                            lesson.UserSolution.CodeReview.Status
+                        )
+                        : null
+                )
+                : null
         );
     }
 

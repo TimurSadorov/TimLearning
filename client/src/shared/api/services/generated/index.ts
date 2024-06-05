@@ -39,8 +39,10 @@ export type { GetStudyGroupCodeReviewsResponse } from './models/GetStudyGroupCod
 export type { GetUserCoursesResponse } from './models/GetUserCoursesResponse';
 export type { GetUserSolutionCodeReviewResponse } from './models/GetUserSolutionCodeReviewResponse';
 export type { JoinToStudyGroupRequest } from './models/JoinToStudyGroupRequest';
+export type { LessonCodeReviewResponse } from './models/LessonCodeReviewResponse';
 export type { LessonExerciseRequest } from './models/LessonExerciseRequest';
 export type { LessonSystemDataResponse } from './models/LessonSystemDataResponse';
+export type { LessonUserSolutionResponse } from './models/LessonUserSolutionResponse';
 export type { LessonWithExerciseResponse } from './models/LessonWithExerciseResponse';
 export type { LoginRequest } from './models/LoginRequest';
 export type { MainAppContainerRequest } from './models/MainAppContainerRequest';
@@ -67,7 +69,6 @@ export type { UpdateModuleRequest } from './models/UpdateModuleRequest';
 export type { UpdateStudyGroupRequest } from './models/UpdateStudyGroupRequest';
 export type { UserCourseAllDataResponse } from './models/UserCourseAllDataResponse';
 export type { UserEmailConfirmationRequest } from './models/UserEmailConfirmationRequest';
-export type { UserExerciseResponse } from './models/UserExerciseResponse';
 export type { UserExerciseTestingResponse } from './models/UserExerciseTestingResponse';
 export { UserExerciseTestingStatus } from './models/UserExerciseTestingStatus';
 export type { UserLessonResponse } from './models/UserLessonResponse';

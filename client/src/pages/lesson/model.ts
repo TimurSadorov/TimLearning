@@ -27,6 +27,7 @@ export const useUserLessonPage = (lessonId: string) => {
     const onCompleteLesson = useCallback(
         async (lesson: LessonEntity.Type.UserLesson) => {
             CourseEntity.Model.updateUserCourse(lesson.courseId);
+            updateUserLesson();
         },
         [CourseEntity.Model.updateUserCourse, updateUserLesson],
     );

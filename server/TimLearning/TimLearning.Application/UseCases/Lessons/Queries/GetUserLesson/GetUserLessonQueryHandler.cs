@@ -30,12 +30,15 @@ public class GetUserLessonQueryHandler : IRequestHandler<GetUserLessonQuery, Use
                 l.Text,
                 l.Module.CourseId,
                 l.Exercise != null
-                    ? new UserExerciseDto(
-                        l.Exercise.UserSolutions.Where(s => s.UserId == request.CallingUserId)
-                            .OrderByDescending(s => s.Added)
-                            .FirstOrDefault()!
-                            .Code
-                    )
+                    ? l.Exercise.UserSolutions.Where(s => s.UserId == request.CallingUserId)
+                        .OrderByDescending(s => s.Added)
+                        .Select(s => new UserSolutionDto(
+                            s.Code,
+                            s.CodeReview != null
+                                ? new UserCodeReviewDto(s.CodeReview.Id, s.CodeReview.Status)
+                                : null
+                        ))
+                        .FirstOrDefault() ?? new UserSolutionDto(null, null)
                     : null
             ))
             .FirstOrDefaultAsync(cancellationToken);

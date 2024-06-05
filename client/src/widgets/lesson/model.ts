@@ -22,7 +22,7 @@ export const useCodeForm = (
     lesson: LessonEntity.Type.UserLesson,
     onComplete?: (lesson: LessonEntity.Type.UserLesson) => void,
 ) => {
-    const lastUserSolutionCode = lesson.exercise?.lastUserSolutionCode ?? undefined;
+    const lastUserSolutionCode = lesson.userSolution?.code ?? undefined;
     const [code, setCode] = useState<string | undefined>(lastUserSolutionCode ?? undefined);
     useEffect(() => {
         setCode(lastUserSolutionCode);

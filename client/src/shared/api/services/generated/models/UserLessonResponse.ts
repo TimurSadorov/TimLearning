@@ -3,12 +3,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { UserExerciseResponse } from './UserExerciseResponse';
+import type { LessonUserSolutionResponse } from './LessonUserSolutionResponse';
 
 export type UserLessonResponse = {
     id: string;
     name: string;
     text: string;
     courseId: string;
-    exercise?: UserExerciseResponse;
+    userSolution?: LessonUserSolutionResponse;
 };

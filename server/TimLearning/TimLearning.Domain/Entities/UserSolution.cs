@@ -15,4 +15,6 @@ public class UserSolution : IIdHolder<Guid>
     public required string Code { get; init; }
 
     public required DateTimeOffset Added { get; init; }
+
+    public CodeReview? CodeReview { get; init; }
 }

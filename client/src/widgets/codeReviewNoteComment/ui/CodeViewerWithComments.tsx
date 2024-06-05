@@ -79,7 +79,7 @@ export const CodeViewerWithComments = ({ code, reviewId, canStartNewComments, fo
                 reviewId={reviewId}
                 start={selectedCode.start}
                 end={selectedCode.end}
-                isDisabled={canStartNewComments}
+                isDisabled={!canStartNewComments}
                 buttonIsDisabled={isLoadingNotesWithComments}
                 onCreateNewNoteWithComment={onCreateNewNoteWithComment}
             >
@@ -118,7 +118,6 @@ const Container = styled.div`
     display: flex;
     background-color: #fff0bc;
     border-radius: 10px;
-    padding-bottom: 1px;
 `;
 
 const CodeEditorContainer = styled.div<{ $width: number }>`
