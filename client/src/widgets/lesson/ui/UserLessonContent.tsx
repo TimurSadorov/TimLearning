@@ -25,13 +25,13 @@ export type UserLessonContentProps = {
 const getStatusReview = (status: Api.Services.CodeReviewStatus) => {
     switch (status) {
         case Api.Services.CodeReviewStatus.PENDING:
-            return 'Код отправлен на проверку!';
+            return 'Код отправлен на ревью!';
         case Api.Services.CodeReviewStatus.STARTED:
-            return 'Началась проверка кода!';
+            return 'Началось ревью кода!';
         case Api.Services.CodeReviewStatus.COMPLETED:
-            return 'Код прошел код ревью!';
+            return 'Код прошел ревью!';
         case Api.Services.CodeReviewStatus.REJECTED:
-            return 'Код не прошел код ревью!';
+            return 'Код не прошел ревью!';
         default:
             const exhaustiveCheck: never = status;
             throw new Error(exhaustiveCheck);
