@@ -274,7 +274,7 @@ export const LessonEditing = ({ lessonId }: Props) => {
                                         label="Эталонный код"
                                         tooltip="При сохранении данный код будет проверться, что он действительно является решением. Также эталонный код будет доступен для менторов."
                                     >
-                                        <SharedUI.CodeEditor />
+                                        <SharedUI.CodeEditor fontSize="1.12em" />
                                     </FormItem>
                                     {!!updatingResult && !updatingResult.isSuccess ? (
                                         <ErrorBlock>

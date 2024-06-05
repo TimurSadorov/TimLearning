@@ -66,7 +66,7 @@ export const UserLessonContent = ({
                                 value={code}
                                 onChange={setCode}
                                 readonly={isExerciseCompleted}
-                                theme={isExerciseCompleted ? 'light' : 'dark'}
+                                fontSize="1.12em"
                             />
                         </CodeEditorContainer>
                         {isExerciseCompleted ? (

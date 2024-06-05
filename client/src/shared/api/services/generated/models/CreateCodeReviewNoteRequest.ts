@@ -8,4 +8,5 @@ import type { CodeReviewNotePositionRequest } from './CodeReviewNotePositionRequ
 export type CreateCodeReviewNoteRequest = {
     startPosition: CodeReviewNotePositionRequest;
     endPosition: CodeReviewNotePositionRequest;
+    initCommentText: string;
 };

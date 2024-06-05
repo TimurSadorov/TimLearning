@@ -4,3 +4,4 @@ export * as ModuleWidget from './module';
 export * as LessonWidget from './lesson';
 export * as StudyGroupWidget from './studyGroup';
 export * as CodeReviewWidget from './codeReview';
+export * as CodeReviewNoteCommentWidget from './codeReviewNoteComment';

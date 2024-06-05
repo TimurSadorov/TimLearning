@@ -5,3 +5,5 @@ export * as LessonEntity from './lesson';
 export * as UserProgressEntity from './userProgress';
 export * as StudyGroupEntity from './studyGroup';
 export * as CodeReviewEntity from './codeReview';
+export * as CodeReviewNoteEntity from './codeReviewNote';
+export * as CodeReviewNoteCommentEntity from './codeReviewNoteComment';

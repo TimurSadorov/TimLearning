@@ -27,7 +27,11 @@ export const CodeReviewsFilterList = ({ studyGroupId, className }: Props) => {
             ) : (
                 <ListRecords>
                     {codeReviews.map((codeReview) => (
-                        <CodeReviewFeature.UI.CodeReviewRecord key={codeReview.id} codeReview={codeReview} />
+                        <CodeReviewFeature.UI.CodeReviewRecord
+                            key={codeReview.id}
+                            codeReview={codeReview}
+                            onClick={() => navigate(Config.routes.userCodeReview.getLink(codeReview.id))}
+                        />
                     ))}
                 </ListRecords>
             )}

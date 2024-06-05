@@ -3,7 +3,7 @@ import { Api } from '@shared';
 import { createEvent, restore } from 'effector';
 import { createGate, useGate, useUnit } from 'effector-react';
 import { debounce, reset } from 'patronum';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 const FilterCodeReviews = createGate();
 
@@ -33,5 +33,17 @@ export const useFilterCodeReviews = (studyGroupId: string) => {
         isLoading,
         statuses,
         onChangeStatuses,
+    };
+};
+
+export const useCompleteReview = (reviewId: string, isSuccess: boolean) => {
+    const loading = useUnit(CodeReviewEntity.Model.completeCodeReviewFx.pending);
+    const completeCodeReview = useCallback(async () => {
+        await CodeReviewEntity.Model.completeCodeReviewFx({ reviewId, isSuccess });
+    }, [reviewId, isSuccess]);
+
+    return {
+        loading,
+        completeCodeReview,
     };
 };

@@ -3,7 +3,13 @@
     border: 1px solid #e5e5e5;
 }
 
-.test {
+.note-marker {
     position: absolute;
-    background-color: rgb(65, 65, 65);
+    background-color: #fff0bc;
+}
+
+.selected-note-marker {
+    position: absolute;
+    background-color: #f69c00;
+    z-index: 10;
 }

@@ -5,3 +5,5 @@ export * as LessonFeature from './lesson';
 export * as StoredFileFeature from './storedFile';
 export * as StudyGroupFeature from './studyGroup';
 export * as CodeReviewFeature from './codeReview';
+export * as CodeReviewNoteCommentFeature from './codeReviewNoteComment';
+export * as CodeReviewNoteFeature from './codeReviewNote';

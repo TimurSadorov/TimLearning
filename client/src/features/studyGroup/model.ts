@@ -1,5 +1,4 @@
 import { StudyGroupEntity, UserEntity } from '@entities';
-import { UserFeature } from '@features';
 import { Api, Config, SharedUI } from '@shared';
 import { useForm } from 'antd/es/form/Form';
 import { createEvent, restore } from 'effector';

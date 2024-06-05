@@ -73,6 +73,11 @@ const joiningGroup = {
     getLink: () => `/study-group/join`,
 };
 
+const userCodeReview = {
+    path: '/code-review/:reviewId',
+    getLink: (reviewId: string) => `/code-review/${reviewId}`,
+};
+
 export const routes = {
     root,
     login,
@@ -89,4 +94,5 @@ export const routes = {
     studyGroups,
     studyGroup,
     joiningGroup,
+    userCodeReview,
 };

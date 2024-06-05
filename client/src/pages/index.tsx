@@ -14,6 +14,7 @@ import { EditableLessonPage, EditableLessonsPage, UserLessonPage } from './lesso
 import { StudyGroupsPage } from './studyGroup/ui/StudyGroupsPage';
 import { StudyGroupPage } from './studyGroup/ui/StudyGroupPage';
 import { JoiningGroupPage } from './studyGroup/ui/JoiningGroupPage';
+import { CodeReviewPage } from './codeReview';
 
 const routes = Config.routes;
 
@@ -78,6 +79,7 @@ export const Routing = () => {
             >
                 <Route path={routes.studyGroups.path} element={<StudyGroupsPage />} />
                 <Route path={routes.studyGroup.path} element={<StudyGroupPage />} />
+                <Route path={routes.userCodeReview.path} element={<CodeReviewPage />} />
             </Route>
             <Route element={<TemplateWidget.UI.Header />}>
                 <Route path="*" element={<Navigate to={routes.root.path} />} />
