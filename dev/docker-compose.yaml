@@ -13,8 +13,8 @@ services:
       - Mail__Server=smtp.yandex.ru
       - Mail__Port=465
       - Mail__UserName=Поддержка TimLearning
-      - Mail__UserMail=timlearning1@ya.ru
-      - Mail__Password=zjhkokzkbyxsrdmh
+      - Mail__UserMail=
+      - Mail__Password=
       - Mail__UseSsl=true
       - JwtSecret__Key=vIQ1VNG92op9V28eAbgvrofWlkGbZx0xCpZhSZst4Fb9vAYAnfj5v410q67MZsKSwX31g8M8zQb97JSR
       - S3__ServiceUrl=${S3_INTERNAL_BASE_URL}
